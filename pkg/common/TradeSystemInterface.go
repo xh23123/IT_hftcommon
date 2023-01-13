@@ -41,7 +41,7 @@ type MarketAgent interface {
 }
 
 type SystemAgent interface {
-	GenOrderClientId(dataId DataID, exchangeID ExchangeID, sequence int64)
+	GenOrderClientId(dataId DataID, exchangeID ExchangeID, sequence int64) string
 }
 
 type TradeSystemAgent interface {
