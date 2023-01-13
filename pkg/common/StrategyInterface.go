@@ -1,7 +1,7 @@
 package common
 
 type StrategyInterface interface {
-	InitPara(agent TradeSystemAgent)
+	InitPara()
 	InitVar()
 	InitMyStrategy() []ActionEvent
 	OnBookTick(event BookTickWs) []ActionEvent
