@@ -12,6 +12,8 @@ type OrderAgent interface {
 
 	CancelOrderByCid(exid ExchangeID, clientOrderId string, symbol string) (ActionEvent, error)
 	CancelFutureOrderByCid(exid ExchangeID, clientOrderId string, symbol string) (ActionEvent, error)
+	CancelAllOrder(exid ExchangeID, symbol string) ActionEvent
+	CancelAllFutureOrder(exid ExchangeID, symbol string) ActionEvent
 
 	GetSpotOrders(exid ExchangeID, symbol string) []*Order
 	GetSpotOrder(exid ExchangeID, symbol string, clientOrderId string) *Order
