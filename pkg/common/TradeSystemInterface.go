@@ -53,5 +53,5 @@ type TradeSystemAgent interface {
 	AccountAgent
 	MarketAgent
 	SystemAgent
-	NewRestClient(exid ExchangeID, accountIndex AccountIdx, config map[string]string) RestClientInterface
+	NewRestClient(exid ExchangeID, config map[string]string) RestClientInterface
 }
