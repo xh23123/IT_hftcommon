@@ -2,6 +2,8 @@ package common
 
 type ExchangeID string
 
+type AccountIdx int
+
 type TransactionID string
 
 type DataID string
@@ -26,6 +28,7 @@ type IntervalID string
 const BINANCEID ExchangeID = "1"
 const FTXID ExchangeID = "2"
 const OKEXID ExchangeID = "3"
+const COINBASEID ExchangeID = "4"
 
 //TransactionID
 const MixID TransactionID = "0"
