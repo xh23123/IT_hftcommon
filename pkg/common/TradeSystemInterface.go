@@ -25,7 +25,6 @@ type OrderAgent interface {
 
 type TimeStampAgent interface {
 	OrderTimestamp(dataExid ExchangeID,
-		accountIndex AccountIdx,
 		dataId DataID,
 		dataTimestamp int64,
 		orderAction *ActionEvent,
