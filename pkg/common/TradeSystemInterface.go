@@ -1,30 +1,31 @@
 package common
 
 type OrderAgent interface {
-	CreateLimitBothFutureOrder(exid ExchangeID, cid string, symbol string, size float64, price float64) ActionEvent
-	CreateLimitLongFutureOrder(exid ExchangeID, cid string, symbol string, size float64, price float64) ActionEvent
-	CreateLimitShortFutureOrder(exid ExchangeID, cid string, symbol string, size float64, price float64) ActionEvent
-	CreateLimitSpotOrder(exid ExchangeID, cid string, symbol string, size float64, price float64) ActionEvent
-	CreateLimitMakerSpotOrder(exid ExchangeID, cid string, symbol string, size float64, price float64) ActionEvent
-	CreateLimitMakerBothFutureOrder(exid ExchangeID, cid string, symbol string, size float64, price float64) ActionEvent
-	CreateLimitMakerLongFutureOrder(exid ExchangeID, cid string, symbol string, size float64, price float64) ActionEvent
-	CreateLimitMakerShortFutureOrder(exid ExchangeID, cid string, symbol string, size float64, price float64) ActionEvent
+	CreateLimitBothFutureOrder(exid ExchangeID, accountIndex AccountIdx, cid string, symbol string, size float64, price float64) ActionEvent
+	CreateLimitLongFutureOrder(exid ExchangeID, accountIndex AccountIdx, cid string, symbol string, size float64, price float64) ActionEvent
+	CreateLimitShortFutureOrder(exid ExchangeID, accountIndex AccountIdx, cid string, symbol string, size float64, price float64) ActionEvent
+	CreateLimitSpotOrder(exid ExchangeID, accountIndex AccountIdx, cid string, symbol string, size float64, price float64) ActionEvent
+	CreateLimitMakerSpotOrder(exid ExchangeID, accountIndex AccountIdx, cid string, symbol string, size float64, price float64) ActionEvent
+	CreateLimitMakerBothFutureOrder(exid ExchangeID, accountIndex AccountIdx, cid string, symbol string, size float64, price float64) ActionEvent
+	CreateLimitMakerLongFutureOrder(exid ExchangeID, accountIndex AccountIdx, cid string, symbol string, size float64, price float64) ActionEvent
+	CreateLimitMakerShortFutureOrder(exid ExchangeID, accountIndex AccountIdx, cid string, symbol string, size float64, price float64) ActionEvent
 
-	CancelOrderByCid(exid ExchangeID, clientOrderId string, symbol string) (ActionEvent, error)
-	CancelFutureOrderByCid(exid ExchangeID, clientOrderId string, symbol string) (ActionEvent, error)
-	CancelAllOrder(exid ExchangeID, symbol string) ActionEvent
-	CancelAllFutureOrder(exid ExchangeID, symbol string) ActionEvent
+	CancelOrderByCid(exid ExchangeID, accountIndex AccountIdx, clientOrderId string, symbol string) (ActionEvent, error)
+	CancelFutureOrderByCid(exid ExchangeID, accountIndex AccountIdx, clientOrderId string, symbol string) (ActionEvent, error)
+	CancelAllOrder(exid ExchangeID, accountIndex AccountIdx, symbol string) ActionEvent
+	CancelAllFutureOrder(exid ExchangeID, accountIndex AccountIdx, symbol string) ActionEvent
 
-	GetSpotOrders(exid ExchangeID, symbol string) []*Order
-	GetSpotOrder(exid ExchangeID, symbol string, clientOrderId string) *Order
-	GetFutureOrders(exid ExchangeID, symbol string) []*Order
-	GetFutureOrder(exid ExchangeID, symbol string, clientOrderId string) *Order
+	GetSpotOrders(exid ExchangeID, accountIndex AccountIdx, symbol string) []*Order
+	GetSpotOrder(exid ExchangeID, accountIndex AccountIdx, symbol string, clientOrderId string) *Order
+	GetFutureOrders(exid ExchangeID, accountIndex AccountIdx, symbol string) []*Order
+	GetFutureOrder(exid ExchangeID, accountIndex AccountIdx, symbol string, clientOrderId string) *Order
 
 	ActionProcess(actions []ActionEvent)
 }
 
 type TimeStampAgent interface {
 	OrderTimestamp(dataExid ExchangeID,
+		accountIndex AccountIdx,
 		dataId DataID,
 		dataTimestamp int64,
 		orderAction *ActionEvent,
@@ -32,10 +33,10 @@ type TimeStampAgent interface {
 }
 
 type AccountAgent interface {
-	GetSpotBalance(exid ExchangeID, asset string) *Balance
-	GetFutureBalance(exid ExchangeID, asset string) *Balance
-	GetFuturePosition(exid ExchangeID, symbol string) *FuturePosition
-	SetMultiAssetMargin(exid ExchangeID, MultiAssetMargin bool) ActionEvent
+	GetSpotBalance(exid ExchangeID, accountIndex AccountIdx, asset string) *Balance
+	GetFutureBalance(exid ExchangeID, accountIndex AccountIdx, asset string) *Balance
+	GetFuturePosition(exid ExchangeID, accountIndex AccountIdx, symbol string) *FuturePosition
+	SetMultiAssetMargin(exid ExchangeID, accountIndex AccountIdx, MultiAssetMargin bool) ActionEvent
 }
 
 type MarketAgent interface {
@@ -43,7 +44,7 @@ type MarketAgent interface {
 }
 
 type SystemAgent interface {
-	GenOrderClientId(dataId DataID, exchangeID ExchangeID, sequence int64) string
+	GenOrderClientId(dataId DataID, accountIndex AccountIdx, exchangeID ExchangeID, sequence int64) string
 }
 
 type TradeSystemAgent interface {
@@ -52,5 +53,5 @@ type TradeSystemAgent interface {
 	AccountAgent
 	MarketAgent
 	SystemAgent
-	NewRestClient(exid ExchangeID, config map[string]string) RestClientInterface
+	NewRestClient(exid ExchangeID, accountIndex AccountIdx, config map[string]string) RestClientInterface
 }
