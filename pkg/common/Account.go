@@ -4,6 +4,7 @@ type OrderUpdateInfo struct {
 	DataID          DataID        `json:"dataid"`
 	Transaction     TransactionID `json:"transactionid"`
 	Exchange        ExchangeID    `json:"exid"`
+	AccountIndex    AccountIdx    `json:"accountidx"`
 	Status          OrderStatusID `json:"status"`
 	Symbol          string        `json:"symbol"`
 	Id              string        `json:"id"`
@@ -23,6 +24,7 @@ type TradeUpdateInfo struct {
 	DataID          DataID        `json:"dataid"`
 	Transaction     TransactionID `json:"transactionid"`
 	Exchange        ExchangeID    `json:"exid"`
+	AccountIndex    AccountIdx    `json:"accountidx"`
 	Status          OrderStatusID `json:"status"`
 	Symbol          string        `json:"symbol"`
 	Id              string        `json:"id"`
