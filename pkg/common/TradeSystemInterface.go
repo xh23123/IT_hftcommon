@@ -40,6 +40,7 @@ type AccountAgent interface {
 
 type MarketAgent interface {
 	InitMdConfig(*StrategyCfg)
+	ResetMarketWs(exid ExchangeID, data []ResetID) ActionEvent
 }
 
 type SystemAgent interface {
