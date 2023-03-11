@@ -7,7 +7,7 @@ type RestClientInterface interface {
 	GetSpotOrders(symbol string) []*Order
 	GetFutureOrder(symbol string, origClientOrderID string) *Order
 	GetFutureOrders(symbol string) []*Order
-	GetSpotBalance() WsSpotBalance
+	GetSpotBalance() (WsSpotBalance, error)
 	GetFutureBalancePosition() (WsFutureBalance, WsFuturePosition, error)
 	GetSpotKlines(symbol string, interval IntervalID, limit int, startTime int64, endTime int64) ([]*Kline, error)
 	GetFutureKlines(symbol string, interval IntervalID, limit int, startTime int64, endTime int64) ([]*Kline, error)
