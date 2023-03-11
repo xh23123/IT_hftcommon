@@ -54,5 +54,5 @@ type TradeSystemAgent interface {
 	MarketAgent
 	SystemAgent
 	NewRestClient(exid ExchangeID, config map[string]string) RestClientInterface
-	registerSymbols(symbols []string)
+	RegisterSymbols(symbols []string)
 }
