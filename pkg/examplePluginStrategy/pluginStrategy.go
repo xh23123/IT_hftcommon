@@ -152,25 +152,25 @@ func (s *TestStrategy) OnMarkPrice(event MarkPriceWs) []ActionEvent {
 	return nil
 }
 
-func (s *TestStrategy) OnOrder(event OrderUpdateInfo) []ActionEvent {
+func (s *TestStrategy) OnOrder(event OrderTradeUpdateInfo) []ActionEvent {
 	eventStr, _ := json.Marshal(event)
 	fmt.Println("OnOrder", string(eventStr))
 	return nil
 }
 
-func (s *TestStrategy) OnTrade(event TradeUpdateInfo) []ActionEvent {
+func (s *TestStrategy) OnTrade(event OrderTradeUpdateInfo) []ActionEvent {
 	eventStr, _ := json.Marshal(event)
 	fmt.Println("OnTrade", string(eventStr))
 	return nil
 }
 
-func (s *TestStrategy) OnFutureOrder(event OrderUpdateInfo) []ActionEvent {
+func (s *TestStrategy) OnFutureOrder(event OrderTradeUpdateInfo) []ActionEvent {
 	eventStr, _ := json.Marshal(event)
 	fmt.Println("OnFutureOrder", string(eventStr))
 	return nil
 }
 
-func (s *TestStrategy) OnFutureTrade(event TradeUpdateInfo) []ActionEvent {
+func (s *TestStrategy) OnFutureTrade(event OrderTradeUpdateInfo) []ActionEvent {
 	eventStr, _ := json.Marshal(event)
 	fmt.Println("OnFutureTrade", string(eventStr))
 
