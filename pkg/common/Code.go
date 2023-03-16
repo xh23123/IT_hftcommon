@@ -34,6 +34,7 @@ const COINBASEID ExchangeID = "4"
 const MixID TransactionID = "0"
 const SpotID TransactionID = "1"
 const FutureID TransactionID = "2"
+const LeverageID TransactionID = "3"
 
 //DataID
 const AccountUpdateID DataID = "0"
