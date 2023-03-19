@@ -5,7 +5,7 @@ type Order struct {
 	Id           string      `json:"id"`
 	Cid          string      `json:"cid"`
 	Side         SideID      `json:"side"`
-	IsIsolated   bool        `json:"isIsolated"`
+	IsIsolated   bool        `json:"is_isolated"`
 	PositionSide PositionID  `json:"position_side"`
 	Type         OrderTypeID `json:"type"`
 	FilledSize   float64     `json:"filled_size"`
