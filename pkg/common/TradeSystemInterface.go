@@ -15,10 +15,8 @@ type OrderAgent interface {
 	CancelAllOrder(exid ExchangeID, accountIndex AccountIdx, symbol string) ActionEvent
 	CancelAllFutureOrder(exid ExchangeID, accountIndex AccountIdx, symbol string) ActionEvent
 
-	GetSpotOrders(exid ExchangeID, accountIndex AccountIdx, symbol string) []*Order
-	GetSpotOrder(exid ExchangeID, accountIndex AccountIdx, symbol string, clientOrderId string) *Order
-	GetFutureOrders(exid ExchangeID, accountIndex AccountIdx, symbol string) []*Order
-	GetFutureOrder(exid ExchangeID, accountIndex AccountIdx, symbol string, clientOrderId string) *Order
+	GetOrders(exid ExchangeID, accountIndex AccountIdx, symbol string, transactionId TransactionID) []*Order
+	GetOrder(exid ExchangeID, accountIndex AccountIdx, symbol string, transactionId TransactionID, clientOrderId string) *Order
 
 	ActionProcess(actions []ActionEvent)
 }
