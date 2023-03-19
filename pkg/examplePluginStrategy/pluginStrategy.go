@@ -164,19 +164,6 @@ func (s *TestStrategy) OnTrade(event OrderTradeUpdateInfo) []ActionEvent {
 	return nil
 }
 
-func (s *TestStrategy) OnFutureOrder(event OrderTradeUpdateInfo) []ActionEvent {
-	eventStr, _ := json.Marshal(event)
-	fmt.Println("OnFutureOrder", string(eventStr))
-	return nil
-}
-
-func (s *TestStrategy) OnFutureTrade(event OrderTradeUpdateInfo) []ActionEvent {
-	eventStr, _ := json.Marshal(event)
-	fmt.Println("OnFutureTrade", string(eventStr))
-
-	return nil
-}
-
 func (s *TestStrategy) OnError(event ErrorMsg) []ActionEvent {
 	eventStr, _ := json.Marshal(event)
 	fmt.Println("OnError", string(eventStr))

@@ -16,8 +16,6 @@ type StrategyInterface interface {
 	OnMarkPrice(event MarkPriceWs) []ActionEvent
 	OnFutureKlineWs(event KlineWs) []ActionEvent
 	OnFutureAggTrade(event AggTradeWs) []ActionEvent
-	OnFutureTrade(event OrderTradeUpdateInfo) []ActionEvent
-	OnFutureOrder(event OrderTradeUpdateInfo) []ActionEvent
 	OnError(event ErrorMsg) []ActionEvent
 	OnTimer() []ActionEvent
 	OnExit()
