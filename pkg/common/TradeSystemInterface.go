@@ -30,8 +30,7 @@ type TimeStampAgent interface {
 }
 
 type AccountAgent interface {
-	GetSpotBalance(exid ExchangeID, accountIndex AccountIdx, asset string) *Balance
-	GetFutureBalance(exid ExchangeID, accountIndex AccountIdx, asset string) *Balance
+	GetBalance(exid ExchangeID, accountIndex AccountIdx, asset string, transactionId TransactionID) *Balance
 	GetFuturePosition(exid ExchangeID, accountIndex AccountIdx, symbol string) *FuturePosition
 	SetMultiAssetMargin(exid ExchangeID, accountIndex AccountIdx, MultiAssetMargin bool) ActionEvent
 }
