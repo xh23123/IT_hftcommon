@@ -10,10 +10,8 @@ type OrderAgent interface {
 	CreateLimitMakerLongFutureOrder(exid ExchangeID, accountIndex AccountIdx, cid string, symbol string, size float64, price float64) ActionEvent
 	CreateLimitMakerShortFutureOrder(exid ExchangeID, accountIndex AccountIdx, cid string, symbol string, size float64, price float64) ActionEvent
 
-	CancelOrderByCid(exid ExchangeID, accountIndex AccountIdx, clientOrderId string, symbol string) (ActionEvent, error)
-	CancelFutureOrderByCid(exid ExchangeID, accountIndex AccountIdx, clientOrderId string, symbol string) (ActionEvent, error)
-	CancelAllOrder(exid ExchangeID, accountIndex AccountIdx, symbol string) ActionEvent
-	CancelAllFutureOrder(exid ExchangeID, accountIndex AccountIdx, symbol string) ActionEvent
+	CancelOrderByCid(exid ExchangeID, accountIndex AccountIdx, clientOrderId string, symbol string, transactionId TransactionID) (ActionEvent, error)
+	CancelAllOrders(exid ExchangeID, accountIndex AccountIdx, symbol string, transactionId TransactionID) ActionEvent
 
 	GetOrders(exid ExchangeID, accountIndex AccountIdx, symbol string, transactionId TransactionID) []*Order
 	GetOrder(exid ExchangeID, accountIndex AccountIdx, symbol string, transactionId TransactionID, clientOrderId string) *Order
