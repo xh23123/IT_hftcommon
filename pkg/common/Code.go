@@ -51,10 +51,10 @@ const UnknownDataID DataID = "10"
 const RestDataID DataID = "11"
 
 // ActionID
-const CREATE_LIMITTYPE_ORDER ActionID = "1"
-const CREATE_MARKET_ORDER ActionID = "2"
-const CANCEL_ORDER ActionID = "3"
-const CANCEL_ALL_ORDER ActionID = "4"
+const CREATE_LIMITTYPE_SPOT_ORDER ActionID = "1"
+const CREATE_MARKET_SPOT_ORDER ActionID = "2"
+const CANCEL_SPOT_ORDER ActionID = "3"
+const CANCEL_ALL_SPOT_ORDER ActionID = "4"
 const CREATE_LIMITTYPE_FUTURE_ORDER ActionID = "5"
 const CREATE_MARKET_FUTURE_ORDER ActionID = "6"
 const CANCEL_FUTURE_ORDER ActionID = "7"
@@ -69,6 +69,7 @@ const RESET_TRIG_ONOFF ActionID = "15"
 const SET_MULTIASSETMARGIN ActionID = "16"
 const UNKNOWN_ACTION ActionID = "17"
 const CREATE_MARGIN_LIMITTYPE_ORDER ActionID = "18"
+const CANCEL_ALL_MARGIN_ORDER ActionID = "19"
 
 //PositionID
 const LONG PositionID = "LONG"
