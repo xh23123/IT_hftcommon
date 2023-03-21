@@ -70,6 +70,7 @@ const SET_MULTIASSETMARGIN ActionID = "16"
 const UNKNOWN_ACTION ActionID = "17"
 const CREATE_MARGIN_LIMITTYPE_ORDER ActionID = "18"
 const CANCEL_ALL_MARGIN_ORDER ActionID = "19"
+const CANCEL_MARGIN_ORDER ActionID = "20"
 
 //PositionID
 const LONG PositionID = "LONG"
