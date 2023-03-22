@@ -24,6 +24,7 @@ type OrderTradeUpdateInfo struct {
 
 type Balance struct {
 	Balance          float64 `json:"wb"`
+	MarginBalance    float64 `json:"mb"`
 	AvailableBalance float64 `json:"ab"`
 }
 type WsSpotBalance map[string]*Balance
