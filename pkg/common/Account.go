@@ -27,7 +27,21 @@ type Balance struct {
 	MarginBalance    float64 `json:"mb"`
 	AvailableBalance float64 `json:"ab"`
 }
-type WsSpotBalance map[string]*Balance
+
+type UserAsset struct {
+	Asset    string  `json:"asset"`
+	Borrowed float64 `json:"borrowed"`
+	Free     float64 `json:"free"`
+	Interest float64 `json:"interest"`
+	Locked   float64 `json:"locked"`
+	NetAsset float64 `json:"netAsset"`
+}
+
+type MarginBalance struct {
+	MarginLevel float64 `json:"marginLevel"`
+	UserAssets  []UserAsset
+}
+type SpotBalance map[string]*Balance
 
 type SidePosition struct {
 	Amount        float64 `json:"pa"`
