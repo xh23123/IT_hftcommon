@@ -38,8 +38,8 @@ type UserAsset struct {
 }
 
 type MarginBalance struct {
-	MarginLevel float64 `json:"marginLevel"`
-	UserAssets  []UserAsset
+	MarginLevel float64     `json:"marginLevel"`
+	UserAssets  []UserAsset `json:"userAssets"`
 }
 type SpotBalance map[string]*Balance
 
