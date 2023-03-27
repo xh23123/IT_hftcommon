@@ -1,14 +1,15 @@
 package common
 
-type StrategyInterface interface {
-	InitPara()
-	InitVar()
-	InitMyStrategy() []ActionEvent
+type OrderEntryCallback interface {
+	OnOrder(event OrderTradeUpdateInfo) []ActionEvent
+	OnTrade(event OrderTradeUpdateInfo) []ActionEvent
+	OnError(event ErrorMsg) []ActionEvent
+}
+
+type MarketDataCallback interface {
 	OnBookTick(event BookTickWs) []ActionEvent
 	OnDepth(event DepthWs) []ActionEvent
 	OnTick(event TickWs) []ActionEvent
-	OnTrade(event OrderTradeUpdateInfo) []ActionEvent
-	OnOrder(event OrderTradeUpdateInfo) []ActionEvent
 	OnKlineWs(event KlineWs) []ActionEvent
 	OnFutureBookTick(event BookTickWs) []ActionEvent
 	OnFutureDepth(event DepthWs) []ActionEvent
@@ -16,7 +17,15 @@ type StrategyInterface interface {
 	OnMarkPrice(event MarkPriceWs) []ActionEvent
 	OnFutureKlineWs(event KlineWs) []ActionEvent
 	OnFutureAggTrade(event AggTradeWs) []ActionEvent
-	OnError(event ErrorMsg) []ActionEvent
+}
+
+type StrategyInterface interface {
+	OrderEntryCallback
+	MarketDataCallback
+
+	InitPara()
+	InitVar()
+	InitMyStrategy() []ActionEvent
 	OnTimer() []ActionEvent
 	OnExit()
 }
