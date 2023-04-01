@@ -15,6 +15,7 @@ type Order struct {
 	Price        float64       `json:"price"`
 	CreateTime   int64         `json:"create_time"`
 	CancelTime   int64         `json:"cancel_time"`
+	ReduceOnly   bool          `json:"reduce_only"`
 	Status       StatusID      `json:"status"`
 }
 
