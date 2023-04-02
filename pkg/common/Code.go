@@ -72,6 +72,7 @@ const UNKNOWN_ACTION ActionID = "17"
 const CREATE_LIMITTYPE_MARGIN_ORDER ActionID = "18"
 const CANCEL_ALL_MARGIN_ORDER ActionID = "19"
 const CANCEL_MARGIN_ORDER ActionID = "20"
+const CREATE_LIMITTYPE_COIN_FUTURE_ORDER ActionID = "21"
 
 //PositionID
 const LONG PositionID = "LONG"

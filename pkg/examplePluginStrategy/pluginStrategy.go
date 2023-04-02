@@ -104,6 +104,13 @@ func (s *TestStrategy) OnFutureBookTick(event BookTickWs) (actions []ActionEvent
 	return actions
 }
 
+func (s *TestStrategy) OnCoinFutureBookTick(event BookTickWs) (actions []ActionEvent) {
+	eventStr, _ := json.Marshal(event)
+	fmt.Println("OnCoinFutureBookTick", string(eventStr))
+
+	return actions
+}
+
 func (s *TestStrategy) OnDepth(event DepthWs) []ActionEvent {
 	eventStr, _ := json.Marshal(event)
 	fmt.Println("OnDepth", string(eventStr))
