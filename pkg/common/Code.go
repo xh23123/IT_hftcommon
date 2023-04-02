@@ -35,6 +35,7 @@ const MixID TransactionID = "0"
 const SpotID TransactionID = "1"
 const FutureID TransactionID = "2"
 const MarginID TransactionID = "3"
+const CoinFutureID TransactionID = "4"
 
 //DataID
 const AccountUpdateID DataID = "0"
