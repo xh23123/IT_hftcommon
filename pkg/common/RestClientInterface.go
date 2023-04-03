@@ -1,6 +1,7 @@
 package common
 
 type RestClientInterface interface {
+	BinanceRestClientInterface
 	GetPremiumIndex(symbol string) []*PremiumIndexInfo
 	SetMultiAssetMargin(MultiAssetMargin bool)
 	GetOrder(symbol string, transactionId TransactionID, origClientOrderID string) *Order
