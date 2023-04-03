@@ -2,9 +2,53 @@ package common
 
 type BinanceRestClientInterface interface {
 	GetDustAssets() (res *ListDustResponse, err error)
-	ConvertDustAssets(assets []string) (withdraws *DustTransferResponse, err error)
-	GetMarginDustAssets() (res *[]ListMarginDustResponse, err error)
-	ConvertMarginDustAssets(assets []string) (res *[]ListMarginDustResponse, err error)
+	ConvertDustAssets(assets []string) (*DustTransferResponse, error)
+	GetMarginDustAssets() (*[]ListMarginDustResponse, error)
+	ConvertMarginDustAssets(assets []string) (*[]ListMarginDustResponse, error)
+	MarginLoan(asset string, isIsolated bool, symbol string, amount float64) (*TransactionResponse, error)
+	MarginRepay(asset string, isIsolated bool, symbol string, amount float64) (*TransactionResponse, error)
+	MarginAllAssets() ([]*MarginAsset, error)
+	MarginAllPairs() ([]*MarginAllPair, error)
+	CrossMarginCollateralRatio() ([]*CrossMarginCollateralRatio, error)
+	NextHourlyInterestRates(assets []string, isIsolated bool) ([]*NextHourlyInterestRate, error)
+}
+
+type NextHourlyInterestRate struct {
+	Name               string `json:"asset"`
+	NextHourlyInterest string `json:"nextHourlyInterestRate"`
+}
+
+type Collateral struct {
+	MinUsdValue  string `json:"minUsdValue,omitempty"`
+	MaxUsdValue  string `json:"maxUsdValue,omitempty"`
+	DiscountRate string `json:"discountRate"`
+}
+
+type CrossMarginCollateralRatio struct {
+	Collaterals []Collateral `json:"collaterals"`
+	AssetNames  []string     `json:"assetNames"`
+}
+type MarginAllPair struct {
+	ID            int64  `json:"id"`
+	Symbol        string `json:"symbol"`
+	Base          string `json:"base"`
+	Quote         string `json:"quote"`
+	IsMarginTrade bool   `json:"isMarginTrade"`
+	IsBuyAllowed  bool   `json:"isBuyAllowed"`
+	IsSellAllowed bool   `json:"isSellAllowed"`
+}
+
+type MarginAsset struct {
+	FullName      string `json:"assetFullName"`
+	Name          string `json:"assetName"`
+	Borrowable    bool   `json:"isBorrowable"`
+	Mortgageable  bool   `json:"isMortgageable"`
+	UserMinBorrow string `json:"userMinBorrow"`
+	UserMinRepay  string `json:"userMinRepay"`
+}
+
+type TransactionResponse struct {
+	TranID int64 `json:"tranId"`
 }
 
 type ListMarginDustResponse struct {
