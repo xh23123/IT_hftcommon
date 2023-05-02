@@ -11,6 +11,7 @@ type OrderAgent interface {
 	CreateLimitMakerShortFutureOrder(exid ExchangeID, accountIndex AccountIdx, cid string, symbol string, size float64, price float64, reduceOnly bool) ActionEvent
 
 	CreateLimitMarginOrder(exid ExchangeID, accountIndex AccountIdx, cid string, symbol string, size float64, price float64) ActionEvent
+	CreateLimitMakerMarginOrder(exid ExchangeID, accountIndex AccountIdx, cid string, symbol string, size float64, price float64) ActionEvent
 
 	CreateLimitBothCoinFutureOrder(exid ExchangeID, accountIndex AccountIdx, cid string, symbol string, size float64, price float64) ActionEvent
 	CreateLimitLongCoinFutureOrder(exid ExchangeID, accountIndex AccountIdx, cid string, symbol string, size float64, price float64, reduceOnly bool) ActionEvent
