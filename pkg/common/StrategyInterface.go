@@ -16,7 +16,7 @@ type MarketDataCallback interface {
 	OnFutureTick(event TickWs) []ActionEvent
 	OnMarkPrice(event MarkPriceWs) []ActionEvent
 	OnFutureKlineWs(event KlineWs) []ActionEvent
-	OnFutureAggTrade(event AggTradeWs) []ActionEvent
+	OnFutureAggTrade(event TradeWs) []ActionEvent
 	OnCoinFutureBookTick(event BookTickWs) []ActionEvent
 }
 

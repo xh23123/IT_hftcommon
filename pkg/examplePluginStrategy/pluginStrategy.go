@@ -147,7 +147,7 @@ func (s *TestStrategy) OnFutureKlineWs(event KlineWs) []ActionEvent {
 	return nil
 }
 
-func (s *TestStrategy) OnFutureAggTrade(event AggTradeWs) []ActionEvent {
+func (s *TestStrategy) OnFutureAggTrade(event TradeWs) []ActionEvent {
 	eventStr, _ := json.Marshal(event)
 	fmt.Println("OnFutureAggTrade", string(eventStr))
 	return nil

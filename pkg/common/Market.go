@@ -23,7 +23,7 @@ type DepthWs struct {
 	ExchangeTimestamp int64          `json:"extimestamp"`
 }
 
-type AggTradeWs struct {
+type TradeWs struct {
 	Exchange          ExchangeID `json:"exid"`
 	DataID            DataID     `json:"dataid"`
 	Symbol            string     `json:"symbol"`
