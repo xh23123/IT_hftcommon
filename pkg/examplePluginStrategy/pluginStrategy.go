@@ -153,6 +153,12 @@ func (s *TestStrategy) OnFutureAggTrade(event TradeWs) []ActionEvent {
 	return nil
 }
 
+func (s *TestStrategy) OnTradeWs(event TradeWs) []ActionEvent {
+	eventStr, _ := json.Marshal(event)
+	fmt.Println("OnTradeWs", string(eventStr))
+	return nil
+}
+
 func (s *TestStrategy) OnMarkPrice(event MarkPriceWs) []ActionEvent {
 	eventStr, _ := json.Marshal(event)
 	fmt.Println("OnMarkPrice", string(eventStr))

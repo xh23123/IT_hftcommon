@@ -29,6 +29,7 @@ type TradeWs struct {
 	Symbol            string     `json:"symbol"`
 	Price             float64    `json:"price"`
 	Size              float64    `json:"size"`
+	TradeCount        int64      `json:"tradecount"`
 	IsMaker           bool       `json:"m"`
 	ReceiveTimestamp  int64      `json:"recvtimestamp"`
 	ExchangeTimestamp int64      `json:"extimestamp"`
