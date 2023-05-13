@@ -50,6 +50,7 @@ const ErrorID DataID = "8"
 const AggTradeID DataID = "9"
 const UnknownDataID DataID = "10"
 const RestDataID DataID = "11"
+const TradeID DataID = "12"
 
 // ActionID
 const CREATE_LIMITTYPE_SPOT_ORDER ActionID = "1"
@@ -118,6 +119,7 @@ const ResetAggTrade ResetID = "9"
 const ResetMarginAccount ResetID = "10"
 const ResetCoinFutureBookTick ResetID = "11"
 const ResetCoinFutureAccount ResetID = "12"
+const ResetSpotTrade ResetID = "13"
 
 //Interval
 const Interval1s IntervalID = "1s"
