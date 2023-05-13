@@ -11,6 +11,7 @@ type MarketDataCallback interface {
 	OnDepth(event DepthWs) []ActionEvent
 	OnTick(event TickWs) []ActionEvent
 	OnKlineWs(event KlineWs) []ActionEvent
+	OnTradeWs(event TradeWs) []ActionEvent
 	OnFutureBookTick(event BookTickWs) []ActionEvent
 	OnFutureDepth(event DepthWs) []ActionEvent
 	OnFutureTick(event TickWs) []ActionEvent
