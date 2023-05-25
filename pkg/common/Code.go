@@ -36,6 +36,7 @@ const SpotID TransactionID = "1"
 const FutureID TransactionID = "2"
 const MarginID TransactionID = "3"
 const CoinFutureID TransactionID = "4"
+const UniMarginID TransactionID = "5"
 
 //DataID
 const AccountUpdateID DataID = "0"
@@ -120,6 +121,7 @@ const ResetMarginAccount ResetID = "10"
 const ResetCoinFutureBookTick ResetID = "11"
 const ResetCoinFutureAccount ResetID = "12"
 const ResetSpotTrade ResetID = "13"
+const ResetUniMarginAccount ResetID = "14"
 
 //Interval
 const Interval1s IntervalID = "1s"
