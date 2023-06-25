@@ -1,12 +1,12 @@
 package common
 
 type OrderAgent interface {
-	CreateLimitBothFutureOrder(exid ExchangeID, accountIndex AccountIdx, cid string, symbol string, size float64, price float64) ActionEvent
+	CreateLimitBothFutureOrder(exid ExchangeID, accountIndex AccountIdx, cid string, symbol string, size float64, price float64, reduceOnly bool) ActionEvent
 	CreateLimitLongFutureOrder(exid ExchangeID, accountIndex AccountIdx, cid string, symbol string, size float64, price float64, reduceOnly bool) ActionEvent
 	CreateLimitShortFutureOrder(exid ExchangeID, accountIndex AccountIdx, cid string, symbol string, size float64, price float64, reduceOnly bool) ActionEvent
 	CreateLimitSpotOrder(exid ExchangeID, accountIndex AccountIdx, cid string, symbol string, size float64, price float64) ActionEvent
 	CreateLimitMakerSpotOrder(exid ExchangeID, accountIndex AccountIdx, cid string, symbol string, size float64, price float64) ActionEvent
-	CreateLimitMakerBothFutureOrder(exid ExchangeID, accountIndex AccountIdx, cid string, symbol string, size float64, price float64) ActionEvent
+	CreateLimitMakerBothFutureOrder(exid ExchangeID, accountIndex AccountIdx, cid string, symbol string, size float64, price float64, reduceOnly bool) ActionEvent
 	CreateLimitMakerLongFutureOrder(exid ExchangeID, accountIndex AccountIdx, cid string, symbol string, size float64, price float64, reduceOnly bool) ActionEvent
 	CreateLimitMakerShortFutureOrder(exid ExchangeID, accountIndex AccountIdx, cid string, symbol string, size float64, price float64, reduceOnly bool) ActionEvent
 
