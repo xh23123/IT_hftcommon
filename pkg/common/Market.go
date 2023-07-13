@@ -5,6 +5,7 @@ type BookTickWs struct {
 	Exchange          ExchangeID `json:"exid"`
 	DataID            DataID     `json:"dataid"`
 	Symbol            string     `json:"symbol"`
+	UpdateID          int64      `json:"updateid"`
 	BestBidPrice      float64    `json:"bbp"`
 	BestBidSize       float64    `json:"bbs"`
 	BestAskPrice      float64    `json:"bap"`
@@ -17,6 +18,7 @@ type DepthWs struct {
 	Exchange          ExchangeID     `json:"exid"`
 	DataID            DataID         `json:"dataid"`
 	Symbol            string         `json:"symbol"`
+	UpdateID          int64          `json:"updateid"`
 	Bids              [20][2]float64 `json:"bids"`
 	Asks              [20][2]float64 `json:"asks"`
 	ReceiveTimestamp  int64          `json:"recvtimestamp"`
@@ -27,6 +29,7 @@ type TradeWs struct {
 	Exchange          ExchangeID `json:"exid"`
 	DataID            DataID     `json:"dataid"`
 	Symbol            string     `json:"symbol"`
+	TradeID           int64      `json:"tradeid"`
 	Price             float64    `json:"price"`
 	Size              float64    `json:"size"`
 	TradeCount        int64      `json:"tradecount"`
