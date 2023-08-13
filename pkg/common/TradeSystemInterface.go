@@ -28,11 +28,28 @@ type OrderAgent interface {
 	ActionProcess(actions []ActionEvent)
 }
 
+type OrderFeedbackInterface interface {
+	OnTrade(event OrderTradeUpdateInfo) []ActionEvent
+	OnOrder(event OrderTradeUpdateInfo) []ActionEvent
+	OnError(event ErrorMsg) []ActionEvent
+}
+
 type TimeStampAgent interface {
 	OrderTimestamp(dataExid ExchangeID,
 		dataId DataID,
 		dataTimestamp int64,
 		orderAction *ActionEvent,
+	)
+
+	FeedbackTimestamp(dataExid ExchangeID,
+		accountIndex AccountIdx,
+		dataId DataID,
+		symbol string,
+		actionType ActionID,
+		timeEventID TimeEventID,
+		orderClientId string,
+		orderId string,
+		feedBackTimestamp int64,
 	)
 }
 
@@ -41,11 +58,20 @@ type AccountAgent interface {
 	GetFuturePosition(exid ExchangeID, accountIndex AccountIdx, symbol string, transactionId TransactionID) *FuturePosition
 	SetMultiAssetMargin(exid ExchangeID, accountIndex AccountIdx, MultiAssetMargin bool) ActionEvent
 	SetDualSidePosition(exid ExchangeID, accountIndex AccountIdx, transactionId TransactionID, dualSidePosition bool) ActionEvent
+
+	WsUpdateFutureBalancePosition(exid ExchangeID, accountIndex AccountIdx, balancePosition WsFutureBalancePosition)
 }
 
-type MarketAgent interface {
+type GatewayInterface interface {
+	StartGateWay()
+	GetQueue(symbol string) chan DataEvent
+	EnQueue(symbol string, event *DataEvent)
+}
+
+type MarketDataAgent interface {
 	InitMdConfig(*StrategyCfg)
 	ResetMarketWs(exid ExchangeID, data []ResetID) ActionEvent
+	StrategyManagerCfg() StrategyManagerCfg
 }
 
 type SystemAgent interface {
@@ -54,11 +80,18 @@ type SystemAgent interface {
 
 type TradeSystemAgent interface {
 	OrderAgent
+	OrderFeedbackInterface
 	TimeStampAgent
 	AccountAgent
-	MarketAgent
+	MarketDataAgent
 	SystemAgent
+	GatewayInterface
 	Config() *ini.File
 	NewRestClient(exid ExchangeID, config map[string]string) RestClientInterface
+	NewOrderManager(ExchangeID, AccountIdx, TransactionID) OrderManagerInterface
+	NewBalanceManager(ExchangeID, AccountIdx) BalanceManagerInterface
+	RegisterAccountManager(ExchangeID, AccountManagerInterface)
+	RegisterAccountWs(ExchangeID, AccountIdx, AccountWsInterface)
+	RegisterMarketWs(ExchangeID, AccountIdx, MarketWsInterface)
 	RegisterSymbols(symbols []string)
 }
