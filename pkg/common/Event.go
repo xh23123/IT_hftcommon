@@ -8,3 +8,22 @@ type ActionEvent struct {
 	Action       ActionID      `json:"aid"`
 	Data         interface{}   `json:"data"`
 }
+
+// GateWay 统一数据格式
+type DataEvent struct {
+	ExchangeID    ExchangeID
+	AccountIndex  AccountIdx
+	TransactionID TransactionID
+	DataID        DataID
+	Symbol        string
+	Data          interface{}
+}
+
+func NewDataEvent(exchangeID ExchangeID, accountIndex AccountIdx, transactionID TransactionID, dataID DataID, symbol string, data interface{}) *DataEvent {
+	return &DataEvent{ExchangeID: exchangeID,
+		AccountIndex:  accountIndex,
+		TransactionID: transactionID,
+		DataID:        dataID,
+		Symbol:        symbol,
+		Data:          data}
+}
