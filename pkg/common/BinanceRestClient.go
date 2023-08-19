@@ -11,8 +11,46 @@ type BinanceRestClientInterface interface {
 	MarginAllPairs() ([]*MarginAllPair, error)
 	CrossMarginCollateralRatio() ([]*CrossMarginCollateralRatio, error)
 	NextHourlyInterestRates(assets []string, isIsolated bool) ([]*NextHourlyInterestRate, error)
+	GetExchangeInfos(transactionId TransactionID) (*ExchangeInfo, error)
 }
 
+// ExchangeInfo exchange info
+type ExchangeInfo struct {
+	Timezone        string        `json:"timezone"`
+	ServerTime      int64         `json:"serverTime"`
+	RateLimits      []RateLimit   `json:"rateLimits"`
+	ExchangeFilters []interface{} `json:"exchangeFilters"`
+	Symbols         []Symbol      `json:"symbols"`
+}
+
+// RateLimit struct
+type RateLimit struct {
+	RateLimitType string `json:"rateLimitType"`
+	Interval      string `json:"interval"`
+	IntervalNum   int64  `json:"intervalNum"`
+	Limit         int64  `json:"limit"`
+}
+
+// Symbol market symbol
+type Symbol struct {
+	Symbol                     string                   `json:"symbol"`
+	Status                     string                   `json:"status"`
+	BaseAsset                  string                   `json:"baseAsset"`
+	BaseAssetPrecision         int                      `json:"baseAssetPrecision"`
+	QuoteAsset                 string                   `json:"quoteAsset"`
+	QuotePrecision             int                      `json:"quotePrecision"`
+	QuoteAssetPrecision        int                      `json:"quoteAssetPrecision"`
+	BaseCommissionPrecision    int32                    `json:"baseCommissionPrecision"`
+	QuoteCommissionPrecision   int32                    `json:"quoteCommissionPrecision"`
+	OrderTypes                 []string                 `json:"orderTypes"`
+	IcebergAllowed             bool                     `json:"icebergAllowed"`
+	OcoAllowed                 bool                     `json:"ocoAllowed"`
+	QuoteOrderQtyMarketAllowed bool                     `json:"quoteOrderQtyMarketAllowed"`
+	IsSpotTradingAllowed       bool                     `json:"isSpotTradingAllowed"`
+	IsMarginTradingAllowed     bool                     `json:"isMarginTradingAllowed"`
+	Filters                    []map[string]interface{} `json:"filters"`
+	Permissions                []string                 `json:"permissions"`
+}
 type NextHourlyInterestRate struct {
 	Name               string `json:"asset"`
 	NextHourlyInterest string `json:"nextHourlyInterestRate"`
