@@ -51,6 +51,61 @@ type Symbol struct {
 	Filters                    []map[string]interface{} `json:"filters"`
 	Permissions                []string                 `json:"permissions"`
 }
+
+// LotSizeFilter define lot size filter of symbol
+type LotSizeFilter struct {
+	MaxQuantity string `json:"maxQty"`
+	MinQuantity string `json:"minQty"`
+	StepSize    string `json:"stepSize"`
+}
+
+// PriceFilter define price filter of symbol
+type PriceFilter struct {
+	MaxPrice string `json:"maxPrice"`
+	MinPrice string `json:"minPrice"`
+	TickSize string `json:"tickSize"`
+}
+
+// LotSizeFilter return lot size filter of symbol
+func (s *Symbol) LotSizeFilter() *LotSizeFilter {
+	for _, filter := range s.Filters {
+		if filter["filterType"].(string) == string("LOT_SIZE") {
+			f := &LotSizeFilter{}
+			if i, ok := filter["maxQty"]; ok {
+				f.MaxQuantity = i.(string)
+			}
+			if i, ok := filter["minQty"]; ok {
+				f.MinQuantity = i.(string)
+			}
+			if i, ok := filter["stepSize"]; ok {
+				f.StepSize = i.(string)
+			}
+			return f
+		}
+	}
+	return nil
+}
+
+// PriceFilter return price filter of symbol
+func (s *Symbol) PriceFilter() *PriceFilter {
+	for _, filter := range s.Filters {
+		if filter["filterType"].(string) == string("PRICE_FILTER") {
+			f := &PriceFilter{}
+			if i, ok := filter["maxPrice"]; ok {
+				f.MaxPrice = i.(string)
+			}
+			if i, ok := filter["minPrice"]; ok {
+				f.MinPrice = i.(string)
+			}
+			if i, ok := filter["tickSize"]; ok {
+				f.TickSize = i.(string)
+			}
+			return f
+		}
+	}
+	return nil
+}
+
 type NextHourlyInterestRate struct {
 	Name               string `json:"asset"`
 	NextHourlyInterest string `json:"nextHourlyInterestRate"`
