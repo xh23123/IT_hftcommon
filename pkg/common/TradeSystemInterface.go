@@ -1,5 +1,7 @@
 package common
 
+import "gopkg.in/ini.v1"
+
 type OrderAgent interface {
 	CreateLimitBothFutureOrder(exid ExchangeID, accountIndex AccountIdx, cid string, symbol string, size float64, price float64, reduceOnly bool) ActionEvent
 	CreateLimitLongFutureOrder(exid ExchangeID, accountIndex AccountIdx, cid string, symbol string, size float64, price float64) ActionEvent
@@ -56,6 +58,7 @@ type TradeSystemAgent interface {
 	AccountAgent
 	MarketAgent
 	SystemAgent
+	Config() *ini.File
 	NewRestClient(exid ExchangeID, config map[string]string) RestClientInterface
 	RegisterSymbols(symbols []string)
 }
