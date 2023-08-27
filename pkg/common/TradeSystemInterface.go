@@ -29,9 +29,7 @@ type OrderAgent interface {
 }
 
 type OrderFeedbackInterface interface {
-	OnTrade(event OrderTradeUpdateInfo) []ActionEvent
-	OnOrder(event OrderTradeUpdateInfo) []ActionEvent
-	OnError(event ErrorMsg) []ActionEvent
+	OnError(event ErrorMsg)
 }
 
 type TimeStampAgent interface {
