@@ -62,7 +62,6 @@ type AccountAgent interface {
 
 type GatewayInterface interface {
 	StartGateWay()
-	GetQueue(symbol string) chan DataEvent
 	EnQueue(symbol string, event *DataEvent)
 }
 
