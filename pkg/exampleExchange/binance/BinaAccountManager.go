@@ -131,7 +131,7 @@ func (b *BinaAccountManager) GetFuturePosition(symbol string, transactionId comm
 
 func (b *BinaAccountManager) GetOrders(symbol string, transactionId common.TransactionID) []*common.Order {
 
-	if v, ok := b.orderManager[transactionId].OpenOrders(symbol); ok {
+	if v, ok := b.orderManager[transactionId].OpenOrdersBySymbol(symbol); ok {
 		return v
 	} else {
 		return nil
