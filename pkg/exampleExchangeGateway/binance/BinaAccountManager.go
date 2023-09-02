@@ -29,7 +29,7 @@ type BinaAccountManager struct {
 	balanceManager common.BalanceManagerInterface
 }
 
-func NewAccountManager(systemAgent common.TradeSystemAgent) {
+func NewBinaAccountManager(systemAgent common.TradeSystemAgent) {
 
 	accountConfig := GetBinanceAccountConfigs(systemAgent)
 

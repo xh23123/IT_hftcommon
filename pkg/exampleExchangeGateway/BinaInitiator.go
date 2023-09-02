@@ -32,3 +32,7 @@ func InitMarketWs(systemAgent common.TradeSystemAgent) {
 func NewRestClient(config map[string]string) common.RestClientInterface {
 	return bina.NewRestClient(config)
 }
+
+func NewAccountManager(systemAgent common.TradeSystemAgent) {
+	bina.NewBinaAccountManager(systemAgent)
+}
