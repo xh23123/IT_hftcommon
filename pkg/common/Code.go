@@ -31,6 +31,7 @@ const OKEXID ExchangeID = "3"
 const COINBASEID ExchangeID = "4"
 const COINEX ExchangeID = "5"
 const BYBIT ExchangeID = "6"
+const ETHEREUMDEX ExchangeID = "7"
 
 // TransactionID
 const MixID TransactionID = "0"
