@@ -24,13 +24,15 @@ type ResetID string
 
 type IntervalID string
 
-//ExchangeID
+// ExchangeID
 const BINANCEID ExchangeID = "1"
 const FTXID ExchangeID = "2"
 const OKEXID ExchangeID = "3"
 const COINBASEID ExchangeID = "4"
+const COINEX ExchangeID = "5"
+const BYBIT ExchangeID = "6"
 
-//TransactionID
+// TransactionID
 const MixID TransactionID = "0"
 const SpotID TransactionID = "1"
 const FutureID TransactionID = "2"
@@ -38,7 +40,7 @@ const MarginID TransactionID = "3"
 const CoinFutureID TransactionID = "4"
 const UniMarginID TransactionID = "5"
 
-//DataID
+// DataID
 const AccountUpdateID DataID = "0"
 const OrderUpdateID DataID = "1"
 const TradeUpdateID DataID = "2"
@@ -78,22 +80,22 @@ const CREATE_LIMITTYPE_COIN_FUTURE_ORDER ActionID = "21"
 const CANCEL_COIN_FUTURE_ORDER ActionID = "22"
 const CANCEL_ALL_COIN_FUTURE_ORDER ActionID = "23"
 
-//PositionID
+// PositionID
 const LONG PositionID = "LONG"
 const SHORT PositionID = "SHORT"
 const BOTH PositionID = "BOTH"
 const NOPOSITIONID PositionID = ""
 
-//SideID
+// SideID
 const BUY SideID = "BUY"
 const SELL SideID = "SELL"
 
-//OrderTypeID
+// OrderTypeID
 const OrderTypeLimit OrderTypeID = "LIMIT"
 const OrderTypeMarket OrderTypeID = "MARKET"
 const OrderTypeLimitMaker OrderTypeID = "LIMIT_MAKER"
 
-//OrderStatusID
+// OrderStatusID
 const NEW OrderStatusID = "NEW"
 const OPEN OrderStatusID = "OPEN"
 const CANCELED OrderStatusID = "CANCELED"
@@ -102,12 +104,12 @@ const EXPIRED OrderStatusID = "EXPIRED"
 const PARTIALLY_FILLED OrderStatusID = "PARTIALLY_FILLED"
 const FILLED OrderStatusID = "FILLED"
 
-//StatusID
+// StatusID
 const Pending StatusID = 0
 const Normal StatusID = 1
 const Canceling StatusID = 2
 
-//ResetID
+// ResetID
 const ResetSpotBookTick ResetID = "1"
 const ResetSpotDepth ResetID = "2"
 const ResetSpotTick ResetID = "3"
@@ -123,7 +125,7 @@ const ResetCoinFutureAccount ResetID = "12"
 const ResetSpotTrade ResetID = "13"
 const ResetUniMarginAccount ResetID = "14"
 
-//Interval
+// Interval
 const Interval1s IntervalID = "1s"
 const Interval1m IntervalID = "1m"
 const Interval3m IntervalID = "3m"
