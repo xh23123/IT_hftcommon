@@ -19,7 +19,7 @@ require (
 	github.com/orcaman/concurrent-map v1.0.0
 	github.com/stretchr/testify v1.8.1
 	github.com/valyala/fasthttp v1.43.0
-	github.com/xh23123/IT_hftcommon v0.0.67
+	github.com/xh23123/IT_hftcommon v0.0.68
 	github.com/zeromq/goczmq v4.1.0+incompatible
 	go.uber.org/zap v1.25.0
 	google.golang.org/protobuf v1.30.0
@@ -27,7 +27,6 @@ require (
 )
 
 require (
-	github.com/BurntSushi/toml v1.2.1 // indirect
 	github.com/andybalholm/brotli v1.0.4 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/gin-contrib/sse v0.1.0 // indirect
@@ -51,7 +50,6 @@ require (
 	golang.org/x/net v0.4.0 // indirect
 	golang.org/x/sys v0.3.0 // indirect
 	golang.org/x/text v0.5.0 // indirect
-	gopkg.in/natefinch/lumberjack.v2 v2.0.0 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )

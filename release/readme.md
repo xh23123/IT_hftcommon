@@ -1,4 +1,5 @@
 ## gost ##
+commit: 7485ad9 - (41 seconds ago) remove ftx and add kraken
 
 commit: 36590f6 - (3 minutes ago) remove useless print
 
