@@ -26,12 +26,12 @@ type IntervalID string
 
 // ExchangeID
 const BINANCEID ExchangeID = "1"
-const FTXID ExchangeID = "2"
 const OKEXID ExchangeID = "3"
 const COINBASEID ExchangeID = "4"
 const COINEX ExchangeID = "5"
 const BYBIT ExchangeID = "6"
 const ETHEREUMDEX ExchangeID = "7"
+const KRAKEN ExchangeID = "8"
 
 // TransactionID
 const MixID TransactionID = "0"
