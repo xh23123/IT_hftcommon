@@ -19,6 +19,7 @@ type MarketDataCallback interface {
 	OnFutureKlineWs(event KlineWs) []ActionEvent
 	OnFutureAggTrade(event TradeWs) []ActionEvent
 	OnCoinFutureBookTick(event BookTickWs) []ActionEvent
+	OnDexBookTicks(event DexBookTicks) []ActionEvent
 }
 
 type StrategyInterface interface {

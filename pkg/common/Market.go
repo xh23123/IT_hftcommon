@@ -14,6 +14,27 @@ type BookTickWs struct {
 	ExchangeTimestamp int64      `json:"extimestamp"`
 }
 
+type DexBookTick struct {
+	Symbol                string  `json:"symbol"`
+	UpdateID              int64   `json:"updateid"`
+	BestBidPriceInBlock   float64 `json:"bbpblock"`
+	BestBidSizeInBlock    float64 `json:"bbsblock"`
+	BestAskPriceInBlock   float64 `json:"bapblock"`
+	BestAskSizeInBlock    float64 `json:"basblock"`
+	BestBidPriceInMempool float64 `json:"bbpmempool"`
+	BestBidSizeInMempool  float64 `json:"bbsmempool"`
+	BestAskPriceInMempool float64 `json:"bapmempool"`
+	BestAskSizeInMempool  float64 `json:"basmempool"`
+	ReceiveTimestamp      int64   `json:"recvtimestamp"`
+	ExchangeTimestamp     int64   `json:"extimestamp"`
+}
+
+type DexBookTicks struct {
+	Exchange ExchangeID    `json:"exid"`
+	DataID   DataID        `json:"dataid"`
+	Ticks    []DexBookTick `json:"ticks"`
+}
+
 type DepthWs struct {
 	Exchange          ExchangeID     `json:"exid"`
 	DataID            DataID         `json:"dataid"`
