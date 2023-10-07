@@ -1,4 +1,6 @@
 ## gost ##
+commit: ace5a1e - (7 minutes ago) fix bybit maker order issue
+
 commit: 9b7310b - (67 minutes ago) make ontimer sync
 
 commit: cde3acc - (29 minutes ago) dont init accountws for market only account ;fix kraken plugin issue
