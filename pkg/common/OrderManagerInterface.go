@@ -12,4 +12,5 @@ type OrderManagerInterface interface {
 	WsUpdateOrderOnOrder(OrderTradeUpdateInfo)
 	SetOpenOrder(orders []*Order)
 	WsUpdateOrderOnTrade(event OrderTradeUpdateInfo)
+	UpdateOpenOrder(openOrders []*Order) error
 }
