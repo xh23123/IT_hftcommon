@@ -26,7 +26,8 @@ type BinaAccountManager struct {
 	futureCli    *futures.Client
 	orderManager map[common.TransactionID]common.OrderManagerInterface
 
-	balanceManager common.BalanceManagerInterface
+	balanceManager   common.BalanceManagerInterface
+	openOrderChecker common.OpenOrderChecker
 }
 
 func NewBinaAccountManager(systemAgent common.TradeSystemAgent) {
@@ -55,6 +56,7 @@ func NewBinaAccountManager(systemAgent common.TradeSystemAgent) {
 		systemAgent.RegisterAccountManager(common.BINANCEID, bam)
 
 		bam.initAccountInfo()
+		bam.initOrderCheckFunc()
 		go bam.onTimer()
 
 	}
@@ -205,6 +207,25 @@ func (b *BinaAccountManager) initAccountInfo() {
 	b.restSetFutureBalancePosition()
 	b.restSetSpotOrder()
 	b.restSetFutureOrder()
+}
+
+func (b *BinaAccountManager) initOrderCheckFunc() {
+	b.openOrderChecker.AddOrderCheckFunc(b.updateSpotOrderOnTimer)
+	b.openOrderChecker.AddOrderCheckFunc(b.updateFutureOrderOnTimer)
+}
+
+func (b *BinaAccountManager) updateSpotOrderOnTimer() error {
+	if orders, err := b.restSpotOrder(); err == nil {
+		return b.orderManager[common.SpotID].UpdateOpenOrder(orders)
+	}
+	return nil
+}
+
+func (b *BinaAccountManager) updateFutureOrderOnTimer() error {
+	if orders, err := b.restFutureOrder(); err == nil {
+		return b.orderManager[common.FutureID].UpdateOpenOrder(orders)
+	}
+	return nil
 }
 
 func (b *BinaAccountManager) restSpotBalance() (cmap.ConcurrentMap, error) {
@@ -665,5 +686,7 @@ func (b *BinaAccountManager) onTimer() {
 	ticker1 := time.NewTicker(Rest_update_interval)
 	for {
 		<-ticker1.C
+		curTime := common.SystemMilliSeconds()
+		b.openOrderChecker.CheckOpenOrdersOnTime(curTime)
 	}
 }
