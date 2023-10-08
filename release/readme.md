@@ -1,4 +1,6 @@
 ## gost ##
+commit: 66521ec - (5 minutes ago) update to common 69
+
 commit: ace5a1e - (7 minutes ago) fix bybit maker order issue
 
 commit: 9b7310b - (67 minutes ago) make ontimer sync
