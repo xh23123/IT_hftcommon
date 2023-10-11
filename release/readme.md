@@ -1,4 +1,6 @@
 ## gost ##
+commit:  867a3d3 - (4 minutes ago) large goroutine queue to 4000
+
 commit: 66521ec - (5 minutes ago) update to common 69
 
 commit: ace5a1e - (7 minutes ago) fix bybit maker order issue
