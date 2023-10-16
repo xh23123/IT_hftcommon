@@ -75,6 +75,10 @@ type SystemAgent interface {
 	GenOrderClientId(exid ExchangeID, accountIndex AccountIdx, dataId DataID, sequence int64) string
 }
 
+type DebugInterface interface {
+	SetOpenOrder(exid ExchangeID, accountIndex AccountIdx, transactionID TransactionID, orders []*Order)
+}
+
 type TradeSystemAgent interface {
 	OrderAgent
 	OrderFeedbackInterface
@@ -83,6 +87,7 @@ type TradeSystemAgent interface {
 	MarketDataAgent
 	SystemAgent
 	GatewayInterface
+	DebugInterface
 	Config() *ini.File
 	NewRestClient(exid ExchangeID, config map[string]string) RestClientInterface
 	NewOrderManager(ExchangeID, AccountIdx, TransactionID) OrderManagerInterface
