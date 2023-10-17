@@ -1,4 +1,6 @@
 ## gost ##
+commit: 5b9dec4 - (13 minutes ago) support get all orders for GetOrders
+
 commit: 9f685e5 - (79 seconds ago) fix setorders error
 
 commit: 13806fc - (57 seconds ago) add panic info for setopenorders
