@@ -1,5 +1,7 @@
 ## gost ##
-commit:  867a3d3 - (4 minutes ago) large goroutine queue to 4000
+commit: 392d805 - (16 hours ago) add SetOpenOrder for debug and regression tests
+
+commit: 867a3d3 - (4 minutes ago) large goroutine queue to 4000
 
 commit: 66521ec - (5 minutes ago) update to common 69
 
