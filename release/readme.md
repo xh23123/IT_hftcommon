@@ -1,4 +1,6 @@
 ## gost ##
+commit: 13806fc - (57 seconds ago) add panic info for setopenorders
+
 commit: 392d805 - (16 hours ago) add SetOpenOrder for debug and regression tests
 
 commit: 867a3d3 - (4 minutes ago) large goroutine queue to 4000
