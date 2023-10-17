@@ -1,4 +1,6 @@
 ## gost ##
+commit: 9f685e5 - (79 seconds ago) fix setorders error
+
 commit: 13806fc - (57 seconds ago) add panic info for setopenorders
 
 commit: 392d805 - (16 hours ago) add SetOpenOrder for debug and regression tests
