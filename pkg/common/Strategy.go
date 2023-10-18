@@ -59,6 +59,7 @@ type RegisterInfo struct {
 	RegisterSpotKlineWs        map[string]string
 	RegisterFutureKlineWs      map[string]string
 	RegisterFutureAggTrade     []string
+	RegisterDexBookTicks       []string
 }
 
 type WsInfo struct {
