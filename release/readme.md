@@ -1,4 +1,6 @@
 ## gost ##
+commit: f032be7 - (3 hours ago) support dex bookticks : OnDexBookTicks
+
 commit: 5b9dec4 - (13 minutes ago) support get all orders for GetOrders
 
 commit: 9f685e5 - (79 seconds ago) fix setorders error
