@@ -1,4 +1,7 @@
 ## gost ##
+
+commit: 48d7f96 - (8 minutes ago) fix cancelling status issue
+
 commit: f032be7 - (3 hours ago) support dex bookticks : OnDexBookTicks
 
 commit: 5b9dec4 - (13 minutes ago) support get all orders for GetOrders
