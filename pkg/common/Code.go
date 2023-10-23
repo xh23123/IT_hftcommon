@@ -32,6 +32,7 @@ const COINEX ExchangeID = "5"
 const BYBIT ExchangeID = "6"
 const ETHEREUMDEX ExchangeID = "7"
 const KRAKEN ExchangeID = "8"
+const MOCKEXCHANGE ExchangeID = "9"
 
 // TransactionID
 const MixID TransactionID = "0"
