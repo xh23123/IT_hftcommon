@@ -1,4 +1,5 @@
 ## gost ##
+commit: 324c656 - (37 seconds ago) add MOCKEXCHANGE for regression tests  
 
 commit: 48d7f96 - (8 minutes ago) fix cancelling status issue
 
