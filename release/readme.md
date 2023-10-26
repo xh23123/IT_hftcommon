@@ -1,4 +1,6 @@
 ## gost ##
+commit: 6d0b3fb - (22 hours ago) fix okex market md reconnection issue
+
 commit: 0da544d - (2 minutes ago) support mock exchange
 
 commit: 324c656 - (37 seconds ago) add MOCKEXCHANGE for regression tests  
