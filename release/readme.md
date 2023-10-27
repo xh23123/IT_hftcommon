@@ -1,4 +1,6 @@
 ## gost ##
+commit: acf19b5 - (2 days ago) support mock for regression tests; fix a race condition for new order
+
 commit: 6d0b3fb - (22 hours ago) fix okex market md reconnection issue
 
 commit: 0da544d - (2 minutes ago) support mock exchange
