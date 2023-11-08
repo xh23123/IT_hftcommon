@@ -1,5 +1,7 @@
 package common
 
+import "math/big"
+
 // 行情相关数据
 type BookTickWs struct {
 	Exchange          ExchangeID `json:"exid"`
@@ -15,18 +17,19 @@ type BookTickWs struct {
 }
 
 type DexBookTick struct {
-	Symbol                string  `json:"symbol"`
-	UpdateID              int64   `json:"updateid"`
-	BestBidPriceInBlock   float64 `json:"bbpblock"`
-	BestBidSizeInBlock    float64 `json:"bbsblock"`
-	BestAskPriceInBlock   float64 `json:"bapblock"`
-	BestAskSizeInBlock    float64 `json:"basblock"`
-	BestBidPriceInMempool float64 `json:"bbpmempool"`
-	BestBidSizeInMempool  float64 `json:"bbsmempool"`
-	BestAskPriceInMempool float64 `json:"bapmempool"`
-	BestAskSizeInMempool  float64 `json:"basmempool"`
-	ReceiveTimestamp      int64   `json:"recvtimestamp"`
-	ExchangeTimestamp     int64   `json:"extimestamp"`
+	Symbol            string             `json:"symbol"`
+	ReceiveTimestamp  int64              `json:"recvtimestamp"`
+	ExchangeTimestamp int64              `json:"extimestamp"`
+	UniswapV2         *UniswapV2BookTick `json:"uniswapv2,omitempty"`
+}
+
+type UniswapV2BookTick struct {
+	Token0   string  `json:"token0"`
+	Toekn1   string  `json:"token1"`
+	Decimal0 int64   `json:"decimal0"`
+	Decimal1 int64   `json:"decimal1"`
+	Reserve0 big.Int `json:"reserve0"`
+	Reserve1 big.Int `json:"reserve1"`
 }
 
 type DexBookTicks struct {
@@ -57,6 +60,30 @@ type TradeWs struct {
 	IsMaker           bool       `json:"m"`
 	ReceiveTimestamp  int64      `json:"recvtimestamp"`
 	ExchangeTimestamp int64      `json:"extimestamp"`
+}
+
+type DexTrade struct {
+	Symbol            string          `json:"symbol"`
+	ReceiveTimestamp  int64           `json:"recvtimestamp"`
+	ExchangeTimestamp int64           `json:"extimestamp"`
+	UniswapV2         *UniswapV2Trade `json:"uniswapv2,omitempty"`
+}
+
+type UniswapV2Trade struct {
+	Token0     string  `json:"token0"`
+	Toekn1     string  `json:"token1"`
+	Decimal0   int64   `json:"decimal0"`
+	Decimal1   int64   `json:"decimal1"`
+	Amount0In  big.Int `json:"amount0_in"`
+	Amount1In  big.Int `json:"amount1_in"`
+	Amount0Out big.Int `json:"amount0_out"`
+	Amount1Out big.Int `json:"amount1_out"`
+}
+
+type DexTrades struct {
+	Exchange ExchangeID `json:"exid"`
+	DataID   DataID     `json:"dataid"`
+	Trades   []DexTrade `json:"trades"`
 }
 
 type TickWs struct {
