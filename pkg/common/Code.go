@@ -57,6 +57,7 @@ const UnknownDataID DataID = "10"
 const RestDataID DataID = "11"
 const TradeID DataID = "12"
 const DexBookTickID DataID = "13"
+const DexTradeID DataID = "14"
 
 // ActionID
 const CREATE_LIMITTYPE_SPOT_ORDER ActionID = "1"
