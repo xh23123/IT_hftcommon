@@ -1,4 +1,7 @@
 ## gost ##
+
+commit: 55c61db - (2 hours ago) process cancel rejection properly
+
 commit: 1925996 - (6 minutes ago) move coinbase to plugin exchange
 
 commit: acf19b5 - (2 days ago) support mock for regression tests; fix a race condition for new order
