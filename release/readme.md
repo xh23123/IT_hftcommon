@@ -1,5 +1,7 @@
 ## gost ##
 
+commit: 2af6394 - (3 minutes ago) panic if exchange return wrong cancel rejection
+
 commit: 55c61db - (2 hours ago) process cancel rejection properly
 
 commit: 1925996 - (6 minutes ago) move coinbase to plugin exchange
