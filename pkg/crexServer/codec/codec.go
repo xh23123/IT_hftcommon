@@ -91,30 +91,33 @@ var (
 	ErrInvalidData     = errors.New("invalid data")
 )
 
-func TryGetMessage(c Conn, isLittleEnd bool) (message []byte, err error) {
-	inboundBuffered := c.InboundBuffered()
-	if inboundBuffered < headerSize {
-		return nil, ErrNotEnoughHeader
+func TryGetMessage(c Conn, isLittleEnd bool) (message [][]byte, err error) {
+	for {
+		inboundBuffered := c.InboundBuffered()
+		if inboundBuffered < headerSize {
+			break
+		}
+		headerLen, err := c.Peek(headerSize)
+		if err != nil {
+			return nil, err
+		}
+		var dataLen uint32
+		if isLittleEnd {
+			dataLen = binary.LittleEndian.Uint32(headerLen)
+		} else {
+			dataLen = binary.BigEndian.Uint32(headerLen)
+		}
+		peekData, err := c.Peek(int(dataLen) + headerSize)
+		if err != nil {
+			logger.Error("OnTraffic", zap.Error(err), zap.Uint32("dataLen", dataLen))
+			return nil, err
+		}
+		if len(peekData) != int(dataLen)+headerSize {
+			break
+		} else {
+			c.Discard(int(dataLen) + headerSize)
+		}
+		message = append(message, peekData[headerSize:])
 	}
-	headerLen, err := c.Peek(headerSize)
-	if err != nil {
-		return nil, err
-	}
-	var dataLen uint32
-	if isLittleEnd {
-		dataLen = binary.LittleEndian.Uint32(headerLen)
-	} else {
-		dataLen = binary.BigEndian.Uint32(headerLen)
-	}
-	peekData, err := c.Peek(int(dataLen) + headerSize)
-	if err != nil {
-		logger.Error("OnTraffic", zap.Error(err), zap.Uint32("dataLen", dataLen))
-		return nil, err
-	}
-	if len(peekData) != int(dataLen)+headerSize {
-		return nil, ErrInvalidData
-	} else {
-		c.Discard(int(dataLen) + headerSize)
-	}
-	return peekData[headerSize:], nil
+	return
 }

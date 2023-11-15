@@ -3,6 +3,8 @@ package proxy
 import (
 	"context"
 	"crypto/tls"
+	"errors"
+	"sync"
 	"time"
 
 	"github.com/gorilla/websocket"
@@ -29,6 +31,18 @@ const (
 	defaultReadBufferSize  = 4096
 	defaultWriteBufferSize = 4096
 )
+
+var proxyRspPoll = sync.Pool{
+	New: func() any {
+		return &message.ProxyRsp{}
+	},
+}
+
+var websocketPushPool = sync.Pool{
+	New: func() any {
+		return &message.WebsocketPushMessage{}
+	},
+}
 
 var HttpClient = &fasthttp.Client{
 	NoDefaultUserAgentHeader: true, // Don't send: User-Agent: fasthttp
@@ -63,6 +77,7 @@ func handleHttpReq(ctx context.Context, m []byte) (resp []byte, err error) {
 	if err != nil {
 		return nil, err
 	}
+	logger.Debug("handleHttpReq", zap.String("request", httpRequest.String()))
 
 	request := fasthttp.AcquireRequest()
 	defer fasthttp.ReleaseRequest(request)
@@ -80,7 +95,7 @@ func handleHttpReq(ctx context.Context, m []byte) (resp []byte, err error) {
 	}
 	httpResp := fasthttp.AcquireResponse()
 	defer fasthttp.ReleaseResponse(httpResp)
-	err = HttpClient.DoTimeout(request, httpResp, time.Second*HttpClient.ReadTimeout)
+	err = HttpClient.DoTimeout(request, httpResp, time.Second*2)
 	msgResp := new(message.HttpResp)
 	if err != nil {
 		msgResp.Error = err.Error()
@@ -144,35 +159,64 @@ func (c *WebSocketConn) OnMessage(ctx context.Context, data []byte) ([]byte, err
 	return proto.Marshal(&websocketStartResp)
 }
 
+func (c *WebSocketConn) forwardWsPushMessage(content []byte, messageType uint32) error {
+	proxyRsp := proxyRspPoll.Get().(*message.ProxyRsp)
+	defer proxyRspPoll.Put(proxyRsp)
+	proxyRsp.Reset()
+	proxyRsp.Type = message.Reqtype_WEBSOCKETPUSH
+	messagePush := websocketPushPool.Get().(*message.WebsocketPushMessage)
+	defer websocketPushPool.Put(messagePush)
+	messagePush.Reset()
+	messagePush.MessageType = messageType
+	messagePush.Message = content
+	data, err := proto.Marshal(messagePush)
+	if err != nil {
+		logger.Error("Marshal", zap.Error(err))
+		return err
+	}
+	proxyRsp.Message = data
+	rsp, err := c.codec.Encode(proxyRsp, c.isLittleEndian)
+	if err != nil {
+		logger.Error("Encode", zap.Error(err))
+		return err
+	}
+	err = send(c.conn, rsp)
+	if err != nil {
+		logger.Error("send", zap.Error(err))
+		return err
+	}
+	return nil
+}
+
 func (c *WebSocketConn) Forward() {
+	var err error
+	var proxyRsp message.ProxyRsp
+	proxyRsp.Type = message.Reqtype_WEBSOCKETPUSH
 	defer func() {
-		c.conn.Close()
 		c.wsConn.Close()
 	}()
+	c.wsConn.SetPongHandler(func(appData string) error {
+		return c.forwardWsPushMessage([]byte(appData), websocket.PongMessage)
+	})
+
+	c.wsConn.SetPingHandler(func(appData string) error {
+		return c.forwardWsPushMessage([]byte(appData), websocket.PingMessage)
+	})
 	for {
-		messageType, msg, err := c.wsConn.ReadMessage()
+		var messageType int
+		var msg []byte
+		messageType, msg, err = c.wsConn.ReadMessage()
 		if err != nil {
 			logger.Error("Forward failed", zap.Error(err))
+			proxyRsp.Error = err.Error()
+			rsp, err := c.codec.Encode(&proxyRsp, c.isLittleEndian)
+			if err != nil {
+				logger.Error("Forward Encode failed", zap.Error(err))
+			}
+			send(c.conn, rsp)
 			return
 		}
-		logger.Info("Forward", zap.String("message", string(msg)), zap.Int("type", messageType))
-		var messagePush message.WebsocketPushMessage
-		messagePush.Message = msg
-		messagePush.MessageType = uint32(messageType)
-		data, err := proto.Marshal(&messagePush)
-		if err != nil {
-			logger.Error("Forward failed", zap.Error(err))
-			return
-		}
-		var proxyRsp message.ProxyRsp
-		proxyRsp.Message = data
-		proxyRsp.Type = message.Reqtype_WEBSOCKETPUSH
-		rsp, err := c.codec.Encode(&proxyRsp, c.isLittleEndian)
-		if err != nil {
-			logger.Error("Forward failed", zap.Error(err))
-			return
-		}
-		c.conn.Write(rsp)
+		err = c.forwardWsPushMessage(msg, uint32(messageType))
 		if err != nil {
 			logger.Error("Forward Write failed", zap.Error(err))
 			return
@@ -186,6 +230,9 @@ func (c *WebSocketConn) WriteMessage(ctx context.Context, data []byte) ([]byte, 
 	if err != nil {
 		return nil, err
 	}
+	if c.wsConn == nil {
+		return nil, errors.New("websocket not ready")
+	}
 	err = c.wsConn.WriteMessage(int(WebsocketWriteReq.MessageType), WebsocketWriteReq.Message)
 	if err != nil {
 		return nil, err
@@ -193,4 +240,8 @@ func (c *WebSocketConn) WriteMessage(ctx context.Context, data []byte) ([]byte, 
 
 	var websocketWriteRsp message.WebsocketWriteRsp
 	return proto.Marshal(&websocketWriteRsp)
+}
+
+func (c *WebSocketConn) Close() {
+	c.wsConn.Close()
 }
