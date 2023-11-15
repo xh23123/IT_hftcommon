@@ -78,6 +78,7 @@ type UniswapV2Trade struct {
 	Amount1In  big.Int `json:"amount1_in"`
 	Amount0Out big.Int `json:"amount0_out"`
 	Amount1Out big.Int `json:"amount1_out"`
+	Removed    bool    `json:"removed"`
 }
 
 type DexTrades struct {

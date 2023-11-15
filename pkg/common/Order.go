@@ -1,5 +1,7 @@
 package common
 
+import "math/big"
+
 type Order struct {
 	Exchange     ExchangeID    `json:"exid"`
 	Transaction  TransactionID `json:"tid"`
@@ -17,6 +19,9 @@ type Order struct {
 	CancelTime   int64         `json:"cancel_time"`
 	ReduceOnly   bool          `json:"reduce_only"`
 	Status       StatusID      `json:"status"`
+	// dex
+	DexAmountIn     big.Int `json:"dex_amount_in"`
+	DexMinAmountOut big.Int `json:"dex_amount_out"`
 }
 
 type CancelInfo struct {
