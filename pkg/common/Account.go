@@ -1,5 +1,7 @@
 package common
 
+import "math/big"
+
 type OrderTradeUpdateInfo struct {
 	DataID          DataID        `json:"dataid"`
 	Transaction     TransactionID `json:"transactionid"`
@@ -26,6 +28,8 @@ type Balance struct {
 	Balance          float64 `json:"wb"`
 	MarginBalance    float64 `json:"mb"`
 	AvailableBalance float64 `json:"ab"`
+	DexBalance       big.Int `json:"dex_balance"`
+	DexDecimal       int64   `json:"dex_decimal"`
 }
 
 type UserAsset struct {
