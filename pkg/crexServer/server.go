@@ -3,6 +3,7 @@ package proxy
 import (
 	"context"
 	"fmt"
+	"net"
 	"time"
 
 	"github.com/panjf2000/gnet/v2"
@@ -34,7 +35,30 @@ func (h *ServerHandler) OnOpen(c gnet.Conn) (out []byte, action gnet.Action) {
 }
 
 func (h *ServerHandler) OnClose(c gnet.Conn, err error) (action gnet.Action) {
+	ctx := c.Context()
+	if ctx == nil {
+		return
+	}
+	cc := ctx.(context.Context)
+	conn, ok := cc.Value(connKey("conn")).(*WebSocketConn)
+	if !ok {
+		return
+	}
+	conn.Close()
 	return
+}
+
+func send(c net.Conn, date []byte) error {
+	left := len(date)
+	total := len(date)
+	for left > 0 {
+		n, err := c.Write(date[total-left:])
+		if err != nil {
+			return err
+		}
+		left = left - n
+	}
+	return nil
 }
 
 func (h *ServerHandler) response(c gnet.Conn, proxyRsp *message.ProxyRsp) (action gnet.Action) {
@@ -43,104 +67,125 @@ func (h *ServerHandler) response(c gnet.Conn, proxyRsp *message.ProxyRsp) (actio
 		logger.Error("onTraffic Marshal", zap.Error(err), zap.String("proxyRsp", proxyRsp.String()))
 		return gnet.Close
 	}
-	c.Write(response)
+	err = send(c, response)
+	if err != nil {
+		return gnet.Close
+	}
 	return gnet.None
 }
 
 func (h *ServerHandler) OnTraffic(c gnet.Conn) (action gnet.Action) {
-	peekData, err := codec.TryGetMessage(c, h.isLittleEnd)
-	logger.Info("OnTraffic", zap.String("message", string(peekData)))
-	if err != nil {
-		logger.Error("onTraffic get message failed", zap.Error(err))
-		return gnet.Close
-	}
-	msg, err := h.codec.Decode(peekData)
-	if err != nil {
-		logger.Error("OnTraffic", zap.Error(err))
-		return gnet.Close
-	}
-
-	defer codec.RecycleMessage(msg)
-	switch msg.Type {
-	case message.Reqtype_HTTP:
-		var conn *HttpConn
-		ctx := c.Context()
-		if ctx != nil {
-			c := ctx.(context.Context)
-			conn = c.Value(connKey("conn")).(*HttpConn)
-		} else {
-			conn = NewHttpConn(c, h.codec)
-			ctx := context.Background()
-			ctx = context.WithValue(ctx, connKey("conn"), conn)
-			c.SetContext(ctx)
-		}
-		resp, err := conn.OnMessage(context.Background(), msg.GetMessage())
-		var proxyRsp message.ProxyRsp
-		proxyRsp.Seq = msg.GetSeq()
-		proxyRsp.Type = message.Reqtype_HTTP
-		proxyRsp.Message = resp
+	messages, err := codec.TryGetMessage(c, h.isLittleEnd)
+	for _, oneMessage := range messages {
 		if err != nil {
-			proxyRsp.Error = err.Error()
+			logger.Error("onTraffic get message failed", zap.Error(err))
+			return gnet.Close
 		}
-		return h.response(c, &proxyRsp)
-
-	case message.Reqtype_WEBSOCKET:
-		var conn *WebSocketConn
-		ctx := c.Context()
-		if ctx != nil {
-			c := ctx.(context.Context)
-			conn = c.Value(connKey("conn")).(*WebSocketConn)
-		} else {
-			conn = NewWebSocketConn(c, h.codec, h.isLittleEnd)
-			ctx := context.Background()
-			ctx = context.WithValue(ctx, connKey("conn"), conn)
-			c.SetContext(ctx)
-		}
-		resp, err := conn.OnMessage(context.Background(), msg.GetMessage())
-		var proxyRsp message.ProxyRsp
-		proxyRsp.Seq = msg.GetSeq()
-		proxyRsp.Type = message.Reqtype_WEBSOCKET
-		proxyRsp.Message = resp
+		msg, err := h.codec.Decode(oneMessage)
 		if err != nil {
-			proxyRsp.Error = err.Error()
+			logger.Error("OnTraffic", zap.Error(err))
+			return gnet.Close
 		}
-		return h.response(c, &proxyRsp)
 
-	case message.Reqtype_WEBSOCKETWRITE:
-		ctx := c.Context()
-		if ctx == nil {
-			logger.Error("onTraffic write too early", zap.String("addr", c.RemoteAddr().String()))
+		defer codec.RecycleMessage(msg)
+		switch msg.Type {
+		case message.Reqtype_HTTP:
+			var conn *HttpConn
+			ctx := c.Context()
+			if ctx != nil {
+				c := ctx.(context.Context)
+				conn = c.Value(connKey("conn")).(*HttpConn)
+			} else {
+				conn = NewHttpConn(c, h.codec)
+				ctx := context.Background()
+				ctx = context.WithValue(ctx, connKey("conn"), conn)
+				c.SetContext(ctx)
+			}
+			resp, err := conn.OnMessage(context.Background(), msg.GetMessage())
 			var proxyRsp message.ProxyRsp
-			proxyRsp.Message = []byte("write too early")
-			h.response(c, &proxyRsp)
-			return
-		}
-		ctt := ctx.(context.Context)
-		conn := ctt.Value(connKey("conn")).(*WebSocketConn)
-		if conn == nil {
-			logger.Error("onTraffic no conn", zap.String("addr", c.RemoteAddr().String()))
+			proxyRsp.Seq = msg.GetSeq()
+			proxyRsp.Type = message.Reqtype_HTTP
+			proxyRsp.Message = resp
+			if err != nil {
+				proxyRsp.Error = err.Error()
+			}
+			action = h.response(c, &proxyRsp)
+			if action != gnet.None {
+				return action
+			}
+
+		case message.Reqtype_WEBSOCKET:
+			var conn *WebSocketConn
+			ctx := c.Context()
+			if ctx != nil {
+				c := ctx.(context.Context)
+				conn = c.Value(connKey("conn")).(*WebSocketConn)
+			} else {
+				conn = NewWebSocketConn(c, h.codec, h.isLittleEnd)
+				ctx := context.Background()
+				ctx = context.WithValue(ctx, connKey("conn"), conn)
+				c.SetContext(ctx)
+			}
+			resp, err := conn.OnMessage(context.Background(), msg.GetMessage())
 			var proxyRsp message.ProxyRsp
-			proxyRsp.Message = []byte("no conn")
-			h.response(c, &proxyRsp)
-			return
+			proxyRsp.Seq = msg.GetSeq()
+			proxyRsp.Type = message.Reqtype_WEBSOCKET
+			proxyRsp.Message = resp
+			if err != nil {
+				proxyRsp.Error = err.Error()
+			}
+			action = h.response(c, &proxyRsp)
+			if action != gnet.None {
+				return action
+			}
+
+		case message.Reqtype_WEBSOCKETWRITE:
+			ctx := c.Context()
+			if ctx == nil {
+				logger.Error("onTraffic write too early", zap.String("addr", c.RemoteAddr().String()))
+				var proxyRsp message.ProxyRsp
+				proxyRsp.Error = "write too early"
+				action = h.response(c, &proxyRsp)
+				if action != gnet.None {
+					return action
+				}
+			}
+			ctt := ctx.(context.Context)
+			conn := ctt.Value(connKey("conn"))
+			if conn == nil {
+				logger.Error("onTraffic no conn", zap.String("addr", c.RemoteAddr().String()))
+				var proxyRsp message.ProxyRsp
+				proxyRsp.Error = "no conn"
+				action = h.response(c, &proxyRsp)
+				if action != gnet.None {
+					return action
+				}
+			}
+			websocketConn := conn.(*WebSocketConn)
+			resp, err := websocketConn.WriteMessage(context.Background(), msg.GetMessage())
+			var proxyRsp message.ProxyRsp
+			proxyRsp.Seq = msg.GetSeq()
+			proxyRsp.Type = message.Reqtype_WEBSOCKETWRITE
+			proxyRsp.Message = resp
+			if err != nil {
+				proxyRsp.Error = err.Error()
+			}
+			action = h.response(c, &proxyRsp)
+			if action != gnet.None {
+				return action
+			}
+		case message.Reqtype_HEARTBEAT:
+			action := h.response(c, &message.ProxyRsp{
+				Type:    msg.GetType(),
+				Seq:     msg.GetSeq(),
+				Message: msg.GetMessage(),
+			})
+			if action != gnet.None {
+				return action
+			}
 		}
-		resp, err := conn.WriteMessage(context.Background(), msg.GetMessage())
-		var proxyRsp message.ProxyRsp
-		proxyRsp.Seq = msg.GetSeq()
-		proxyRsp.Type = message.Reqtype_WEBSOCKETWRITE
-		proxyRsp.Message = resp
-		if err != nil {
-			proxyRsp.Error = err.Error()
-		}
-		return h.response(c, &proxyRsp)
-	case message.Reqtype_HEARTBEAT:
-		return h.response(c, &message.ProxyRsp{
-			Type:    msg.GetType(),
-			Seq:     msg.GetSeq(),
-			Message: msg.GetMessage(),
-		})
 	}
-	return
+	return gnet.None
 }
 func (h *ServerHandler) OnTick() (delay time.Duration, action gnet.Action) {
 

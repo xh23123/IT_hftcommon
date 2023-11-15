@@ -1,6 +1,7 @@
 package main
 
 import (
+	"log"
 	"os"
 	"os/signal"
 	"syscall"
@@ -18,5 +19,5 @@ func main() {
 			server.Stop()
 		}
 	}()
-	server.Run()
+	log.Println(server.Run())
 }
