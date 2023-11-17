@@ -27,7 +27,7 @@ message HttpReq {
     string method = 5;
 }
 
-message HttpResp {
+message HttpRsp {
     uint32 statusCode = 1;
     bytes resp = 2;
     string error = 3;
@@ -37,7 +37,7 @@ message WebsocketStartReq {
     string url = 1;
 }
 
-message WebsocketStartResp {
+message WebsocketStartRsp {
     string error = 1;
 }
 
@@ -56,18 +56,30 @@ message WebsocketPushMessage {
     bytes message = 2;
 }
 
+message Message {
+    oneof Body {
+        HttpReq httpReq = 1;
+        HttpRsp httpRsp = 2;
+        WebsocketStartReq websocketStartReq = 3;
+        WebsocketStartRsp websocketStartRsp = 4;
+        WebsocketWriteReq websocketWriteReq = 5;
+        WebsocketWriteRsp websocketWriteRsp = 6;
+        WebsocketPushMessage websocketPushMessage = 7;
+    }
+}
+
 message ProxyReq {
     Reqtype type = 1;
-    bytes message = 2;
-    string seq = 3;
+    uint32 seq = 2;
+    Message message = 3;
 }
 
 message ProxyRsp {
     Reqtype type = 1;
-    bytes message = 2;
-    string seq = 3;
-    string error = 4;
-    string code = 5;
+    uint32 seq = 2;
+    Message message = 3;
+    uint32 code = 4;
+    string error = 5;
 }
 
 // protoc --go_opt=paths=source_relative --proto_path=. --go_out=. .\message.proto
