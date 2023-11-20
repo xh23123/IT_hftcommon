@@ -14,7 +14,6 @@ import (
 	"github.com/xh23123/IT_hftcommon/pkg/crexServer/codec/message"
 	"github.com/xh23123/IT_hftcommon/pkg/crexServer/logger"
 	"go.uber.org/zap"
-	"google.golang.org/protobuf/proto"
 )
 
 type noCopy struct{}
@@ -34,7 +33,9 @@ const (
 
 var proxyRspPoll = sync.Pool{
 	New: func() any {
-		return &message.ProxyRsp{}
+		return &message.ProxyRsp{
+			Message: new(message.Message),
+		}
 	},
 }
 
@@ -71,14 +72,7 @@ func NewHttpConn(c gnet.Conn, codec codec.CodecInterface) *HttpConn {
 	}
 }
 
-func handleHttpReq(ctx context.Context, m []byte) (resp []byte, err error) {
-	httpRequest := new(message.HttpReq)
-	err = proto.Unmarshal(m, httpRequest)
-	if err != nil {
-		return nil, err
-	}
-	logger.Debug("handleHttpReq", zap.String("request", httpRequest.String()))
-
+func handleHttpReq(ctx context.Context, httpRequest *message.HttpReq) (msgResp *message.HttpRsp, err error) {
 	request := fasthttp.AcquireRequest()
 	defer fasthttp.ReleaseRequest(request)
 	for _, headerPair := range httpRequest.GetHeader().GetHeaderPair() {
@@ -96,7 +90,7 @@ func handleHttpReq(ctx context.Context, m []byte) (resp []byte, err error) {
 	httpResp := fasthttp.AcquireResponse()
 	defer fasthttp.ReleaseResponse(httpResp)
 	err = HttpClient.DoTimeout(request, httpResp, time.Second*2)
-	msgResp := new(message.HttpResp)
+	msgResp = new(message.HttpRsp)
 	if err != nil {
 		msgResp.Error = err.Error()
 		return nil, err
@@ -105,11 +99,11 @@ func handleHttpReq(ctx context.Context, m []byte) (resp []byte, err error) {
 	msgResp.Resp = append(msgResp.Resp, httpResp.Body()...)
 	msgResp.StatusCode = uint32(httpResp.StatusCode())
 
-	return proto.Marshal(msgResp)
+	return
 }
 
-func (c *HttpConn) OnMessage(ctx context.Context, data []byte) ([]byte, error) {
-	return handleHttpReq(ctx, data)
+func (c *HttpConn) OnMessage(ctx context.Context, req *message.HttpReq) (*message.HttpRsp, error) {
+	return handleHttpReq(ctx, req)
 }
 
 func (c *HttpConn) Shutdown() error {
@@ -134,12 +128,7 @@ func NewWebSocketConn(conn gnet.Conn, codec codec.CodecInterface, isLittleEndian
 	}
 }
 
-func (c *WebSocketConn) OnMessage(ctx context.Context, data []byte) ([]byte, error) {
-	var WebsocketStartReq message.WebsocketStartReq
-	err := proto.Unmarshal(data, &WebsocketStartReq)
-	if err != nil {
-		return nil, err
-	}
+func (c *WebSocketConn) OnMessage(ctx context.Context, websocketStartReq *message.WebsocketStartReq) (*message.WebsocketStartRsp, error) {
 	dial := websocket.Dialer{
 		ReadBufferSize:   defaultReadBufferSize,
 		WriteBufferSize:  defaultWriteBufferSize,
@@ -148,33 +137,36 @@ func (c *WebSocketConn) OnMessage(ctx context.Context, data []byte) ([]byte, err
 			InsecureSkipVerify: true,
 		},
 	}
-	websocketConn, _, err := dial.Dial(WebsocketStartReq.GetUrl(), nil)
+	websocketConn, _, err := dial.Dial(websocketStartReq.GetUrl(), nil)
 	if err != nil {
 		return nil, err
 	}
 	c.wsConn = websocketConn
 	c.isConnect = true
-	var websocketStartResp message.WebsocketStartResp
+	var websocketStartResp message.WebsocketStartRsp
 	go c.Forward()
-	return proto.Marshal(&websocketStartResp)
+	return &websocketStartResp, nil
+}
+
+func clear(proxyRsp *message.ProxyRsp) {
+	proxyRsp.Code = 0
+	proxyRsp.Type = 0
+	proxyRsp.Error = ""
+	proxyRsp.Seq = 0
 }
 
 func (c *WebSocketConn) forwardWsPushMessage(content []byte, messageType uint32) error {
 	proxyRsp := proxyRspPoll.Get().(*message.ProxyRsp)
 	defer proxyRspPoll.Put(proxyRsp)
-	proxyRsp.Reset()
+	clear(proxyRsp)
 	proxyRsp.Type = message.Reqtype_WEBSOCKETPUSH
 	messagePush := websocketPushPool.Get().(*message.WebsocketPushMessage)
 	defer websocketPushPool.Put(messagePush)
 	messagePush.Reset()
 	messagePush.MessageType = messageType
 	messagePush.Message = content
-	data, err := proto.Marshal(messagePush)
-	if err != nil {
-		logger.Error("Marshal", zap.Error(err))
-		return err
-	}
-	proxyRsp.Message = data
+
+	proxyRsp.Message.Body = &message.Message_WebsocketPushMessage{WebsocketPushMessage: messagePush}
 	rsp, err := c.codec.Encode(proxyRsp, c.isLittleEndian)
 	if err != nil {
 		logger.Error("Encode", zap.Error(err))
@@ -208,14 +200,9 @@ func (c *WebSocketConn) Forward() {
 		messageType, msg, err = c.wsConn.ReadMessage()
 		if err != nil {
 			logger.Error("Forward failed", zap.Error(err))
-			proxyRsp.Error = err.Error()
-			rsp, err := c.codec.Encode(&proxyRsp, c.isLittleEndian)
-			if err != nil {
-				logger.Error("Forward Encode failed", zap.Error(err))
-			}
-			send(c.conn, rsp)
 			return
 		}
+		logger.Info("Forward", zap.String("message", string(msg)), zap.Int("type", messageType))
 		err = c.forwardWsPushMessage(msg, uint32(messageType))
 		if err != nil {
 			logger.Error("Forward Write failed", zap.Error(err))
@@ -224,22 +211,17 @@ func (c *WebSocketConn) Forward() {
 	}
 }
 
-func (c *WebSocketConn) WriteMessage(ctx context.Context, data []byte) ([]byte, error) {
-	var WebsocketWriteReq message.WebsocketWriteReq
-	err := proto.Unmarshal(data, &WebsocketWriteReq)
-	if err != nil {
-		return nil, err
-	}
+func (c *WebSocketConn) WriteMessage(ctx context.Context, WebsocketWriteReq *message.WebsocketWriteReq) (*message.WebsocketWriteRsp, error) {
 	if c.wsConn == nil {
 		return nil, errors.New("websocket not ready")
 	}
-	err = c.wsConn.WriteMessage(int(WebsocketWriteReq.MessageType), WebsocketWriteReq.Message)
+	err := c.wsConn.WriteMessage(int(WebsocketWriteReq.MessageType), WebsocketWriteReq.Message)
 	if err != nil {
 		return nil, err
 	}
 
 	var websocketWriteRsp message.WebsocketWriteRsp
-	return proto.Marshal(&websocketWriteRsp)
+	return &websocketWriteRsp, nil
 }
 
 func (c *WebSocketConn) Close() {

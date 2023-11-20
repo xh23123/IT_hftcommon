@@ -6,6 +6,7 @@ import (
 	"encoding/hex"
 	"fmt"
 	"log"
+	"math/rand"
 	"net"
 	"os"
 	"reflect"
@@ -48,7 +49,7 @@ func send(c net.Conn, proxyReq *message.ProxyReq) {
 }
 
 func TestHttp(t *testing.T) {
-	port := 8092
+	port := rand.Intn(1000) + 2000
 	s := proxy.NewServer(port)
 	go s.Run()
 	defer s.Stop()
@@ -58,12 +59,13 @@ func TestHttp(t *testing.T) {
 		log.Fatal(err)
 	}
 	var httpReq message.HttpReq
-	httpReq.Url = "https://www.google.com"
-	d, _ := proto.Marshal(&httpReq)
-	var proxyReq message.ProxyReq
+	httpReq.Url = "https://www.baidu.com"
+	proxyReq := message.ProxyReq{
+		Message: new(message.Message),
+	}
 	proxyReq.Type = message.Reqtype_HTTP
-	proxyReq.Seq = "1"
-	proxyReq.Message = d
+	proxyReq.Seq = 1
+	proxyReq.Message.Body = &message.Message_HttpReq{HttpReq: &httpReq}
 
 	now := time.Now()
 	defer func() {
@@ -94,11 +96,7 @@ func TestHttp(t *testing.T) {
 	if err != nil {
 		log.Fatal(err)
 	}
-	var httpRsp message.HttpResp
-	err = proto.Unmarshal(proxyRsp.Message, &httpRsp)
-	if err != nil {
-		log.Fatal(err)
-	}
+	httpRsp := proxyRsp.Message.GetHttpRsp()
 	log.Println(httpRsp.String())
 }
 
@@ -164,8 +162,9 @@ func httpRequest(method, urlHost string, reqParameters map[string]interface{}, a
 	}
 
 	proxyReq := message.ProxyReq{
-		Type: message.Reqtype_HTTP,
-		Seq:  genSeq(),
+		Type:    message.Reqtype_HTTP,
+		Seq:     genSeq(),
+		Message: new(message.Message),
 	}
 	headPairs = append(headPairs, &message.HeaderPair{Key: "Content-Type", Value: []string{CONTENTTYPE}})
 	headPairs = append(headPairs, &message.HeaderPair{Key: "User-Agent", Value: []string{USERAGENT}})
@@ -185,11 +184,7 @@ func httpRequest(method, urlHost string, reqParameters map[string]interface{}, a
 			HeaderPair: headPairs,
 		},
 	}
-	v, err := proto.Marshal(&httpRes)
-	if err != nil {
-		return nil, err
-	}
-	proxyReq.Message = v
+	proxyReq.Message.Body = &message.Message_HttpReq{HttpReq: &httpRes}
 	return &proxyReq, nil
 }
 
@@ -248,10 +243,6 @@ func TestOrder(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	var httpResp message.HttpResp
-	err = proto.Unmarshal(rsp.Message, &httpResp)
-	if err != nil {
-		t.Fatal(err)
-	}
+	httpResp := rsp.Message.GetHttpRsp()
 	t.Log(httpResp.String())
 }
