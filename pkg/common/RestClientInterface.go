@@ -1,5 +1,7 @@
 package common
 
+import "math/big"
+
 type RestClientInterface interface {
 	BinanceRestClientInterface
 	GetPremiumIndex(symbol string) []*PremiumIndexInfo
@@ -12,4 +14,5 @@ type RestClientInterface interface {
 	GetCoinFutureBalancePosition() (WsFutureBalance, WsFuturePosition, error)
 	GetSpotKlines(symbol string, interval IntervalID, limit int, startTime int64, endTime int64) ([]*Kline, error)
 	GetFutureKlines(symbol string, interval IntervalID, limit int, startTime int64, endTime int64) ([]*Kline, error)
+	GetSuggestGasPrice() (*big.Int, error)
 }
