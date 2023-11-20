@@ -13,7 +13,9 @@ import (
 )
 
 var messagePool = sync.Pool{New: func() any {
-	return new(message.ProxyReq)
+	return &message.ProxyReq{
+		Message: new(message.Message),
+	}
 }}
 
 var encoderPool = sync.Pool{New: func() any {

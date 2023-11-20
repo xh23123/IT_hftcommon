@@ -101,15 +101,17 @@ func (h *ServerHandler) OnTraffic(c gnet.Conn) (action gnet.Action) {
 				ctx = context.WithValue(ctx, connKey("conn"), conn)
 				c.SetContext(ctx)
 			}
-			resp, err := conn.OnMessage(context.Background(), msg.GetMessage())
-			var proxyRsp message.ProxyRsp
+			resp, err := conn.OnMessage(context.Background(), msg.GetMessage().GetHttpReq())
+			proxyRsp := &message.ProxyRsp{
+				Message: new(message.Message),
+			}
 			proxyRsp.Seq = msg.GetSeq()
 			proxyRsp.Type = message.Reqtype_HTTP
-			proxyRsp.Message = resp
+			proxyRsp.Message.Body = &message.Message_HttpRsp{HttpRsp: resp}
 			if err != nil {
 				proxyRsp.Error = err.Error()
 			}
-			action = h.response(c, &proxyRsp)
+			action = h.response(c, proxyRsp)
 			if action != gnet.None {
 				return action
 			}
@@ -126,15 +128,17 @@ func (h *ServerHandler) OnTraffic(c gnet.Conn) (action gnet.Action) {
 				ctx = context.WithValue(ctx, connKey("conn"), conn)
 				c.SetContext(ctx)
 			}
-			resp, err := conn.OnMessage(context.Background(), msg.GetMessage())
-			var proxyRsp message.ProxyRsp
+			resp, err := conn.OnMessage(context.Background(), msg.GetMessage().GetWebsocketStartReq())
+			proxyRsp := &message.ProxyRsp{
+				Message: new(message.Message),
+			}
 			proxyRsp.Seq = msg.GetSeq()
 			proxyRsp.Type = message.Reqtype_WEBSOCKET
-			proxyRsp.Message = resp
+			proxyRsp.Message.Body = &message.Message_WebsocketStartRsp{WebsocketStartRsp: resp}
 			if err != nil {
 				proxyRsp.Error = err.Error()
 			}
-			action = h.response(c, &proxyRsp)
+			action = h.response(c, proxyRsp)
 			if action != gnet.None {
 				return action
 			}
@@ -143,7 +147,9 @@ func (h *ServerHandler) OnTraffic(c gnet.Conn) (action gnet.Action) {
 			ctx := c.Context()
 			if ctx == nil {
 				logger.Error("onTraffic write too early", zap.String("addr", c.RemoteAddr().String()))
-				var proxyRsp message.ProxyRsp
+				proxyRsp := message.ProxyRsp{
+					Message: new(message.Message),
+				}
 				proxyRsp.Error = "write too early"
 				action = h.response(c, &proxyRsp)
 				if action != gnet.None {
@@ -154,7 +160,9 @@ func (h *ServerHandler) OnTraffic(c gnet.Conn) (action gnet.Action) {
 			conn := ctt.Value(connKey("conn"))
 			if conn == nil {
 				logger.Error("onTraffic no conn", zap.String("addr", c.RemoteAddr().String()))
-				var proxyRsp message.ProxyRsp
+				proxyRsp := message.ProxyRsp{
+					Message: new(message.Message),
+				}
 				proxyRsp.Error = "no conn"
 				action = h.response(c, &proxyRsp)
 				if action != gnet.None {
@@ -162,15 +170,17 @@ func (h *ServerHandler) OnTraffic(c gnet.Conn) (action gnet.Action) {
 				}
 			}
 			websocketConn := conn.(*WebSocketConn)
-			resp, err := websocketConn.WriteMessage(context.Background(), msg.GetMessage())
-			var proxyRsp message.ProxyRsp
+			resp, err := websocketConn.WriteMessage(context.Background(), msg.GetMessage().GetWebsocketWriteReq())
+			proxyRsp := &message.ProxyRsp{
+				Message: new(message.Message),
+			}
 			proxyRsp.Seq = msg.GetSeq()
 			proxyRsp.Type = message.Reqtype_WEBSOCKETWRITE
-			proxyRsp.Message = resp
+			proxyRsp.Message.Body = &message.Message_WebsocketWriteRsp{WebsocketWriteRsp: resp}
 			if err != nil {
 				proxyRsp.Error = err.Error()
 			}
-			action = h.response(c, &proxyRsp)
+			action = h.response(c, proxyRsp)
 			if action != gnet.None {
 				return action
 			}

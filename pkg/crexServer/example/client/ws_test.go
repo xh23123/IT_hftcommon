@@ -25,34 +25,36 @@ import (
 	"google.golang.org/protobuf/proto"
 )
 
-var seq atomic.Int32
+var seq atomic.Uint32
 
-func genSeq() string {
+func genSeq() uint32 {
 	d := seq.Add(1)
-	return strconv.Itoa(int(d))
+	return d
 }
 
 func NewWebsocketStartMessage(addr string) *message.ProxyReq {
-	var proxyReq message.ProxyReq
+	proxyReq := message.ProxyReq{
+		Message: new(message.Message),
+	}
 	proxyReq.Type = message.Reqtype_WEBSOCKET
 	proxyReq.Seq = genSeq()
 	var websocketStartReq message.WebsocketStartReq
 	websocketStartReq.Url = addr
-	m, _ := proto.Marshal(&websocketStartReq)
-	proxyReq.Message = m
+	proxyReq.Message.Body = &message.Message_WebsocketStartReq{WebsocketStartReq: &websocketStartReq}
 
 	return &proxyReq
 }
 
 func NewWebsocketWriteMessage(content string) *message.ProxyReq {
-	var proxyReq message.ProxyReq
+	proxyReq := message.ProxyReq{
+		Message: new(message.Message),
+	}
 	proxyReq.Type = message.Reqtype_WEBSOCKETWRITE
 	proxyReq.Seq = genSeq()
 	var websocketWriteReq message.WebsocketWriteReq
 	websocketWriteReq.MessageType = websocket.TextMessage
 	websocketWriteReq.Message = []byte(content)
-	m, _ := proto.Marshal(&websocketWriteReq)
-	proxyReq.Message = m
+	proxyReq.Message.Body = &message.Message_WebsocketWriteReq{WebsocketWriteReq: &websocketWriteReq}
 
 	return &proxyReq
 }
@@ -87,25 +89,13 @@ func OnMessage(conn net.Conn) error {
 	}
 	switch proxyRsp.Type {
 	case message.Reqtype_WEBSOCKET:
-		var resp message.WebsocketStartResp
-		err := proto.Unmarshal(proxyRsp.Message, &resp)
-		if err != nil {
-			return err
-		}
+		resp := proxyRsp.Message.GetWebsocketStartRsp()
 		log.Println("Reqtype_WEBSOCKET", resp.String())
 	case message.Reqtype_WEBSOCKETPUSH:
-		var resp message.WebsocketPushMessage
-		err := proto.Unmarshal(proxyRsp.Message, &resp)
-		if err != nil {
-			return err
-		}
+		resp := proxyRsp.Message.GetWebsocketPushMessage()
 		log.Println("Reqtype_WEBSOCKETPUSH", resp.String())
 	case message.Reqtype_WEBSOCKETWRITE:
-		var resp message.WebsocketWriteRsp
-		err := proto.Unmarshal(proxyRsp.Message, &resp)
-		if err != nil {
-			return err
-		}
+		resp := proxyRsp.Message.GetWebsocketWriteRsp()
 		log.Println("Reqtype_WEBSOCKETWRITE", resp.String())
 	}
 	return nil
@@ -200,11 +190,12 @@ func HttpRequest(request *http.Request, exchange string, port int) ([]byte, erro
 		}
 		httpReq.Body = body
 	}
-	d, _ := proto.Marshal(httpReq)
-	proxyReq := new(message.ProxyReq)
+	proxyReq := &message.ProxyReq{
+		Message: &message.Message{},
+	}
 	proxyReq.Type = message.Reqtype_HTTP
 	proxyReq.Seq = genSeq()
-	proxyReq.Message = d
+	proxyReq.Message.Body = &message.Message_HttpReq{HttpReq: httpReq}
 
 	send(conn, proxyReq)
 	if err != nil {
@@ -215,12 +206,7 @@ func HttpRequest(request *http.Request, exchange string, port int) ([]byte, erro
 		return nil, err
 	}
 
-	httpRsp := new(message.HttpResp)
-	httpRsp.Reset()
-	err = proto.Unmarshal(resp.Message, httpRsp)
-	if err != nil {
-		return nil, err
-	}
+	httpRsp := resp.Message.GetHttpRsp()
 	httpData := make([]byte, len(httpRsp.GetResp()))
 	copy(httpData, httpRsp.GetResp())
 	return httpData, nil
