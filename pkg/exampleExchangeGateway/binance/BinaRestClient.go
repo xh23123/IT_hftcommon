@@ -3,6 +3,8 @@ package bina
 import (
 	"context"
 	"encoding/json"
+	"fmt"
+	"math/big"
 
 	"github.com/xh23123/IT_hftcommon/pkg/common"
 	"github.com/xh23123/IT_hftcommon/pkg/exampleExchangeGateway/binance/go-binance/v2"
@@ -555,4 +557,8 @@ func (r *BinaRestClient) GetExchangeInfos(transactionId common.TransactionID) (*
 		panic("BinaRestClient::GetExchangeInfos invalid transactionId : " + transactionId)
 	}
 
+}
+
+func (r *BinaRestClient) GetSuggestGasPrice() (*big.Int, error) {
+	return nil, fmt.Errorf("no implement")
 }

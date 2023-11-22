@@ -7,15 +7,12 @@ import (
 	"strconv"
 	"strings"
 	"time"
+
+	"github.com/shopspring/decimal"
 )
 
 func Float2Str(number float64) string {
-	num := strconv.FormatFloat(number, 'f', 8, 64)
-	for strings.HasSuffix(num, "0") {
-		num = strings.TrimSuffix(num, "0")
-	}
-	num = strings.TrimSuffix(num, ".")
-	return num
+	return decimal.NewFromFloat(number).String()
 }
 
 func Str2Float(number string) float64 {
