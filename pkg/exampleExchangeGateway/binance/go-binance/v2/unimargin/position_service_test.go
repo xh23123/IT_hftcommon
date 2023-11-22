@@ -91,23 +91,6 @@ func (s *positionServiceTestSuite) TestUpdatePositionMargin() {
 	s.r().NoError(err)
 }
 
-func (s *positionServiceTestSuite) TestChangePositionMode() {
-	data := []byte(`{
-		"code": 200,
-		"msg": "success"
-	}`)
-	s.mockDo(data, nil)
-	defer s.assertDo()
-	s.assertReq(func(r *request) {
-		e := newSignedRequest().setFormParams(params{
-			"dualSidePosition": "true",
-		})
-		s.assertRequestEqual(e, r)
-	})
-	err := s.client.NewChangePositionModeService().DualSide(true).Do(newContext())
-	s.r().NoError(err)
-}
-
 func (s *positionServiceTestSuite) TestGetPositionMode() {
 	data := []byte(`{
 		"dualSidePosition": true

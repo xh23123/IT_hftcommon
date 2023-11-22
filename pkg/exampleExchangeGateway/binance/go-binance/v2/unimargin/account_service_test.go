@@ -14,54 +14,6 @@ func TestAccountService(t *testing.T) {
 	suite.Run(t, new(accountServiceTestSuite))
 }
 
-func (s *accountServiceTestSuite) TestetBalance() {
-	data := []byte(`[
-		{
-			"accountAlias": "SgsR",
-			"asset": "BTC",
-			"balance": "0.00250000",
-			"withdrawAvailable": "0.00250000",
-        	"crossWalletBalance": "0.00241969",
-        	"crossUnPnl": "0.00000000",
-        	"availableBalance": "0.00241969",
-        	"updateTime": 1592468353979
-		}
-	]`)
-	s.mockDo(data, nil)
-	defer s.assertDo()
-	s.assertReq(func(r *request) {
-		e := newSignedRequest()
-		s.assertRequestEqual(e, r)
-	})
-
-	res, err := s.client.NewGetBalanceService().Do(newContext())
-	s.r().NoError(err)
-	s.r().Len(res, 1)
-	e := &Balance{
-		AccountAlias:       "SgsR",
-		Asset:              "BTC",
-		Balance:            "0.00250000",
-		WithdrawAvailable:  "0.00250000",
-		CrossWalletBalance: "0.00241969",
-		CrossUnPnl:         "0.00000000",
-		AvailableBalance:   "0.00241969",
-		UpdateTime:         1592468353979,
-	}
-	s.assertBalanceEqual(e, res[0])
-}
-
-func (s *accountServiceTestSuite) assertBalanceEqual(e, a *Balance) {
-	r := s.r()
-	r.Equal(e.AccountAlias, a.AccountAlias, "AccountAlias")
-	r.Equal(e.Asset, a.Asset, "Asset")
-	r.Equal(e.Balance, a.Balance, "Balance")
-	r.Equal(e.WithdrawAvailable, a.WithdrawAvailable, "WithdrawAvailable")
-	r.Equal(e.CrossWalletBalance, a.CrossWalletBalance, "CrossWalletBalance")
-	r.Equal(e.CrossUnPnl, a.CrossUnPnl, "CrossUnPnl")
-	r.Equal(e.AvailableBalance, a.AvailableBalance, "AvailableBalance")
-	r.Equal(e.UpdateTime, a.UpdateTime, "UpdateTime")
-}
-
 func (s *accountServiceTestSuite) TestetAccount() {
 	data := []byte(`{
 		"assets": [

@@ -183,6 +183,18 @@ func (s *TestStrategy) OnError(event ErrorMsg) []ActionEvent {
 	return nil
 }
 
+func (s *TestStrategy) OnDexBookTicks(event DexBookTicks) []ActionEvent {
+	eventStr, _ := json.Marshal(event)
+	fmt.Println("OnDexBookTicks", string(eventStr))
+	return nil
+}
+
+func (s *TestStrategy) OnDexTrades(event DexTrades) []ActionEvent {
+	eventStr, _ := json.Marshal(event)
+	fmt.Println("OnDexTrades", string(eventStr))
+	return nil
+}
+
 func (s *TestStrategy) OnTimer() (actions []ActionEvent) {
 
 	return actions
