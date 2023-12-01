@@ -7,6 +7,7 @@ import (
 type TradingInterface interface {
 	WsUpdateOrderOnOrder(OrderTradeUpdateInfo)
 	WsUpdateOrderOnTrade(OrderTradeUpdateInfo)
+	OnError(ErrorMsg)
 }
 type SpotInterface interface {
 	WsUpdateSpotBalance(balance SpotBalance)
