@@ -100,8 +100,8 @@ const OrderTypeMarket OrderTypeID = "MARKET"
 const OrderTypeLimitMaker OrderTypeID = "LIMIT_MAKER"
 
 // OrderStatusID
-const NEW OrderStatusID = "NEW"
-const OPEN OrderStatusID = "OPEN"
+const NEW OrderStatusID = "NEW"   //The order has been accepted by the engine
+const OPEN OrderStatusID = "OPEN" // The order is open on the order book and is being worked
 const CANCELED OrderStatusID = "CANCELED"
 const REJECTED OrderStatusID = "REJECTED"
 const EXPIRED OrderStatusID = "EXPIRED"

@@ -156,6 +156,10 @@ func (b *BinaAccountManager) WsUpdateOrderOnTrade(info common.OrderTradeUpdateIn
 	b.orderManager[info.Transaction].WsUpdateOrderOnTrade(info)
 }
 
+func (b *BinaAccountManager) OnError(event common.ErrorMsg) {
+	b.orderManager[event.Transaction].OnError(event)
+}
+
 func (b *BinaAccountManager) WsUpdateFutureBalancePosition(balancePosition common.WsFutureBalancePosition) {
 	balances := balancePosition.FutureBalances
 	positions := balancePosition.FuturePositions
@@ -415,7 +419,7 @@ func (b *BinaAccountManager) createLimitTypeSpotOrderProcess(data *common.Order)
 			Cid:          data.Cid,
 			Side:         data.Side,
 			Size:         data.Size,
-			Error:        err.Error(),
+			Error:        common.NewError(common.ERRORCODE_ORDER_REJECTED, err.Error()),
 			Timestamp:    common.SystemNanoSeconds()})
 
 	} else {
@@ -470,7 +474,7 @@ func (b *BinaAccountManager) createLimitTypeFutureOrderProcess(data *common.Orde
 			Cid:          data.Cid,
 			Side:         data.Side,
 			Size:         data.Size,
-			Error:        err.Error(),
+			Error:        common.NewError(common.ERRORCODE_ORDER_REJECTED, err.Error()),
 			Timestamp:    common.SystemNanoSeconds()})
 	} else {
 		data.CreateTime = res.UpdateTime
@@ -504,7 +508,7 @@ func (b *BinaAccountManager) createMarketSpotOrderProcess(data *common.Order) (i
 			Cid:          data.Cid,
 			Side:         data.Side,
 			Size:         data.Size,
-			Error:        err.Error(),
+			Error:        common.NewError(common.ERRORCODE_ORDER_REJECTED, err.Error()),
 			Timestamp:    common.SystemNanoSeconds()})
 	} else {
 		data.CreateTime = res.TransactTime
@@ -523,6 +527,9 @@ func (b *BinaAccountManager) cancelSpotOrderProcess(data common.CancelInfo) erro
 		zap.Any("common.CancelInfo", data))
 
 	if err != nil {
+
+		err = convert_to_cancel_reject_error(err)
+
 		if o, ok := b.orderManager[common.SpotID].OpenOrder(data.Id); ok {
 			b.systemAgent.OnError(common.ErrorMsg{
 				Exchange:     common.BINANCEID,
@@ -534,7 +541,7 @@ func (b *BinaAccountManager) cancelSpotOrderProcess(data common.CancelInfo) erro
 				Id:           data.Id,
 				Side:         o.Side,
 				Size:         o.Size,
-				Error:        err.Error(),
+				Error:        err,
 				Timestamp:    common.SystemNanoSeconds()})
 		} else {
 			b.systemAgent.OnError(common.ErrorMsg{
@@ -546,7 +553,7 @@ func (b *BinaAccountManager) cancelSpotOrderProcess(data common.CancelInfo) erro
 				Id:           data.Id,
 				Side:         "",
 				Size:         0,
-				Error:        err.Error(),
+				Error:        err,
 				Timestamp:    common.SystemNanoSeconds()})
 		}
 		common.Logger.Error("Binance cancelSpotOrderProcess Error",
@@ -554,9 +561,8 @@ func (b *BinaAccountManager) cancelSpotOrderProcess(data common.CancelInfo) erro
 			zap.String("error", err.Error()),
 			zap.String("cancelOrder", common.Marshal(data)),
 			zap.String("response", common.Marshal(response)))
-		if !strings.Contains(err.Error(), "Unknown order") {
-			return err
-		}
+
+		return err
 	}
 	return nil
 }
@@ -594,6 +600,7 @@ func (b *BinaAccountManager) createMarketFutureOrderProcess(data *common.Order) 
 		zap.Any("order", data))
 
 	if err != nil {
+
 		common.Logger.Error("Binance createMarketFutureOrderProcess Error",
 			zap.Int("accountIndex", int(b.accountIndex)),
 			zap.String("error", err.Error()),
@@ -608,7 +615,7 @@ func (b *BinaAccountManager) createMarketFutureOrderProcess(data *common.Order) 
 			Cid:          data.Cid,
 			Side:         data.Side,
 			Size:         data.Size,
-			Error:        err.Error(),
+			Error:        common.NewError(common.ERRORCODE_ORDER_REJECTED, err.Error()),
 			Timestamp:    common.SystemNanoSeconds()})
 	} else {
 		data.CreateTime = res.UpdateTime
@@ -627,6 +634,8 @@ func (b *BinaAccountManager) cancelFutureOrderProcess(data common.CancelInfo) er
 		zap.Any("common.CancelInfo", data))
 
 	if err != nil {
+		err = convert_to_cancel_reject_error(err)
+
 		if o, ok := b.orderManager[common.FutureID].OpenOrder(data.Id); ok {
 			b.systemAgent.OnError(common.ErrorMsg{
 				Exchange:     common.BINANCEID,
@@ -638,7 +647,7 @@ func (b *BinaAccountManager) cancelFutureOrderProcess(data common.CancelInfo) er
 				Cid:          o.Cid,
 				Side:         o.Side,
 				Size:         o.Size,
-				Error:        err.Error(),
+				Error:        err,
 				Timestamp:    common.SystemNanoSeconds()})
 		} else {
 			b.systemAgent.OnError(common.ErrorMsg{
@@ -650,7 +659,7 @@ func (b *BinaAccountManager) cancelFutureOrderProcess(data common.CancelInfo) er
 				Id:           data.Id,
 				Side:         "",
 				Size:         0,
-				Error:        err.Error(),
+				Error:        err,
 				Timestamp:    common.SystemNanoSeconds()})
 		}
 		common.Logger.Error("Binance cancelFutureOrderProcess Error",
@@ -658,9 +667,7 @@ func (b *BinaAccountManager) cancelFutureOrderProcess(data common.CancelInfo) er
 			zap.String("error", err.Error()),
 			zap.String("cancelOrder", common.Marshal(data)),
 			zap.String("response", common.Marshal(response)))
-		if !strings.Contains(err.Error(), "Unknown order") {
-			return err
-		}
+		return err
 	}
 	return nil
 }
@@ -688,5 +695,13 @@ func (b *BinaAccountManager) onTimer() {
 		<-ticker1.C
 		curTime := common.SystemMilliSeconds()
 		b.openOrderChecker.CheckOpenOrdersOnTime(curTime)
+	}
+}
+
+func convert_to_cancel_reject_error(err error) error {
+	if strings.Contains(err.Error(), "Unknown order") {
+		return common.NewError(common.ERRORCODE_CANCEL_ORDER_NOT_EXIST, err.Error())
+	} else {
+		return common.NewError(common.ERRORCODE_CANCEL_REJECTED, err.Error())
 	}
 }

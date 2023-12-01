@@ -10,6 +10,6 @@ type ErrorMsg struct {
 	Cid          string        `json:"cid"`
 	Side         SideID        `json:"side"`
 	Size         float64       `json:"size"`
-	Error        string        `json:"error"`
+	Error        error         `json:"error"`
 	Timestamp    int64         `json:"timestamp"`
 }
