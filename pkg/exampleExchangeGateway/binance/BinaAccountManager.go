@@ -214,8 +214,8 @@ func (b *BinaAccountManager) initAccountInfo() {
 }
 
 func (b *BinaAccountManager) initOrderCheckFunc() {
-	b.openOrderChecker.AddOrderCheckFunc(b.updateSpotOrderOnTimer)
-	b.openOrderChecker.AddOrderCheckFunc(b.updateFutureOrderOnTimer)
+	b.openOrderChecker.AddOrderCheckFunc(common.BINANCEID, common.SpotID, b.updateSpotOrderOnTimer)
+	b.openOrderChecker.AddOrderCheckFunc(common.BINANCEID, common.FutureID, b.updateFutureOrderOnTimer)
 }
 
 func (b *BinaAccountManager) updateSpotOrderOnTimer() error {
