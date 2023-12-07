@@ -1,5 +1,9 @@
 package common
 
+import (
+	"go.uber.org/zap"
+)
+
 type OpenOrderChecker struct {
 	needToRecheckOrderFunc []func() error
 	orderCheckFunc         []func() error
@@ -22,12 +26,15 @@ func (b *OpenOrderChecker) CheckOpenOrdersOnTime(curMilliSec int64) {
 	if b.firstCheckTime(curSecond) {
 		for _, v := range b.orderCheckFunc {
 			if err := v(); err != nil {
+				Logger.Error("OpenOrderChecker::CheckOpenOrdersOnTime firstCheckTime ", zap.Error(err))
 				b.needToRecheckOrderFunc = append(b.needToRecheckOrderFunc, v)
 			}
 		}
 	} else if b.secondCheckTime(curSecond) {
 		for _, v := range b.needToRecheckOrderFunc {
-			v()
+			if err := v(); err != nil {
+				Logger.Error("OpenOrderChecker::CheckOpenOrdersOnTime secondCheckTime ", zap.Error(err))
+			}
 		}
 		b.needToRecheckOrderFunc = b.needToRecheckOrderFunc[:0]
 	}
