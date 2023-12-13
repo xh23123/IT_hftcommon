@@ -51,6 +51,7 @@ type RegisterInfo struct {
 	RegisterSpotKline          []string
 	RegisterSpotTrade          []string
 	RegisterFutureDepth        map[string]string
+	RegisterFutureDiffDepth    map[string]string
 	RegisterFutureBookTick     []string
 	RegisterFutureTick         []string
 	RegisterFutureKline        []string
