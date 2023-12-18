@@ -9,6 +9,7 @@ type OrderManagerInterface interface {
 	OpenOrdersBySymbol(symbol string) ([]*Order, bool) //TODO
 	AllOpenOrders() cmap.ConcurrentMap                 //TODO
 	CreateOrderProcess(event interface{}, handler func(data *Order) (id string, err error))
+	AmendOrderProcess(event interface{}, handler func(data *Order) (id string, err error))
 	CancelOrderProcess(event interface{}, handler func(data CancelInfo) error)
 	CancelAllOrderProcess(event interface{}, handler func(data CancelInfo))
 	SetOpenOrder(orders []*Order)

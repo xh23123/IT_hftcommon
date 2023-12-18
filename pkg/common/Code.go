@@ -83,6 +83,14 @@ const CANCEL_MARGIN_ORDER ActionID = "20"
 const CREATE_LIMITTYPE_COIN_FUTURE_ORDER ActionID = "21"
 const CANCEL_COIN_FUTURE_ORDER ActionID = "22"
 const CANCEL_ALL_COIN_FUTURE_ORDER ActionID = "23"
+const CREATE_AMEND_SPOT_ORDER ActionID = "24"
+const CREATE_AMEND_FUTURE_ORDER ActionID = "25"
+const CREATE_AMEND_COIN_FUTURE_ORDER ActionID = "26"
+const CREATE_AMEND_MARGIN_ORDER ActionID = "27"
+const CREATE_IOC_SPOT_ORDER ActionID = "28"
+const CREATE_IOC_FUTURE_ORDER ActionID = "29"
+const CREATE_IOC_COIN_FUTURE_ORDER ActionID = "30"
+const CREATE_IOC_MARGIN_ORDER ActionID = "31"
 
 // PositionID
 const LONG PositionID = "LONG"
@@ -98,8 +106,9 @@ const SELL SideID = "SELL"
 const OrderTypeLimit OrderTypeID = "LIMIT"
 const OrderTypeMarket OrderTypeID = "MARKET"
 const OrderTypeLimitMaker OrderTypeID = "LIMIT_MAKER"
+const OrderTypeIOC OrderTypeID = "IOC"
 
-// OrderStatusID
+// OrderStatusID (exchange side)
 const NEW OrderStatusID = "NEW"   //The order has been accepted by the engine
 const OPEN OrderStatusID = "OPEN" // The order is open on the order book and is being worked
 const CANCELED OrderStatusID = "CANCELED"
@@ -108,10 +117,11 @@ const EXPIRED OrderStatusID = "EXPIRED"
 const PARTIALLY_FILLED OrderStatusID = "PARTIALLY_FILLED"
 const FILLED OrderStatusID = "FILLED"
 
-// StatusID
-const Pending StatusID = 0
+// StatusID (gost side)
+const Pending StatusID = 0 // the new order request was sent to exchange and waiting for response
 const Normal StatusID = 1
 const Canceling StatusID = 2
+const Amending StatusID = 3 // the amend request was sent to exchange and waiting for response
 
 // ResetID
 const ResetSpotBookTick ResetID = "1"

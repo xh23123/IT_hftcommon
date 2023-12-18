@@ -419,7 +419,7 @@ func (b *BinaAccountManager) createLimitTypeSpotOrderProcess(data *common.Order)
 			Cid:          data.Cid,
 			Side:         data.Side,
 			Size:         data.Size,
-			Error:        common.NewError(common.ERRORCODE_ORDER_REJECTED, err.Error()),
+			Error:        common.NewError(common.ERRORCODE_ORDER_REJECTED, common.REASON_UNKNOWN, err.Error()),
 			Timestamp:    common.SystemNanoSeconds()})
 
 	} else {
@@ -474,7 +474,7 @@ func (b *BinaAccountManager) createLimitTypeFutureOrderProcess(data *common.Orde
 			Cid:          data.Cid,
 			Side:         data.Side,
 			Size:         data.Size,
-			Error:        common.NewError(common.ERRORCODE_ORDER_REJECTED, err.Error()),
+			Error:        common.NewError(common.ERRORCODE_ORDER_REJECTED, common.REASON_UNKNOWN, err.Error()),
 			Timestamp:    common.SystemNanoSeconds()})
 	} else {
 		data.CreateTime = res.UpdateTime
@@ -508,7 +508,7 @@ func (b *BinaAccountManager) createMarketSpotOrderProcess(data *common.Order) (i
 			Cid:          data.Cid,
 			Side:         data.Side,
 			Size:         data.Size,
-			Error:        common.NewError(common.ERRORCODE_ORDER_REJECTED, err.Error()),
+			Error:        common.NewError(common.ERRORCODE_ORDER_REJECTED, common.REASON_UNKNOWN, err.Error()),
 			Timestamp:    common.SystemNanoSeconds()})
 	} else {
 		data.CreateTime = res.TransactTime
@@ -615,7 +615,7 @@ func (b *BinaAccountManager) createMarketFutureOrderProcess(data *common.Order) 
 			Cid:          data.Cid,
 			Side:         data.Side,
 			Size:         data.Size,
-			Error:        common.NewError(common.ERRORCODE_ORDER_REJECTED, err.Error()),
+			Error:        common.NewError(common.ERRORCODE_ORDER_REJECTED, common.REASON_UNKNOWN, err.Error()),
 			Timestamp:    common.SystemNanoSeconds()})
 	} else {
 		data.CreateTime = res.UpdateTime
@@ -700,8 +700,8 @@ func (b *BinaAccountManager) onTimer() {
 
 func convert_to_cancel_reject_error(err error) error {
 	if strings.Contains(err.Error(), "Unknown order") {
-		return common.NewError(common.ERRORCODE_CANCEL_ORDER_NOT_EXIST, err.Error())
+		return common.NewError(common.ERRORCODE_CANCEL_ORDER_NOT_EXIST, common.REASON_UNKNOWN, err.Error())
 	} else {
-		return common.NewError(common.ERRORCODE_CANCEL_REJECTED, err.Error())
+		return common.NewError(common.ERRORCODE_CANCEL_REJECTED, common.REASON_UNKNOWN, err.Error())
 	}
 }
