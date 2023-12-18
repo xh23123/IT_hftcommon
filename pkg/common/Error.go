@@ -5,28 +5,29 @@ import "fmt"
 var _ error = (*gostError)(nil)
 
 type gostError struct {
-	code int
-	msg  string
+	code   int
+	reason int
+	msg    string
 }
 
 func (e gostError) Error() string {
 	return fmt.Sprintf("code:%d,msg:%v", e.code, e.msg)
 }
 
-func NewError(code int, msg string) error {
+func NewError(code int, reason int, msg string) error {
 	return gostError{
-		code: code,
-		msg:  msg,
+		code:   code,
+		reason: reason,
+		msg:    msg,
 	}
 }
 
-func GetErrorCode(err error) int {
+func GetErrorCode(err error) (int, int) {
 	if e, ok := err.(gostError); ok {
-		return e.code
+		return e.code, e.reason
 	} else {
-		return ERRORCODE_WRONGTYPE
+		return ERRORCODE_WRONGTYPE, REASON_UNKNOWN
 	}
-
 }
 
 func GetErrorMsg(err error) string {
