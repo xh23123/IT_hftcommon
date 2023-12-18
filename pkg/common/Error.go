@@ -5,8 +5,8 @@ import "fmt"
 var _ error = (*gostError)(nil)
 
 type gostError struct {
-	code   int
-	reason int
+	code   ErrorCode
+	reason ReasonCode
 	msg    string
 }
 
@@ -14,7 +14,7 @@ func (e gostError) Error() string {
 	return fmt.Sprintf("code:%d,msg:%v", e.code, e.msg)
 }
 
-func NewError(code int, reason int, msg string) error {
+func NewError(code ErrorCode, reason ReasonCode, msg string) error {
 	return gostError{
 		code:   code,
 		reason: reason,
@@ -22,7 +22,7 @@ func NewError(code int, reason int, msg string) error {
 	}
 }
 
-func GetErrorCode(err error) (int, int) {
+func GetErrorCode(err error) (ErrorCode, ReasonCode) {
 	if e, ok := err.(gostError); ok {
 		return e.code, e.reason
 	} else {
