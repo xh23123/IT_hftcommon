@@ -49,6 +49,17 @@ type DepthWs struct {
 	ExchangeTimestamp int64          `json:"extimestamp"`
 }
 
+type Orderbook struct {
+	Exchange          ExchangeID   `json:"exid"`
+	DataID            DataID       `json:"dataid"`
+	Symbol            string       `json:"symbol"`
+	UpdateID          int64        `json:"updateid"`
+	Bids              [][2]float64 `json:"bids"`
+	Asks              [][2]float64 `json:"asks"`
+	ReceiveTimestamp  int64        `json:"recvtimestamp"`
+	ExchangeTimestamp int64        `json:"extimestamp"`
+}
+
 type TradeWs struct {
 	Exchange          ExchangeID `json:"exid"`
 	DataID            DataID     `json:"dataid"`
