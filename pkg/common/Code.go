@@ -129,6 +129,7 @@ const ResetCoinFutureBookTick ResetID = "11"
 const ResetCoinFutureAccount ResetID = "12"
 const ResetSpotTrade ResetID = "13"
 const ResetUniMarginAccount ResetID = "14"
+const ResetFutureOrderbook ResetID = "15"
 
 // Interval
 const Interval1s IntervalID = "1s"
