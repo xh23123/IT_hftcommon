@@ -21,7 +21,7 @@ type MarketDataCallback interface {
 	OnCoinFutureBookTick(event BookTickWs) []ActionEvent
 	OnDexBookTicks(event DexBookTicks) []ActionEvent
 	OnDexTrades(event DexTrades) []ActionEvent
-	OnOrderbook(transactionId TransactionID, event Orderbook) []ActionEvent
+	OnFutureOrderbook(event Orderbook) []ActionEvent
 }
 
 type StrategyInterface interface {

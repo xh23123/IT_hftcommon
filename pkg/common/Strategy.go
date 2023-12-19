@@ -61,6 +61,7 @@ type RegisterInfo struct {
 	RegisterFutureAggTrade     []string
 	RegisterDexBookTicks       []string
 	RegisterDexTrades          []string
+	RegisterFutureOrderbook    []string
 }
 
 type WsInfo struct {
