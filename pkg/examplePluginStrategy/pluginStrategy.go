@@ -141,6 +141,10 @@ func (s *TestStrategy) OnKlineWs(event KlineWs) []ActionEvent {
 	return nil
 }
 
+func (s *TestStrategy) OnFutureOrderbook(event Orderbook) []ActionEvent {
+	return nil
+}
+
 func (s *TestStrategy) OnFutureKlineWs(event KlineWs) []ActionEvent {
 	eventStr, _ := json.Marshal(event)
 	fmt.Println("OnFutureKlineWs", string(eventStr))
