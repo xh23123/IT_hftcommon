@@ -17,3 +17,4 @@ const REASON_TIMEOUT ReasonCode = 2           //rest time out. strategy could re
 const REASON_PARAM_INVALID ReasonCode = 3     //param invalid, e.g. price is 0,price exceed limit,symbol not exist, account not exist
 const REASON_NOTENOUGH_BALANCE ReasonCode = 4 // not enough balance, e.g. not enough balance to buy, not enough balance to pay fee, not enough margin
 const REASON_ORDER_NOT_EXIST ReasonCode = 5   // order not exist, e.g. cancel order not exist, amend order not exist
+const REASON_SYSTEM ReasonCode = 6            // system error, e.g. network error, db error, etc
