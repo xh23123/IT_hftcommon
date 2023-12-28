@@ -106,6 +106,7 @@ const SELL SideID = "SELL"
 const OrderTypeLimit OrderTypeID = "LIMIT"
 const OrderTypeMarket OrderTypeID = "MARKET"
 const OrderTypeLimitMaker OrderTypeID = "LIMIT_MAKER"
+const OrderTypeIOC OrderTypeID = "IOC"
 
 // OrderStatusID (exchange side)
 const NEW OrderStatusID = "NEW"   //The order has been accepted by the engine
