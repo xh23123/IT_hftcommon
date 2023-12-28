@@ -11,7 +11,7 @@ type gostError struct {
 }
 
 func (e gostError) Error() string {
-	return fmt.Sprintf("code:%d,msg:%v", e.code, e.msg)
+	return fmt.Sprintf("code:%d,reason:%d,msg:%v", e.code, e.reason, e.msg)
 }
 
 func NewError(code ErrorCode, reason ReasonCode, msg string) error {
