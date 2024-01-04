@@ -36,16 +36,16 @@ type OrderAgent interface {
 	CreateIocShortCoinFutureOrder(exid ExchangeID, accountIndex AccountIdx, cid string, symbol string, size float64, price float64) ActionEvent
 
 	//Amend orders
-	CreateAmendSpotOrder(exid ExchangeID, accountIndex AccountIdx, cid string, symbol string, size float64, price float64) ActionEvent
-	CreateAmendMarginOrder(exid ExchangeID, accountIndex AccountIdx, cid string, symbol string, size float64, price float64) ActionEvent
+	CreateAmendSpotOrder(exid ExchangeID, accountIndex AccountIdx, orderType OrderTypeID, cid string, symbol string, size float64, price float64) ActionEvent
+	CreateAmendMarginOrder(exid ExchangeID, accountIndex AccountIdx, orderType OrderTypeID, cid string, symbol string, size float64, price float64) ActionEvent
 
-	CreateAmendBothFutureOrder(exid ExchangeID, accountIndex AccountIdx, cid string, symbol string, size float64, price float64, reduceOnly bool) ActionEvent
-	CreateAmendLongFutureOrder(exid ExchangeID, accountIndex AccountIdx, cid string, symbol string, size float64, price float64) ActionEvent
-	CreateAmendShortFutureOrder(exid ExchangeID, accountIndex AccountIdx, cid string, symbol string, size float64, price float64) ActionEvent
+	CreateAmendBothFutureOrder(exid ExchangeID, accountIndex AccountIdx, orderType OrderTypeID, cid string, symbol string, size float64, price float64, reduceOnly bool) ActionEvent
+	CreateAmendLongFutureOrder(exid ExchangeID, accountIndex AccountIdx, orderType OrderTypeID, cid string, symbol string, size float64, price float64) ActionEvent
+	CreateAmendShortFutureOrder(exid ExchangeID, accountIndex AccountIdx, orderType OrderTypeID, cid string, symbol string, size float64, price float64) ActionEvent
 
-	CreateAmendBothCoinFutureOrder(exid ExchangeID, accountIndex AccountIdx, cid string, symbol string, size float64, price float64, reduceOnly bool) ActionEvent
-	CreateAmendLongCoinFutureOrder(exid ExchangeID, accountIndex AccountIdx, cid string, symbol string, size float64, price float64) ActionEvent
-	CreateAmendShortCoinFutureOrder(exid ExchangeID, accountIndex AccountIdx, cid string, symbol string, size float64, price float64) ActionEvent
+	CreateAmendBothCoinFutureOrder(exid ExchangeID, accountIndex AccountIdx, orderType OrderTypeID, cid string, symbol string, size float64, price float64, reduceOnly bool) ActionEvent
+	CreateAmendLongCoinFutureOrder(exid ExchangeID, accountIndex AccountIdx, orderType OrderTypeID, cid string, symbol string, size float64, price float64) ActionEvent
+	CreateAmendShortCoinFutureOrder(exid ExchangeID, accountIndex AccountIdx, orderType OrderTypeID, cid string, symbol string, size float64, price float64) ActionEvent
 
 	CancelOrderByCid(exid ExchangeID, accountIndex AccountIdx, clientOrderId string, symbol string, transactionId TransactionID) (ActionEvent, error)
 	CancelAllOrders(exid ExchangeID, accountIndex AccountIdx, symbol string, transactionId TransactionID) ActionEvent
