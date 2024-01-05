@@ -110,8 +110,9 @@ const OrderTypeLimitMaker OrderTypeID = "LIMIT_MAKER"
 const OrderTypeIOC OrderTypeID = "IOC"
 
 // OrderStatusID (exchange side)
-const NEW OrderStatusID = "NEW"   //The order has been accepted by the engine
-const OPEN OrderStatusID = "OPEN" // The order is open on the order book and is being worked
+const NEW OrderStatusID = "NEW"         //The order has been accepted by the engine
+const OPEN OrderStatusID = "OPEN"       // The order is open on the order book and is being worked
+const AMENDED OrderStatusID = "AMENDED" //The amend order was accepted by the engine
 const CANCELED OrderStatusID = "CANCELED"
 const REJECTED OrderStatusID = "REJECTED"
 const EXPIRED OrderStatusID = "EXPIRED"
