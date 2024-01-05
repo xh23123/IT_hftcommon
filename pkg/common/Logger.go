@@ -7,13 +7,16 @@ import (
 )
 
 var Logger *zap.Logger
+var MaxSize int = 100
+var MaxAge int = 30
+var MaxBackups int = 30
 
 func InitLogger(logpath string, loglevel string) {
 	hook := lumberjack.Logger{
 		Filename:   logpath, //日志文件路径
-		MaxSize:    20,      //最大MB
-		MaxAge:     30,
-		MaxBackups: 7,
+		MaxSize:    MaxSize, //最大MB
+		MaxAge:     MaxAge,
+		MaxBackups: MaxBackups,
 		Compress:   true,
 	}
 	// 设置日志级别,debug可以打印出info,debug,warn；info级别可以打印warn，info；warn只能打印warn
