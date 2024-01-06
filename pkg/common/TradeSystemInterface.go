@@ -124,5 +124,5 @@ type TradeSystemAgent interface {
 	RegisterAccountWs(ExchangeID, AccountIdx, AccountWsInterface)
 	RegisterMarketWs(ExchangeID, AccountIdx, MarketWsInterface)
 	RegisterSymbols(symbols []string)
-	AmendType(ExchangeID, TransactionID, options map[string]string) AmendTypeID
+	AmendType(exid ExchangeID, transactionId TransactionID, options map[string]string) AmendTypeID
 }
