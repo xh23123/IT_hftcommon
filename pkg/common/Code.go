@@ -24,6 +24,8 @@ type ResetID string
 
 type IntervalID string
 
+type AmendTypeID string
+
 // ExchangeID
 const BINANCEID ExchangeID = "1"
 const OKEXID ExchangeID = "3"
@@ -159,3 +161,7 @@ const Interval1d IntervalID = "1d"
 const Interval3d IntervalID = "3d"
 const Interval1w IntervalID = "1w"
 const Interval1M IntervalID = "1M"
+
+const CancelPlace AmendTypeID = "CancelPlace"   // cancel the order and place a new order
+const Amendment AmendTypeID = "Amendment"       // amend the order with partially filled
+const NotSupported AmendTypeID = "NotSupported" // don't support amend
