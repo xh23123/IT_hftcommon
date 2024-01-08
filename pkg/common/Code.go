@@ -117,7 +117,6 @@ const OPEN OrderStatusID = "OPEN"       // The order is open on the order book a
 const AMENDED OrderStatusID = "AMENDED" //The amend order was accepted by the engine
 const CANCELED OrderStatusID = "CANCELED"
 const REJECTED OrderStatusID = "REJECTED"
-const EXPIRED OrderStatusID = "EXPIRED"
 const PARTIALLY_FILLED OrderStatusID = "PARTIALLY_FILLED"
 const FILLED OrderStatusID = "FILLED"
 
