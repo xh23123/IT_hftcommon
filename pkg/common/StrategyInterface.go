@@ -12,16 +12,10 @@ type MarketDataCallback interface {
 	OnTick(event TickWs) []ActionEvent
 	OnKlineWs(event KlineWs) []ActionEvent
 	OnTradeWs(event TradeWs) []ActionEvent
-	OnFutureBookTick(event BookTickWs) []ActionEvent
-	OnFutureDepth(event DepthWs) []ActionEvent
-	OnFutureTick(event TickWs) []ActionEvent
 	OnMarkPrice(event MarkPriceWs) []ActionEvent
-	OnFutureKlineWs(event KlineWs) []ActionEvent
-	OnFutureAggTrade(event TradeWs) []ActionEvent
-	OnCoinFutureBookTick(event BookTickWs) []ActionEvent
+	OnOrderbook(event Orderbook) []ActionEvent
 	OnDexBookTicks(event DexBookTicks) []ActionEvent
 	OnDexTrades(event DexTrades) []ActionEvent
-	OnFutureOrderbook(event Orderbook) []ActionEvent
 }
 
 type StrategyInterface interface {

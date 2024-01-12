@@ -50,8 +50,6 @@ func getBinanceMdConfig() *RegisterWsConfig {
 	//策略配置
 	registerWsConfig := RegisterWsConfig{}
 	registerWsConfig.RegisterWs = append(registerWsConfig.RegisterWs, "OnBookTick")
-	//registerWsConfig.RegisterWs = append(registerWsConfig.RegisterWs, "OnFutureBookTick")
-	//registerWsConfig.RegisterWs = append(registerWsConfig.RegisterWs, "OnFutureDepth")
 	//registerWsConfig.RegisterWs = append(registerWsConfig.RegisterWs, "OnFutureAggTrade")
 
 	registerWsConfig.TickTrigInterval = 1
@@ -97,29 +95,9 @@ func (s *TestStrategy) genCid(triggerDataExid ExchangeID, accountIndex AccountId
 	return s.lastOrderCid[len(s.lastOrderCid)-1]
 }
 
-func (s *TestStrategy) OnFutureBookTick(event BookTickWs) (actions []ActionEvent) {
-	eventStr, _ := json.Marshal(event)
-	fmt.Println("OnFutureBookTick", string(eventStr))
-
-	return actions
-}
-
-func (s *TestStrategy) OnCoinFutureBookTick(event BookTickWs) (actions []ActionEvent) {
-	eventStr, _ := json.Marshal(event)
-	fmt.Println("OnCoinFutureBookTick", string(eventStr))
-
-	return actions
-}
-
 func (s *TestStrategy) OnDepth(event DepthWs) []ActionEvent {
 	eventStr, _ := json.Marshal(event)
 	fmt.Println("OnDepth", string(eventStr))
-	return nil
-}
-
-func (s *TestStrategy) OnFutureDepth(event DepthWs) []ActionEvent {
-	eventStr, _ := json.Marshal(event)
-	fmt.Println("OnFutureDepth", string(eventStr))
 	return nil
 }
 
@@ -129,31 +107,13 @@ func (s *TestStrategy) OnTick(event TickWs) []ActionEvent {
 	return nil
 }
 
-func (s *TestStrategy) OnFutureTick(event TickWs) []ActionEvent {
-	eventStr, _ := json.Marshal(event)
-	fmt.Println("OnFutureTick", string(eventStr))
-	return nil
-}
-
 func (s *TestStrategy) OnKlineWs(event KlineWs) []ActionEvent {
 	eventStr, _ := json.Marshal(event)
 	fmt.Println("OnKlineWs", string(eventStr))
 	return nil
 }
 
-func (s *TestStrategy) OnFutureOrderbook(event Orderbook) []ActionEvent {
-	return nil
-}
-
-func (s *TestStrategy) OnFutureKlineWs(event KlineWs) []ActionEvent {
-	eventStr, _ := json.Marshal(event)
-	fmt.Println("OnFutureKlineWs", string(eventStr))
-	return nil
-}
-
-func (s *TestStrategy) OnFutureAggTrade(event TradeWs) []ActionEvent {
-	eventStr, _ := json.Marshal(event)
-	fmt.Println("OnFutureAggTrade", string(eventStr))
+func (s *TestStrategy) OnOrderbook(event Orderbook) []ActionEvent {
 	return nil
 }
 

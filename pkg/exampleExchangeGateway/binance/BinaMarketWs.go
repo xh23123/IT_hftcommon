@@ -156,14 +156,19 @@ func (b *BinaMarketWs) bookTickHandler(data *binance.WsBookTickerEvent) common.B
 	askSize := common.Str2Float(data.BestAskQty)
 	bidPrice := common.Str2Float(data.BestBidPrice)
 	bidSize := common.Str2Float(data.BestBidQty)
-	return common.BookTickWs{Exchange: common.BINANCEID,
-		DataID:           common.BookTickID,
-		Symbol:           GetSysSymbol(data.Symbol),
-		BestBidPrice:     bidPrice,
-		BestBidSize:      bidSize,
-		BestAskPrice:     askPrice,
-		BestAskSize:      askSize,
-		ReceiveTimestamp: time.Now().UnixNano()}
+	return common.BookTickWs{
+		MarketDataHeader: common.MarketDataHeader{
+			Exchange:         common.BINANCEID,
+			DataID:           common.BookTickID,
+			Symbol:           GetSysSymbol(data.Symbol),
+			ReceiveTimestamp: time.Now().UnixNano(),
+		},
+
+		BestBidPrice: bidPrice,
+		BestBidSize:  bidSize,
+		BestAskPrice: askPrice,
+		BestAskSize:  askSize,
+	}
 }
 
 func (b *BinaMarketWs) futureBookTickHandler(data *futures.WsBookTickerEvent) common.BookTickWs {
@@ -171,14 +176,18 @@ func (b *BinaMarketWs) futureBookTickHandler(data *futures.WsBookTickerEvent) co
 	askSize := common.Str2Float(data.BestAskQty)
 	bidPrice := common.Str2Float(data.BestBidPrice)
 	bidSize := common.Str2Float(data.BestBidQty)
-	return common.BookTickWs{Exchange: common.BINANCEID,
-		DataID:           common.BookTickID,
-		Symbol:           GetSysSymbol(data.Symbol),
-		BestBidPrice:     bidPrice,
-		BestBidSize:      bidSize,
-		BestAskPrice:     askPrice,
-		BestAskSize:      askSize,
-		ReceiveTimestamp: time.Now().UnixNano()}
+	return common.BookTickWs{
+		MarketDataHeader: common.MarketDataHeader{
+			Exchange:         common.BINANCEID,
+			DataID:           common.BookTickID,
+			Symbol:           GetSysSymbol(data.Symbol),
+			ReceiveTimestamp: time.Now().UnixNano(),
+		},
+		BestBidPrice: bidPrice,
+		BestBidSize:  bidSize,
+		BestAskPrice: askPrice,
+		BestAskSize:  askSize,
+	}
 }
 
 func (b *BinaMarketWs) futureDepthHandler(event interface{}) common.DepthWs {
@@ -199,12 +208,15 @@ func (b *BinaMarketWs) futureDepthHandler(event interface{}) common.DepthWs {
 	}
 
 	return common.DepthWs{
-		Exchange:         common.BINANCEID,
-		DataID:           common.DepthID,
-		Symbol:           symbol,
-		Bids:             bids,
-		Asks:             asks,
-		ReceiveTimestamp: time.Now().UnixNano()}
+		MarketDataHeader: common.MarketDataHeader{
+			Exchange:         common.BINANCEID,
+			DataID:           common.DepthID,
+			Symbol:           symbol,
+			ReceiveTimestamp: time.Now().UnixNano(),
+		},
+		Bids: bids,
+		Asks: asks,
+	}
 }
 
 func (b *BinaMarketWs) FutureAggTradeHandler(event interface{}) common.TradeWs {
@@ -213,14 +225,16 @@ func (b *BinaMarketWs) FutureAggTradeHandler(event interface{}) common.TradeWs {
 	size := common.Str2Float(data.Quantity)
 
 	return common.TradeWs{
-		Exchange:         common.BINANCEID,
-		DataID:           common.AggTradeID,
-		Symbol:           GetSysSymbol(data.Symbol),
-		Price:            price,
-		Size:             size,
-		TradeCount:       data.LastTradeID - data.FirstTradeID + 1,
-		IsMaker:          data.Maker,
-		ReceiveTimestamp: time.Now().UnixNano()}
+		MarketDataHeader: common.MarketDataHeader{
+			Exchange:         common.BINANCEID,
+			DataID:           common.AggTradeID,
+			Symbol:           GetSysSymbol(data.Symbol),
+			ReceiveTimestamp: time.Now().UnixNano(),
+		},
+		Price:      price,
+		Size:       size,
+		TradeCount: data.LastTradeID - data.FirstTradeID + 1,
+		IsMaker:    data.Maker}
 }
 
 func (b *BinaMarketWs) SpotTradeHandler(event interface{}) common.TradeWs {
@@ -229,15 +243,18 @@ func (b *BinaMarketWs) SpotTradeHandler(event interface{}) common.TradeWs {
 	size := common.Str2Float(data.Quantity)
 
 	return common.TradeWs{
-		Exchange:          common.BINANCEID,
-		DataID:            common.TradeID,
-		Symbol:            GetSysSymbol(data.Symbol),
-		Price:             price,
-		Size:              size,
-		TradeCount:        1,
-		IsMaker:           data.IsBuyerMaker,
-		ReceiveTimestamp:  time.Now().UnixNano(),
-		ExchangeTimestamp: data.Time}
+		MarketDataHeader: common.MarketDataHeader{
+			Exchange:          common.BINANCEID,
+			DataID:            common.TradeID,
+			Symbol:            GetSysSymbol(data.Symbol),
+			ReceiveTimestamp:  time.Now().UnixNano(),
+			ExchangeTimestamp: data.Time,
+		},
+		Price:      price,
+		Size:       size,
+		TradeCount: 1,
+		IsMaker:    data.IsBuyerMaker,
+	}
 }
 
 func (b *BinaMarketWs) registerFutureDepth() {
