@@ -4,6 +4,8 @@ type ExchangeID string
 
 type AccountIdx int
 
+type SymbolID string
+
 type TransactionID string
 
 type DataID string
@@ -24,20 +26,24 @@ type ResetID string
 
 type IntervalID string
 
+type OrderidID string
+
+type ClientOrderidID string
+
 type AmendTypeID string
 
 // ExchangeID
 const BINANCEID ExchangeID = "1"
 const OKEXID ExchangeID = "3"
 const COINBASEID ExchangeID = "4"
-const COINEX ExchangeID = "5"
-const BYBIT ExchangeID = "6"
-const ETHEREUMDEX ExchangeID = "7"
-const KRAKEN ExchangeID = "8"
-const MOCKEXCHANGE ExchangeID = "9"
+const COINEXID ExchangeID = "5"
+const BYBITID ExchangeID = "6"
+const ETHEREUMDEXID ExchangeID = "7"
+const KRAKENID ExchangeID = "8"
+const MOCKEXCHANGEID ExchangeID = "9"
+const GATEID ExchangeID = "10"
 
 // TransactionID
-const MixID TransactionID = "0"
 const SpotID TransactionID = "1"
 const FutureID TransactionID = "2"
 const MarginID TransactionID = "3"
@@ -45,7 +51,7 @@ const CoinFutureID TransactionID = "4"
 const UniMarginID TransactionID = "5"
 
 // DataID
-const AccountUpdateID DataID = "0"
+
 const OrderUpdateID DataID = "1"
 const TradeUpdateID DataID = "2"
 const BookTickID DataID = "3"
@@ -61,6 +67,9 @@ const TradeID DataID = "12"
 const DexBookTickID DataID = "13"
 const DexTradeID DataID = "14"
 const OrderbookID DataID = "15"
+const BalancesUpdateID DataID = "16"
+const PositionsUpdateID DataID = "17"
+const UpdateRestOrderID DataID = "18"
 
 // ActionID
 const CREATE_LIMITTYPE_SPOT_ORDER ActionID = "1"
@@ -94,6 +103,8 @@ const CREATE_IOC_SPOT_ORDER ActionID = "28"
 const CREATE_IOC_FUTURE_ORDER ActionID = "29"
 const CREATE_IOC_COIN_FUTURE_ORDER ActionID = "30"
 const CREATE_IOC_MARGIN_ORDER ActionID = "31"
+const CREATE_MARKET_MARGIN_ORDER ActionID = "32"
+const CREATE_MARKET_COINFUTURE_ORDER ActionID = "33"
 
 // PositionID
 const LONG PositionID = "LONG"

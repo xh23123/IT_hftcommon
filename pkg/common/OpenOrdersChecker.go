@@ -11,13 +11,20 @@ type orderChecker struct {
 }
 
 type OpenOrderChecker struct {
-	needToRecheckOrderFunc []orderChecker
-	orderCheckFunc         []orderChecker
-	lastFirstCheckTime     int64
+	orderCheckFunc      []orderChecker
+	lastFirstCheckTime  int64
+	nextSecondCheckTime int64
 }
 
 const firstOrderCheckSecond = 54 // check at 54th second per minute
 const secondCheckInterval = 1
+
+func NewOpenOrderChecker() *OpenOrderChecker {
+	return &OpenOrderChecker{
+		lastFirstCheckTime:  0,
+		nextSecondCheckTime: 0,
+	}
+}
 
 func (b *OpenOrderChecker) AddOrderCheckFunc(exchangeId ExchangeID, transactionId TransactionID, checkFunc func() error) {
 	if Logger == nil {
@@ -29,9 +36,6 @@ func (b *OpenOrderChecker) AddOrderCheckFunc(exchangeId ExchangeID, transactionI
 		OrderCheckFunc: checkFunc,
 	})
 
-	if b.needToRecheckOrderFunc == nil {
-		b.needToRecheckOrderFunc = []orderChecker{}
-	}
 }
 
 func (b *OpenOrderChecker) CheckOpenOrdersOnTime(curMilliSec int64) {
@@ -43,7 +47,6 @@ func (b *OpenOrderChecker) CheckOpenOrdersOnTime(curMilliSec int64) {
 					zap.String("ExchangeId", string(v.ExchangeId)),
 					zap.String("TransactionId", string(v.TransactionId)),
 					zap.Error(err))
-				b.needToRecheckOrderFunc = append(b.needToRecheckOrderFunc, v)
 			} else {
 				Logger.Info("OpenOrderChecker::CheckOpenOrdersOnTime success firstCheckTime ",
 					zap.String("ExchangeId", string(v.ExchangeId)),
@@ -51,7 +54,7 @@ func (b *OpenOrderChecker) CheckOpenOrdersOnTime(curMilliSec int64) {
 			}
 		}
 	} else if b.secondCheckTime(curSecond) {
-		for _, v := range b.needToRecheckOrderFunc {
+		for _, v := range b.orderCheckFunc {
 			if err := v.OrderCheckFunc(); err != nil {
 				Logger.Error("OpenOrderChecker::CheckOpenOrdersOnTime failed secondCheckTime ",
 					zap.String("ExchangeId", string(v.ExchangeId)),
@@ -63,7 +66,6 @@ func (b *OpenOrderChecker) CheckOpenOrdersOnTime(curMilliSec int64) {
 					zap.String("TransactionId", string(v.TransactionId)))
 			}
 		}
-		b.needToRecheckOrderFunc = b.needToRecheckOrderFunc[:0]
 	}
 }
 
@@ -71,6 +73,7 @@ func (b *OpenOrderChecker) firstCheckTime(curSecond int64) bool {
 
 	if (curSecond%60) == firstOrderCheckSecond && b.lastFirstCheckTime != curSecond {
 		b.lastFirstCheckTime = curSecond
+		b.nextSecondCheckTime = curSecond + secondCheckInterval
 		return true
 	}
 
@@ -78,5 +81,13 @@ func (b *OpenOrderChecker) firstCheckTime(curSecond int64) bool {
 }
 
 func (b *OpenOrderChecker) secondCheckTime(curSecond int64) bool {
-	return b.lastFirstCheckTime+secondCheckInterval <= curSecond
+
+	if b.nextSecondCheckTime == 0 {
+		return false
+	} else if b.nextSecondCheckTime <= curSecond {
+		b.nextSecondCheckTime = 0
+		return true
+	} else {
+		return false
+	}
 }

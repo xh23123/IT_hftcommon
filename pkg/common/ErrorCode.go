@@ -2,12 +2,11 @@ package common
 
 type ErrorCode int
 
-const ERRORCODE_WRONGTYPE ErrorCode = -1             //not gostError
-const ERRORCODE_CANCEL_ORDER_NOT_EXIST ErrorCode = 1 //cancel failed due to no such order
-const ERRORCODE_CANCEL_REJECTED ErrorCode = 2        //cancel failed
-const ERRORCODE_ORDER_REJECTED ErrorCode = 3         //order failed
-const ERRORCODE_CANCEL_ALL_REJECTED ErrorCode = 4    //order not exist
-const ERRORCODE_AMEND_REJECTED ErrorCode = 5         //amend failed
+const ERRORCODE_WRONGTYPE ErrorCode = -1          //not gostError
+const ERRORCODE_CANCEL_REJECTED ErrorCode = 2     //cancel failed
+const ERRORCODE_ORDER_REJECTED ErrorCode = 3      //order failed
+const ERRORCODE_CANCEL_ALL_REJECTED ErrorCode = 4 //cancel all failed
+const ERRORCODE_AMEND_REJECTED ErrorCode = 5      //amend failed
 
 type ReasonCode int
 

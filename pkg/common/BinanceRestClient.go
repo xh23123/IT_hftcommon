@@ -2,25 +2,24 @@ package common
 
 type BinanceRestClientInterface interface {
 	GetDustAssets() (res *ListDustResponse, err error)
-	ConvertDustAssets(assets []string) (*DustTransferResponse, error)
+	ConvertDustAssets(assets []SymbolID) (*DustTransferResponse, error)
 	GetMarginDustAssets() (*[]ListMarginDustResponse, error)
-	ConvertMarginDustAssets(assets []string) (*[]ListMarginDustResponse, error)
-	MarginLoan(asset string, isIsolated bool, symbol string, amount float64) (*TransactionResponse, error)
-	MarginRepay(asset string, isIsolated bool, symbol string, amount float64) (*TransactionResponse, error)
+	ConvertMarginDustAssets(assets []SymbolID) (*[]ListMarginDustResponse, error)
+	MarginLoan(asset SymbolID, isIsolated bool, symbol SymbolID, amount float64) (*TransactionResponse, error)
+	MarginRepay(asset SymbolID, isIsolated bool, symbol SymbolID, amount float64) (*TransactionResponse, error)
 	MarginAllAssets() ([]*MarginAsset, error)
 	MarginAllPairs() ([]*MarginAllPair, error)
 	CrossMarginCollateralRatio() ([]*CrossMarginCollateralRatio, error)
-	NextHourlyInterestRates(assets []string, isIsolated bool) ([]*NextHourlyInterestRate, error)
-	GetExchangeInfos(transactionId TransactionID) (*ExchangeInfo, error)
+	NextHourlyInterestRates(assets []SymbolID, isIsolated bool) ([]*NextHourlyInterestRate, error)
 }
 
 // ExchangeInfo exchange info
 type ExchangeInfo struct {
-	Timezone        string        `json:"timezone"`
-	ServerTime      int64         `json:"serverTime"`
-	RateLimits      []RateLimit   `json:"rateLimits"`
-	ExchangeFilters []interface{} `json:"exchangeFilters"`
-	Symbols         []Symbol      `json:"symbols"`
+	Timezone        string           `json:"timezone"`
+	ServerTime      int64            `json:"serverTime"`
+	RateLimits      []RateLimit      `json:"rateLimits"`
+	ExchangeFilters []interface{}    `json:"exchangeFilters"`
+	Symbols         []BinaSymbolInfo `json:"symbols"`
 }
 
 // RateLimit struct
@@ -32,12 +31,12 @@ type RateLimit struct {
 }
 
 // Symbol market symbol
-type Symbol struct {
-	Symbol                     string                   `json:"symbol"`
+type BinaSymbolInfo struct {
+	Symbol                     SymbolID                 `json:"symbol"`
 	Status                     string                   `json:"status"`
-	BaseAsset                  string                   `json:"baseAsset"`
+	BaseAsset                  SymbolID                 `json:"baseAsset"`
 	BaseAssetPrecision         int                      `json:"baseAssetPrecision"`
-	QuoteAsset                 string                   `json:"quoteAsset"`
+	QuoteAsset                 SymbolID                 `json:"quoteAsset"`
 	QuotePrecision             int                      `json:"quotePrecision"`
 	QuoteAssetPrecision        int                      `json:"quoteAssetPrecision"`
 	BaseCommissionPrecision    int32                    `json:"baseCommissionPrecision"`
@@ -67,7 +66,7 @@ type PriceFilter struct {
 }
 
 // LotSizeFilter return lot size filter of symbol
-func (s *Symbol) LotSizeFilter() *LotSizeFilter {
+func (s *BinaSymbolInfo) LotSizeFilter() *LotSizeFilter {
 	for _, filter := range s.Filters {
 		if filter["filterType"].(string) == string("LOT_SIZE") {
 			f := &LotSizeFilter{}
@@ -87,7 +86,7 @@ func (s *Symbol) LotSizeFilter() *LotSizeFilter {
 }
 
 // PriceFilter return price filter of symbol
-func (s *Symbol) PriceFilter() *PriceFilter {
+func (s *BinaSymbolInfo) PriceFilter() *PriceFilter {
 	for _, filter := range s.Filters {
 		if filter["filterType"].(string) == string("PRICE_FILTER") {
 			f := &PriceFilter{}
@@ -107,8 +106,8 @@ func (s *Symbol) PriceFilter() *PriceFilter {
 }
 
 type NextHourlyInterestRate struct {
-	Name               string `json:"asset"`
-	NextHourlyInterest string `json:"nextHourlyInterestRate"`
+	Name               SymbolID `json:"asset"`
+	NextHourlyInterest string   `json:"nextHourlyInterestRate"`
 }
 
 type Collateral struct {
@@ -119,16 +118,16 @@ type Collateral struct {
 
 type CrossMarginCollateralRatio struct {
 	Collaterals []Collateral `json:"collaterals"`
-	AssetNames  []string     `json:"assetNames"`
+	AssetNames  []SymbolID   `json:"assetNames"`
 }
 type MarginAllPair struct {
-	ID            int64  `json:"id"`
-	Symbol        string `json:"symbol"`
-	Base          string `json:"base"`
-	Quote         string `json:"quote"`
-	IsMarginTrade bool   `json:"isMarginTrade"`
-	IsBuyAllowed  bool   `json:"isBuyAllowed"`
-	IsSellAllowed bool   `json:"isSellAllowed"`
+	ID            int64    `json:"id"`
+	Symbol        SymbolID `json:"symbol"`
+	Base          string   `json:"base"`
+	Quote         string   `json:"quote"`
+	IsMarginTrade bool     `json:"isMarginTrade"`
+	IsBuyAllowed  bool     `json:"isBuyAllowed"`
+	IsSellAllowed bool     `json:"isSellAllowed"`
 }
 
 type MarginAsset struct {
@@ -145,20 +144,20 @@ type TransactionResponse struct {
 }
 
 type ListMarginDustResponse struct {
-	Asset           string `json:"asset"`
-	Interest        string `json:"interest"`
-	Principal       string `json:"principal"`
-	LiabilityOfBUSD string `json:"liabilityOfBUSD"`
+	Asset           SymbolID `json:"asset"`
+	Interest        string   `json:"interest"`
+	Principal       string   `json:"principal"`
+	LiabilityOfBUSD string   `json:"liabilityOfBUSD"`
 }
 
 type ListDustDetail struct {
-	Asset            string `json:"asset"`
-	AssetFullName    string `json:"assetFullName"`
-	AmountFree       string `json:"amountFree"`
-	ToBTC            string `json:"toBTC"`
-	ToBNB            string `json:"toBNB"`
-	ToBNBOffExchange string `json:"toBNBOffExchange"`
-	Exchange         string `json:"exchange"`
+	Asset            SymbolID `json:"asset"`
+	AssetFullName    string   `json:"assetFullName"`
+	AmountFree       string   `json:"amountFree"`
+	ToBTC            string   `json:"toBTC"`
+	ToBNB            string   `json:"toBNB"`
+	ToBNBOffExchange string   `json:"toBNBOffExchange"`
+	Exchange         string   `json:"exchange"`
 }
 
 type ListDustResponse struct {
@@ -177,10 +176,10 @@ type DustTransferResponse struct {
 
 // DustTransferResult represents the result of a dust transfer.
 type DustTransferResult struct {
-	Amount              string `json:"amount"`
-	FromAsset           string `json:"fromAsset"`
-	OperateTime         int64  `json:"operateTime"`
-	ServiceChargeAmount string `json:"serviceChargeAmount"`
-	TranID              int64  `json:"tranId"`
-	TransferedAmount    string `json:"transferedAmount"`
+	Amount              string   `json:"amount"`
+	FromAsset           SymbolID `json:"fromAsset"`
+	OperateTime         int64    `json:"operateTime"`
+	ServiceChargeAmount string   `json:"serviceChargeAmount"`
+	TranID              int64    `json:"tranId"`
+	TransferedAmount    string   `json:"transferedAmount"`
 }
