@@ -2,10 +2,6 @@ package common
 
 import "sync/atomic"
 
-type BaseConfig struct {
-	OnTimerInterval int64 `json:"timer_interval"`
-}
-
 type TickTrigInfo struct {
 	PrevTime int64
 	PrevBap  float64
@@ -13,27 +9,22 @@ type TickTrigInfo struct {
 }
 
 type RegisterWsConfig struct {
-	RegisterWs       []string `json:"register_ws"`
-	TrigInterval     int64    `json:"trig_interval"`
-	TickTrigInterval int64    `json:"tick_trig_interval"`
-	KlineInterval    string   `json:"kline_interval"`
+	RegisterWs       []map[string]string `json:"register_ws"`
+	TrigInterval     int64               `json:"trig_interval"`
+	TickTrigInterval int64               `json:"tick_trig_interval"`
+	KlineInterval    string              `json:"kline_interval"`
+	Options          map[string]string   `json:"options"`
 }
 
 // StrategyConfig
 type StrategyCfg struct {
-	KeyMap         map[string]string
-	BaseConfig     BaseConfig
-	RegisterConfig map[ExchangeID]map[string]*RegisterWsConfig
+	KeyMap          map[string]string                           `json:"key_map"`
+	OnTimerInterval int64                                       `json:"timer_interval"`
+	GatewayConfigs  map[ExchangeID]map[string]*RegisterWsConfig `json:"gateway_configs"`
 }
 
 type StrategyManagerCfg struct {
-	OnTimerInterval int64
-	EXWsCfg         map[ExchangeID]*StrategyWsCfg
-}
-
-type StrategyWsCfg struct {
-	IntervalMap  map[string]*IntervalInfo
-	RegisterInfo *RegisterInfo
+	GatewayConfigs map[ExchangeID]map[string]*RegisterWsConfig `json:"gateway_configs"`
 }
 
 type IntervalInfo struct {
@@ -42,26 +33,6 @@ type IntervalInfo struct {
 	TickTrigInterval int64 //是booktick
 	TickTrigOnOff    atomic.Value
 	KlineInterval    string
-}
-
-type RegisterInfo struct {
-	RegisterSpotDepth          map[string]string
-	RegisterSpotBookTick       []string
-	RegisterSpotTick           []string
-	RegisterSpotKline          []string
-	RegisterSpotTrade          []string
-	RegisterFutureDepth        map[string]string
-	RegisterFutureBookTick     []string
-	RegisterFutureTick         []string
-	RegisterFutureKline        []string
-	RegisterCoinFutureBookTick []string
-	RegisterMarkPrice          []string
-	RegisterSpotKlineWs        map[string]string
-	RegisterFutureKlineWs      map[string]string
-	RegisterFutureAggTrade     []string
-	RegisterDexBookTicks       []string
-	RegisterDexTrades          []string
-	RegisterFutureOrderbook    []map[string]string
 }
 
 type WsInfo struct {

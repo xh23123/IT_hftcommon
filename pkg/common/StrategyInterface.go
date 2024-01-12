@@ -18,13 +18,16 @@ type MarketDataCallback interface {
 	OnDexTrades(event DexTrades) []ActionEvent
 }
 
-type StrategyInterface interface {
-	OrderEntryCallback
-	MarketDataCallback
-
+type StrategyCommonFunctions interface {
 	InitPara()
 	InitVar()
 	InitMyStrategy() []ActionEvent
 	OnTimer() []ActionEvent
 	OnExit()
+}
+
+type StrategyInterface interface {
+	OrderEntryCallback
+	MarketDataCallback
+	StrategyCommonFunctions
 }
