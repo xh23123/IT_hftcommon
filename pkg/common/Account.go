@@ -8,7 +8,7 @@ type OrderTradeUpdateInfo struct {
 	Exchange        ExchangeID    `json:"exid"`
 	AccountIndex    AccountIdx    `json:"accountidx"`
 	Status          OrderStatusID `json:"status"`
-	Symbol          string        `json:"symbol"`
+	Symbol          SymbolID      `json:"symbol"`
 	Id              string        `json:"id"`
 	Cid             string        `json:"cid"`
 	Side            SideID        `json:"side"`
@@ -61,11 +61,11 @@ type WsFutureBalance map[string]*Balance
 type WsFuturePosition map[string]*FuturePosition
 
 type PremiumIndexInfo struct {
-	Symbol          string `json:"symbol"`
-	MarkPrice       string `json:"markPrice"`
-	LastFundingRate string `json:"lastFundingRate"`
-	NextFundingTime int64  `json:"nextFundingTime"`
-	Time            int64  `json:"time"`
+	Symbol          SymbolID `json:"symbol"`
+	MarkPrice       string   `json:"markPrice"`
+	LastFundingRate string   `json:"lastFundingRate"`
+	NextFundingTime int64    `json:"nextFundingTime"`
+	Time            int64    `json:"time"`
 }
 
 type Kline struct {

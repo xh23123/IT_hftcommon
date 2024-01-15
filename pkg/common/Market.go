@@ -5,7 +5,7 @@ import "math/big"
 type MarketDataHeader struct {
 	Exchange          ExchangeID    `json:"exid"`
 	DataID            DataID        `json:"dataid"`
-	Symbol            string        `json:"symbol"`
+	Symbol            SymbolID      `json:"symbol"`
 	TransactionID     TransactionID `json:"transactionid"`
 	ReceiveTimestamp  int64         `json:"recvtimestamp"`
 	ExchangeTimestamp int64         `json:"extimestamp"`
@@ -30,7 +30,7 @@ type TickWs struct {
 
 type DepthWs struct {
 	MarketDataHeader
-	Symbol   string         `json:"symbol"`
+	Symbol   SymbolID       `json:"symbol"`
 	UpdateID int64          `json:"updateid"`
 	Bids     [20][2]float64 `json:"bids"`
 	Asks     [20][2]float64 `json:"asks"`
@@ -75,7 +75,7 @@ type Orderbook struct {
 }
 
 type DexBookTick struct {
-	Symbol            string             `json:"symbol"`
+	Symbol            SymbolID           `json:"symbol"`
 	ReceiveTimestamp  int64              `json:"recvtimestamp"`
 	ExchangeTimestamp int64              `json:"extimestamp"`
 	UniswapV2         *UniswapV2BookTick `json:"uniswapv2,omitempty"`
@@ -97,7 +97,7 @@ type DexBookTicks struct {
 }
 
 type DexTrade struct {
-	Symbol            string          `json:"symbol"`
+	Symbol            SymbolID        `json:"symbol"`
 	ReceiveTimestamp  int64           `json:"recvtimestamp"`
 	ExchangeTimestamp int64           `json:"extimestamp"`
 	UniswapV2         *UniswapV2Trade `json:"uniswapv2,omitempty"`

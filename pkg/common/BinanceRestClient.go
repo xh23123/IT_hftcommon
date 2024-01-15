@@ -16,11 +16,11 @@ type BinanceRestClientInterface interface {
 
 // ExchangeInfo exchange info
 type ExchangeInfo struct {
-	Timezone        string        `json:"timezone"`
-	ServerTime      int64         `json:"serverTime"`
-	RateLimits      []RateLimit   `json:"rateLimits"`
-	ExchangeFilters []interface{} `json:"exchangeFilters"`
-	Symbols         []Symbol      `json:"symbols"`
+	Timezone        string           `json:"timezone"`
+	ServerTime      int64            `json:"serverTime"`
+	RateLimits      []RateLimit      `json:"rateLimits"`
+	ExchangeFilters []interface{}    `json:"exchangeFilters"`
+	Symbols         []BinaSymbolInfo `json:"symbols"`
 }
 
 // RateLimit struct
@@ -32,8 +32,8 @@ type RateLimit struct {
 }
 
 // Symbol market symbol
-type Symbol struct {
-	Symbol                     string                   `json:"symbol"`
+type BinaSymbolInfo struct {
+	Symbol                     SymbolID                 `json:"symbol"`
 	Status                     string                   `json:"status"`
 	BaseAsset                  string                   `json:"baseAsset"`
 	BaseAssetPrecision         int                      `json:"baseAssetPrecision"`
@@ -67,7 +67,7 @@ type PriceFilter struct {
 }
 
 // LotSizeFilter return lot size filter of symbol
-func (s *Symbol) LotSizeFilter() *LotSizeFilter {
+func (s *BinaSymbolInfo) LotSizeFilter() *LotSizeFilter {
 	for _, filter := range s.Filters {
 		if filter["filterType"].(string) == string("LOT_SIZE") {
 			f := &LotSizeFilter{}
@@ -87,7 +87,7 @@ func (s *Symbol) LotSizeFilter() *LotSizeFilter {
 }
 
 // PriceFilter return price filter of symbol
-func (s *Symbol) PriceFilter() *PriceFilter {
+func (s *BinaSymbolInfo) PriceFilter() *PriceFilter {
 	for _, filter := range s.Filters {
 		if filter["filterType"].(string) == string("PRICE_FILTER") {
 			f := &PriceFilter{}
@@ -122,13 +122,13 @@ type CrossMarginCollateralRatio struct {
 	AssetNames  []string     `json:"assetNames"`
 }
 type MarginAllPair struct {
-	ID            int64  `json:"id"`
-	Symbol        string `json:"symbol"`
-	Base          string `json:"base"`
-	Quote         string `json:"quote"`
-	IsMarginTrade bool   `json:"isMarginTrade"`
-	IsBuyAllowed  bool   `json:"isBuyAllowed"`
-	IsSellAllowed bool   `json:"isSellAllowed"`
+	ID            int64    `json:"id"`
+	Symbol        SymbolID `json:"symbol"`
+	Base          string   `json:"base"`
+	Quote         string   `json:"quote"`
+	IsMarginTrade bool     `json:"isMarginTrade"`
+	IsBuyAllowed  bool     `json:"isBuyAllowed"`
+	IsSellAllowed bool     `json:"isSellAllowed"`
 }
 
 type MarginAsset struct {

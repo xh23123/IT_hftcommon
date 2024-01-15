@@ -5,7 +5,7 @@ import "math/big"
 type Order struct {
 	Exchange     ExchangeID    `json:"exid"`
 	Transaction  TransactionID `json:"tid"`
-	Symbol       string        `json:"symbol"`
+	Symbol       SymbolID      `json:"symbol"`
 	Id           string        `json:"id"`
 	Cid          string        `json:"cid"`
 	Side         SideID        `json:"side"`
@@ -26,8 +26,8 @@ type Order struct {
 }
 
 type CancelInfo struct {
-	Id         string `json:"id"`
-	Cid        string `json:"cid"`
-	Symbol     string `json:"symbol"`
-	CreateTime int64  `json:"create_time"`
+	Id         string   `json:"id"`
+	Cid        string   `json:"cid"`
+	Symbol     SymbolID `json:"symbol"`
+	CreateTime int64    `json:"create_time"`
 }

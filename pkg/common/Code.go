@@ -4,6 +4,8 @@ type ExchangeID string
 
 type AccountIdx int
 
+type SymbolID string
+
 type TransactionID string
 
 type DataID string

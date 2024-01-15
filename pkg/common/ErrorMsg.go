@@ -5,7 +5,7 @@ type ErrorMsg struct {
 	Transaction  TransactionID `json:"tid"`
 	AccountIndex AccountIdx    `json:"accountidx"`
 	ActionID     ActionID      `json:"aid"`
-	Symbol       string        `json:"symbol"`
+	Symbol       SymbolID      `json:"symbol"`
 	Id           string        `json:"id"`
 	Cid          string        `json:"cid"`
 	Side         SideID        `json:"side"`
