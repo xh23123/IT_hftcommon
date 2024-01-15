@@ -16,15 +16,15 @@ type RegisterWsConfig struct {
 	Options          map[string]string   `json:"options"`
 }
 
-// StrategyConfig
-type StrategyCfg struct {
-	KeyMap          map[string]string                           `json:"key_map"`
-	OnTimerInterval int64                                       `json:"timer_interval"`
-	GatewayConfigs  map[ExchangeID]map[string]*RegisterWsConfig `json:"gateway_configs"`
+type MarketDataConfigs struct {
+	MdConfigs map[ExchangeID]map[string]*RegisterWsConfig `json:"gateway_configs"`
 }
 
-type StrategyManagerCfg struct {
-	GatewayConfigs map[ExchangeID]map[string]*RegisterWsConfig `json:"gateway_configs"`
+// StrategyConfig
+type StrategyCfg struct {
+	MarketDataConfigs
+	KeyMap          map[string]string `json:"key_map"`
+	OnTimerInterval int64             `json:"timer_interval"`
 }
 
 type IntervalInfo struct {

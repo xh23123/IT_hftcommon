@@ -96,7 +96,7 @@ type GatewayInterface interface {
 type MarketDataAgent interface {
 	InitMdConfig(*StrategyCfg)
 	ResetMarketWs(exid ExchangeID, data []ResetID) ActionEvent
-	StrategyManagerCfg() StrategyManagerCfg
+	MarketDataConfigs() MarketDataConfigs
 }
 
 type SystemAgent interface {
