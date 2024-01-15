@@ -700,7 +700,7 @@ func (b *BinaAccountManager) onTimer() {
 
 func convert_to_cancel_reject_error(err error) error {
 	if strings.Contains(err.Error(), "Unknown order") {
-		return common.NewError(common.ERRORCODE_CANCEL_ORDER_NOT_EXIST, common.REASON_UNKNOWN, err.Error())
+		return common.NewError(common.ERRORCODE_CANCEL_REJECTED, common.REASON_ORDER_NOT_EXIST, err.Error())
 	} else {
 		return common.NewError(common.ERRORCODE_CANCEL_REJECTED, common.REASON_UNKNOWN, err.Error())
 	}
