@@ -10,7 +10,7 @@ type BalanceManagerInterface interface {
 	GetSpotBalance(asset string) *Balance
 	GetFutureBalance(asset string) *Balance
 	GetCoinFutureBalance(asset string) *Balance
-	GetFuturePosition(symbol string, transactionId TransactionID) *FuturePosition
+	GetFuturePosition(symbol SymbolID, transactionId TransactionID) *FuturePosition
 	WsUpdateCoinFutureBalancePosition(balance WsFutureBalance, position WsFuturePosition)
 	WsUpdateFutureBalancePosition(balance WsFutureBalance, position WsFuturePosition)
 }

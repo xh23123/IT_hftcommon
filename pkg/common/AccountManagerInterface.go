@@ -25,10 +25,10 @@ type ProcessInterface interface {
 }
 
 type UsageInterface interface {
-	GetOrders(symbol string, transactionId TransactionID) []*Order
+	GetOrders(symbol SymbolID, transactionId TransactionID) []*Order
 	GetAllOrders(transactionId TransactionID) cmap.ConcurrentMap
 	GetBalance(asset string, transactionId TransactionID) *Balance
-	GetFuturePosition(symbol string, transactionId TransactionID) *FuturePosition
+	GetFuturePosition(symbol SymbolID, transactionId TransactionID) *FuturePosition
 }
 
 type AccountManagerInterface interface {
@@ -38,5 +38,5 @@ type AccountManagerInterface interface {
 	CoinFutureInterface
 	ProcessInterface
 	UsageInterface
-	RegisterSystemSymbols(symbols []string)
+	RegisterSystemSymbols(symbols []SymbolID)
 }
