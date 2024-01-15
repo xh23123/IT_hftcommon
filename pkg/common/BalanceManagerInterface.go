@@ -10,6 +10,6 @@ type BalanceManagerInterface interface {
 
 	//future only
 	SetFuturePosition(transactionId TransactionID, position cmap.ConcurrentMap)
-	GetFuturePosition(symbol SymbolID, transactionId TransactionID) *FuturePosition
 	WsUpdateFuturePosition(transactionId TransactionID, position WsFuturePosition)
+	GetFuturePosition(symbol SymbolID, transactionId TransactionID) *FuturePosition
 }
