@@ -28,7 +28,7 @@ type FuturePositionUserInterface interface {
 }
 
 type ProcessInterface interface {
-	Process(event ActionEvent)
+	Process(event *ActionEvent)
 }
 
 type UsageInterface interface {
