@@ -4,12 +4,12 @@ import cmap "github.com/orcaman/concurrent-map"
 
 type BalanceManagerInterface interface {
 	//spot and future
+	WsBalanceInterface
+	BalanceUserInterface
 	SetBalances(transactionId TransactionID, balances cmap.ConcurrentMap)
-	WsUpdateBalance(transactionId TransactionID, balance *Balance)
-	GetBalance(transactionId TransactionID, asset string) *Balance
 
 	//future only
+	WsFuturePositionInterface
+	FuturePositionUserInterface
 	SetFuturePosition(transactionId TransactionID, position cmap.ConcurrentMap)
-	WsUpdateFuturePosition(transactionId TransactionID, position WsFuturePosition)
-	GetFuturePosition(symbol SymbolID, transactionId TransactionID) *FuturePosition
 }
