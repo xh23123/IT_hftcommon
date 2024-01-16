@@ -8,19 +8,19 @@ type OrderOptions struct {
 }
 
 type OrderAgent interface {
-	CreateNewOrder(exid ExchangeID, accountIndex AccountIdx, orderType OrderTypeID, orderClientId string, symbol SymbolID, transactionId TransactionID, size float64, price float64, orderOptions *OrderOptions) ActionEvent
-	CreateAmendOrder(exid ExchangeID, accountIndex AccountIdx, orderType OrderTypeID, orderClientId string, symbol SymbolID, transactionId TransactionID, size float64, price float64, orderOptions *OrderOptions) ActionEvent
-	CancelOrderByCid(exid ExchangeID, accountIndex AccountIdx, orderClientId string, symbol SymbolID, transactionId TransactionID) (ActionEvent, error)
-	CancelAllOrders(exid ExchangeID, accountIndex AccountIdx, symbol SymbolID, transactionId TransactionID) ActionEvent
+	CreateNewOrder(exid ExchangeID, accountIndex AccountIdx, orderType OrderTypeID, orderClientId string, symbol SymbolID, transactionId TransactionID, size float64, price float64, orderOptions *OrderOptions) *ActionEvent
+	CreateAmendOrder(exid ExchangeID, accountIndex AccountIdx, orderType OrderTypeID, orderClientId string, symbol SymbolID, transactionId TransactionID, size float64, price float64, orderOptions *OrderOptions) *ActionEvent
+	CancelOrderByCid(exid ExchangeID, accountIndex AccountIdx, orderClientId string, symbol SymbolID, transactionId TransactionID) (*ActionEvent, error)
+	CancelAllOrders(exid ExchangeID, accountIndex AccountIdx, symbol SymbolID, transactionId TransactionID) *ActionEvent
 
 	GetOrders(exid ExchangeID, accountIndex AccountIdx, symbol SymbolID, transactionId TransactionID) []*Order
 	GetOrder(exid ExchangeID, accountIndex AccountIdx, symbol SymbolID, transactionId TransactionID, clientOrderId string) *Order
 
-	ActionProcess(actions []ActionEvent)
+	ActionProcess(actions []*ActionEvent)
 }
 
 type OrderFeedbackInterface interface {
-	OnError(event ErrorMsg)
+	OnError(event *ErrorMsg)
 }
 
 type TimeStampAgent interface {
@@ -45,8 +45,8 @@ type TimeStampAgent interface {
 type AccountAgent interface {
 	GetBalance(exid ExchangeID, accountIndex AccountIdx, asset string, transactionId TransactionID) *Balance
 	GetFuturePosition(exid ExchangeID, accountIndex AccountIdx, symbol SymbolID, transactionId TransactionID) *FuturePosition
-	SetMultiAssetMargin(exid ExchangeID, accountIndex AccountIdx, MultiAssetMargin bool) ActionEvent
-	SetDualSidePosition(exid ExchangeID, accountIndex AccountIdx, transactionId TransactionID, dualSidePosition bool) ActionEvent
+	SetMultiAssetMargin(exid ExchangeID, accountIndex AccountIdx, MultiAssetMargin bool) *ActionEvent
+	SetDualSidePosition(exid ExchangeID, accountIndex AccountIdx, transactionId TransactionID, dualSidePosition bool) *ActionEvent
 
 	WsUpdateBalance(exid ExchangeID, accountIndex AccountIdx, transactionId TransactionID, balance *Balance)
 	WsUpdateFuturePosition(exid ExchangeID, accountIndex AccountIdx, transactionId TransactionID, position WsFuturePosition)
@@ -59,7 +59,7 @@ type GatewayInterface interface {
 
 type MarketDataAgent interface {
 	InitMdConfig(*StrategyCfg)
-	ResetMarketWs(exid ExchangeID, data []ResetID) ActionEvent
+	ResetMarketWs(exid ExchangeID, data []ResetID) *ActionEvent
 	MarketDataConfigs() MarketDataConfigs
 }
 

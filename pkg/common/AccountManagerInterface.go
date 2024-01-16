@@ -5,9 +5,9 @@ import (
 )
 
 type TradingInterface interface {
-	WsUpdateOrderOnOrder(OrderTradeUpdateInfo)
-	WsUpdateOrderOnTrade(OrderTradeUpdateInfo)
-	OnError(ErrorMsg)
+	WsUpdateOrderOnOrder(*OrderTradeUpdateInfo)
+	WsUpdateOrderOnTrade(*OrderTradeUpdateInfo)
+	OnError(*ErrorMsg)
 }
 
 type WsBalanceInterface interface {
