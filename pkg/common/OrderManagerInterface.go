@@ -5,9 +5,10 @@ import cmap "github.com/orcaman/concurrent-map"
 type OrderManagerInterface interface {
 	TradingInterface
 
-	OpenOrder(orderId string) (*Order, bool)             //TODO
-	OpenOrdersBySymbol(symbol SymbolID) ([]*Order, bool) //TODO
-	AllOpenOrders() cmap.ConcurrentMap                   //TODO
+	OpenOrder(orderId string) *Order
+	OpenOrderByCid(orderClientId string) *Order
+	OpenOrdersBySymbol(symbol SymbolID) []*Order
+	AllOpenOrders() cmap.ConcurrentMap
 	CreateOrderProcess(event interface{}, handler func(data *Order) (id string, err error))
 	AmendOrderProcess(event interface{}, handler func(data *Order) (id string, err error))
 	CancelOrderProcess(event interface{}, handler func(data CancelInfo) error)

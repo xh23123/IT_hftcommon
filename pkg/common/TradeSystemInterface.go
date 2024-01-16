@@ -2,52 +2,15 @@ package common
 
 import "gopkg.in/ini.v1"
 
+type OrderOptions struct {
+	ReduceOnly bool       `json:"reduce_only"` //For future BOTH orders only
+	PositionId PositionID `json:"position_id"` //For future orders
+}
+
 type OrderAgent interface {
-
-	//GFD /LIMIT orders
-	CreateLimitSpotOrder(exid ExchangeID, accountIndex AccountIdx, cid string, symbol SymbolID, size float64, price float64) ActionEvent
-	CreateLimitMakerSpotOrder(exid ExchangeID, accountIndex AccountIdx, cid string, symbol SymbolID, size float64, price float64) ActionEvent
-
-	CreateLimitBothFutureOrder(exid ExchangeID, accountIndex AccountIdx, cid string, symbol SymbolID, size float64, price float64, reduceOnly bool) ActionEvent
-	CreateLimitLongFutureOrder(exid ExchangeID, accountIndex AccountIdx, cid string, symbol SymbolID, size float64, price float64) ActionEvent
-	CreateLimitShortFutureOrder(exid ExchangeID, accountIndex AccountIdx, cid string, symbol SymbolID, size float64, price float64) ActionEvent
-
-	CreateLimitMakerBothFutureOrder(exid ExchangeID, accountIndex AccountIdx, cid string, symbol SymbolID, size float64, price float64, reduceOnly bool) ActionEvent
-	CreateLimitMakerLongFutureOrder(exid ExchangeID, accountIndex AccountIdx, cid string, symbol SymbolID, size float64, price float64) ActionEvent
-	CreateLimitMakerShortFutureOrder(exid ExchangeID, accountIndex AccountIdx, cid string, symbol SymbolID, size float64, price float64) ActionEvent
-
-	CreateLimitMarginOrder(exid ExchangeID, accountIndex AccountIdx, cid string, symbol SymbolID, size float64, price float64) ActionEvent
-	CreateLimitMakerMarginOrder(exid ExchangeID, accountIndex AccountIdx, cid string, symbol SymbolID, size float64, price float64) ActionEvent
-
-	CreateLimitBothCoinFutureOrder(exid ExchangeID, accountIndex AccountIdx, cid string, symbol SymbolID, size float64, price float64, reduceOnly bool) ActionEvent
-	CreateLimitLongCoinFutureOrder(exid ExchangeID, accountIndex AccountIdx, cid string, symbol SymbolID, size float64, price float64) ActionEvent
-	CreateLimitShortCoinFutureOrder(exid ExchangeID, accountIndex AccountIdx, cid string, symbol SymbolID, size float64, price float64) ActionEvent
-
-	//IOC orders
-	CreateIocSpotOrder(exid ExchangeID, accountIndex AccountIdx, cid string, symbol SymbolID, size float64, price float64) ActionEvent
-	CreateIocMarginOrder(exid ExchangeID, accountIndex AccountIdx, cid string, symbol SymbolID, size float64, price float64) ActionEvent
-
-	CreateIocBothFutureOrder(exid ExchangeID, accountIndex AccountIdx, cid string, symbol SymbolID, size float64, price float64, reduceOnly bool) ActionEvent
-	CreateIocLongFutureOrder(exid ExchangeID, accountIndex AccountIdx, cid string, symbol SymbolID, size float64, price float64) ActionEvent
-	CreateIocShortFutureOrder(exid ExchangeID, accountIndex AccountIdx, cid string, symbol SymbolID, size float64, price float64) ActionEvent
-
-	CreateIocBothCoinFutureOrder(exid ExchangeID, accountIndex AccountIdx, cid string, symbol SymbolID, size float64, price float64, reduceOnly bool) ActionEvent
-	CreateIocLongCoinFutureOrder(exid ExchangeID, accountIndex AccountIdx, cid string, symbol SymbolID, size float64, price float64) ActionEvent
-	CreateIocShortCoinFutureOrder(exid ExchangeID, accountIndex AccountIdx, cid string, symbol SymbolID, size float64, price float64) ActionEvent
-
-	//Amend orders
-	CreateAmendSpotOrder(exid ExchangeID, accountIndex AccountIdx, orderType OrderTypeID, cid string, symbol SymbolID, size float64, price float64) ActionEvent
-	CreateAmendMarginOrder(exid ExchangeID, accountIndex AccountIdx, orderType OrderTypeID, cid string, symbol SymbolID, size float64, price float64) ActionEvent
-
-	CreateAmendBothFutureOrder(exid ExchangeID, accountIndex AccountIdx, orderType OrderTypeID, cid string, symbol SymbolID, size float64, price float64, reduceOnly bool) ActionEvent
-	CreateAmendLongFutureOrder(exid ExchangeID, accountIndex AccountIdx, orderType OrderTypeID, cid string, symbol SymbolID, size float64, price float64) ActionEvent
-	CreateAmendShortFutureOrder(exid ExchangeID, accountIndex AccountIdx, orderType OrderTypeID, cid string, symbol SymbolID, size float64, price float64) ActionEvent
-
-	CreateAmendBothCoinFutureOrder(exid ExchangeID, accountIndex AccountIdx, orderType OrderTypeID, cid string, symbol SymbolID, size float64, price float64, reduceOnly bool) ActionEvent
-	CreateAmendLongCoinFutureOrder(exid ExchangeID, accountIndex AccountIdx, orderType OrderTypeID, cid string, symbol SymbolID, size float64, price float64) ActionEvent
-	CreateAmendShortCoinFutureOrder(exid ExchangeID, accountIndex AccountIdx, orderType OrderTypeID, cid string, symbol SymbolID, size float64, price float64) ActionEvent
-
-	CancelOrderByCid(exid ExchangeID, accountIndex AccountIdx, clientOrderId string, symbol SymbolID, transactionId TransactionID) (ActionEvent, error)
+	CreateNewOrder(exid ExchangeID, accountIndex AccountIdx, orderType OrderTypeID, orderClientId string, symbol SymbolID, transactionId TransactionID, size float64, price float64, orderOptions *OrderOptions) ActionEvent
+	CreateAmendOrder(exid ExchangeID, accountIndex AccountIdx, orderType OrderTypeID, orderClientId string, symbol SymbolID, transactionId TransactionID, size float64, price float64, orderOptions *OrderOptions) ActionEvent
+	CancelOrderByCid(exid ExchangeID, accountIndex AccountIdx, orderClientId string, symbol SymbolID, transactionId TransactionID) (ActionEvent, error)
 	CancelAllOrders(exid ExchangeID, accountIndex AccountIdx, symbol SymbolID, transactionId TransactionID) ActionEvent
 
 	GetOrders(exid ExchangeID, accountIndex AccountIdx, symbol SymbolID, transactionId TransactionID) []*Order
@@ -85,7 +48,8 @@ type AccountAgent interface {
 	SetMultiAssetMargin(exid ExchangeID, accountIndex AccountIdx, MultiAssetMargin bool) ActionEvent
 	SetDualSidePosition(exid ExchangeID, accountIndex AccountIdx, transactionId TransactionID, dualSidePosition bool) ActionEvent
 
-	WsUpdateFutureBalancePosition(exid ExchangeID, accountIndex AccountIdx, balancePosition WsFutureBalancePosition)
+	WsUpdateBalance(exid ExchangeID, accountIndex AccountIdx, transactionId TransactionID, balance *Balance)
+	WsUpdateFuturePosition(exid ExchangeID, accountIndex AccountIdx, transactionId TransactionID, position WsFuturePosition)
 }
 
 type GatewayInterface interface {

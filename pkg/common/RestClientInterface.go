@@ -6,7 +6,7 @@ type RestClientInterface interface {
 	BinanceRestClientInterface
 	GetPremiumIndex(symbol SymbolID) []*PremiumIndexInfo
 	SetMultiAssetMargin(MultiAssetMargin bool)
-	GetOrder(symbol SymbolID, transactionId TransactionID, origClientOrderID string) *Order
+	GetOrder(symbol SymbolID, transactionId TransactionID, orderClientId string) *Order
 	GetOrders(symbol SymbolID, transactionId TransactionID) []*Order
 	GetSpotBalance() (SpotBalance, error)
 	GetMarginBalance() (MarginBalance, error)

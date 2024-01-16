@@ -39,7 +39,6 @@ const KRAKEN ExchangeID = "8"
 const MOCKEXCHANGE ExchangeID = "9"
 
 // TransactionID
-const MixID TransactionID = "0"
 const SpotID TransactionID = "1"
 const FutureID TransactionID = "2"
 const MarginID TransactionID = "3"
