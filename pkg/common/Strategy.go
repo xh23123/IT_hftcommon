@@ -24,8 +24,8 @@ type MarketDataConfigs struct {
 // StrategyConfig
 type StrategyCfg struct {
 	MarketDataConfigs
-	KeyMap          map[string]string `json:"key_map"`
-	OnTimerInterval int64             `json:"timer_interval"`
+	KeyMap          map[SymbolID]string `json:"key_map"`
+	OnTimerInterval int64               `json:"timer_interval"`
 }
 
 type WsInfo struct {
