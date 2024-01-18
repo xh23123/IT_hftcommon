@@ -10,17 +10,17 @@ type TradingInterface interface {
 	OnError(*ErrorMsg)
 }
 
-type WsBalanceInterface interface {
+type WsUpdateBalanceInterface interface {
 	//spot and future
-	WsUpdateBalance(transactionId TransactionID, balance *Balance)
+	WsUpdateBalance(transactionId TransactionID, balance cmap.ConcurrentMap)
 }
 
 type BalanceUserInterface interface {
 	GetBalance(asset SymbolID, transactionId TransactionID) *Balance
 }
 
-type WsFuturePositionInterface interface {
-	WsUpdateFuturePosition(transactionId TransactionID, position FuturePositions)
+type WsUpdateFuturePositionInterface interface {
+	WsUpdateFuturePosition(transactionId TransactionID, positions FuturePositions)
 }
 
 type FuturePositionUserInterface interface {
@@ -40,8 +40,8 @@ type UsageInterface interface {
 
 type AccountManagerInterface interface {
 	TradingInterface
-	WsBalanceInterface
-	WsFuturePositionInterface
+	WsUpdateBalanceInterface
+	WsUpdateFuturePositionInterface
 	ProcessInterface
 	UsageInterface
 	RegisterSystemSymbols(symbols []SymbolID)
