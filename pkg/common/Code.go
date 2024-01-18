@@ -46,7 +46,7 @@ const CoinFutureID TransactionID = "4"
 const UniMarginID TransactionID = "5"
 
 // DataID
-const AccountUpdateID DataID = "0"
+
 const OrderUpdateID DataID = "1"
 const TradeUpdateID DataID = "2"
 const BookTickID DataID = "3"
@@ -62,6 +62,8 @@ const TradeID DataID = "12"
 const DexBookTickID DataID = "13"
 const DexTradeID DataID = "14"
 const OrderbookID DataID = "15"
+const BalancesUpdateID DataID = "16"
+const PositionsUpdateID DataID = "17"
 
 // ActionID
 const CREATE_LIMITTYPE_SPOT_ORDER ActionID = "1"
