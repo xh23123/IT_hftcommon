@@ -12,7 +12,7 @@ type TradingInterface interface {
 
 type WsUpdateBalanceInterface interface {
 	//spot and future
-	WsUpdateBalance(transactionId TransactionID, balance cmap.ConcurrentMap)
+	WsUpdateBalance(transactionId TransactionID, balances Balances)
 }
 
 type BalanceUserInterface interface {

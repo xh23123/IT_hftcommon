@@ -48,8 +48,8 @@ type AccountAgent interface {
 	SetMultiAssetMargin(exid ExchangeID, accountIndex AccountIdx, MultiAssetMargin bool) *ActionEvent
 	SetDualSidePosition(exid ExchangeID, accountIndex AccountIdx, transactionId TransactionID, dualSidePosition bool) *ActionEvent
 
-	WsUpdateBalance(exid ExchangeID, accountIndex AccountIdx, transactionId TransactionID, balance *Balance)
-	WsUpdateFuturePosition(exid ExchangeID, accountIndex AccountIdx, transactionId TransactionID, position FuturePositions)
+	WsUpdateBalance(exid ExchangeID, accountIndex AccountIdx, transactionId TransactionID, balances Balances)
+	WsUpdateFuturePosition(exid ExchangeID, accountIndex AccountIdx, transactionId TransactionID, positions FuturePositions)
 }
 
 type GatewayInterface interface {
