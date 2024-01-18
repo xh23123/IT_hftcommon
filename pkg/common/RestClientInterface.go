@@ -8,11 +8,9 @@ type RestClientInterface interface {
 	SetMultiAssetMargin(MultiAssetMargin bool)
 	GetOrder(symbol SymbolID, transactionId TransactionID, orderClientId string) *Order
 	GetOrders(symbol SymbolID, transactionId TransactionID) []*Order
-	GetSpotBalance() (SpotBalance, error)
-	GetMarginBalance() (MarginBalance, error)
-	GetFutureBalancePosition() (WsFutureBalance, WsFuturePosition, error)
-	GetCoinFutureBalancePosition() (WsFutureBalance, WsFuturePosition, error)
-	GetSpotKlines(symbol SymbolID, interval IntervalID, limit int, startTime int64, endTime int64) ([]*Kline, error)
-	GetFutureKlines(symbol SymbolID, interval IntervalID, limit int, startTime int64, endTime int64) ([]*Kline, error)
+	GetBalances(transactionId TransactionID) (Balances, error)
+	GetMarginBalances() (MarginBalance, error)
+	GetFuturePositions(transactionId TransactionID) (FuturePositions, error)
+	GetKlines(symbol SymbolID, transactionId TransactionID, interval IntervalID, limit int, startTime int64, endTime int64) ([]*Kline, error)
 	GetSuggestGasPrice() (*big.Int, error)
 }

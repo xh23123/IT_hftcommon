@@ -1,6 +1,6 @@
 package common
 
 type WsFutureBalancePosition struct {
-	FutureBalances  WsFutureBalance  `json:"balance"`
-	FuturePositions WsFuturePosition `json:"position"`
+	FutureBalances  Balances        `json:"balance"`
+	FuturePositions FuturePositions `json:"position"`
 }

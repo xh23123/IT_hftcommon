@@ -6,6 +6,7 @@ type BalanceManagerInterface interface {
 	//spot and future
 	WsBalanceInterface
 	BalanceUserInterface
+	WsUpdateBalance(transactionId TransactionID, balance *Balance)
 	SetBalances(transactionId TransactionID, balances cmap.ConcurrentMap)
 
 	//future only

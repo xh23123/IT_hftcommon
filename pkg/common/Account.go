@@ -19,7 +19,7 @@ type OrderTradeUpdateInfo struct {
 	Price           float64       `json:"price"`
 	AvgPrice        float64       `json:"avg_price"`
 	LastFilledPrice float64       `json:"last_filled_size"`
-	FeeAsset        string        `json:"fee_asset"`
+	FeeAsset        SymbolID      `json:"fee_asset"`
 	FeeCost         float64       `json:"fee_cost"`
 	Timestamp       int64         `json:"timestamp"`
 }
@@ -33,19 +33,19 @@ type Balance struct {
 }
 
 type UserAsset struct {
-	Asset    string  `json:"asset"`
-	Borrowed float64 `json:"borrowed"`
-	Free     float64 `json:"free"`
-	Interest float64 `json:"interest"`
-	Locked   float64 `json:"locked"`
-	NetAsset float64 `json:"netAsset"`
+	Asset    SymbolID `json:"asset"`
+	Borrowed float64  `json:"borrowed"`
+	Free     float64  `json:"free"`
+	Interest float64  `json:"interest"`
+	Locked   float64  `json:"locked"`
+	NetAsset float64  `json:"netAsset"`
 }
 
 type MarginBalance struct {
 	MarginLevel float64     `json:"marginLevel"`
 	UserAssets  []UserAsset `json:"userAssets"`
 }
-type SpotBalance map[string]*Balance
+type Balances map[SymbolID]*Balance //如何统一 Balances 和 MarginBalance
 
 type SidePosition struct {
 	Amount        float64 `json:"pa"`
@@ -57,8 +57,7 @@ type FuturePosition struct {
 	SHORT *SidePosition `json:"SHORT"`
 	BOTH  *SidePosition `json:"BOTH"`
 }
-type WsFutureBalance map[string]*Balance
-type WsFuturePosition map[string]*FuturePosition
+type FuturePositions map[SymbolID]*FuturePosition
 
 type PremiumIndexInfo struct {
 	Symbol          SymbolID `json:"symbol"`

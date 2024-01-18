@@ -16,11 +16,11 @@ type WsBalanceInterface interface {
 }
 
 type BalanceUserInterface interface {
-	GetBalance(asset string, transactionId TransactionID) *Balance
+	GetBalance(asset SymbolID, transactionId TransactionID) *Balance
 }
 
 type WsFuturePositionInterface interface {
-	WsUpdateFuturePosition(transactionId TransactionID, position WsFuturePosition)
+	WsUpdateFuturePosition(transactionId TransactionID, position FuturePositions)
 }
 
 type FuturePositionUserInterface interface {

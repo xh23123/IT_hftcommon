@@ -49,7 +49,7 @@ type AccountAgent interface {
 	SetDualSidePosition(exid ExchangeID, accountIndex AccountIdx, transactionId TransactionID, dualSidePosition bool) *ActionEvent
 
 	WsUpdateBalance(exid ExchangeID, accountIndex AccountIdx, transactionId TransactionID, balance *Balance)
-	WsUpdateFuturePosition(exid ExchangeID, accountIndex AccountIdx, transactionId TransactionID, position WsFuturePosition)
+	WsUpdateFuturePosition(exid ExchangeID, accountIndex AccountIdx, transactionId TransactionID, position FuturePositions)
 }
 
 type GatewayInterface interface {
