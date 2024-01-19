@@ -21,7 +21,7 @@ type MarketDataConfig struct {
 }
 
 type MarketDataConfigs struct {
-	Configs map[ExchangeID]map[TransactionID]map[SymbolID][]*MarketDataConfig `json:"md_configs"`
+	MdConfigs map[ExchangeID]map[TransactionID]map[SymbolID][]*MarketDataConfig `json:"md_configs"`
 }
 
 // StrategyConfig
