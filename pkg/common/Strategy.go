@@ -13,7 +13,8 @@ type OrderBookOptions struct {
 }
 
 type MarketDataConfig struct {
-	MdCallBackName string `json:"md_callback_name"`
+	TransactionId  TransactionID `json:"transaction_id"`
+	MdCallBackName string        `json:"md_callback_name"`
 
 	BookTickOptions  *BookTickOptions  `json:"book_tick_options"`
 	KlineOptions     *KlineOptions     `json:"kline_options"`
@@ -21,7 +22,7 @@ type MarketDataConfig struct {
 }
 
 type MarketDataConfigs struct {
-	MdConfigs map[ExchangeID]map[TransactionID]map[SymbolID][]*MarketDataConfig `json:"md_configs"`
+	MdConfigs map[ExchangeID]map[SymbolID][]*MarketDataConfig `json:"md_configs"`
 }
 
 // StrategyConfig
