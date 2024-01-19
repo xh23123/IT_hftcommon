@@ -41,11 +41,11 @@ type UserAsset struct {
 	NetAsset float64  `json:"netAsset"`
 }
 
-type MarginBalance struct {
+type MarginBalances struct {
 	MarginLevel float64     `json:"marginLevel"`
 	UserAssets  []UserAsset `json:"userAssets"`
 }
-type Balances map[SymbolID]*Balance //如何统一 Balances 和 MarginBalance
+type Balances map[SymbolID]*Balance //如何统一 Balances 和 MarginBalances
 
 type SidePosition struct {
 	Amount        float64 `json:"pa"`
