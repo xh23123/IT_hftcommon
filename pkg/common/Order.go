@@ -26,8 +26,8 @@ type Order struct {
 }
 
 type CancelInfo struct {
-	Id         string   `json:"id"`
-	Cid        string   `json:"cid"`
-	Symbol     SymbolID `json:"symbol"`
-	CreateTime int64    `json:"create_time"`
+	Id         OrderidID       `json:"id"`
+	Cid        OrderClientidID `json:"cid"`
+	Symbol     SymbolID        `json:"symbol"`
+	CreateTime int64           `json:"create_time"`
 }
