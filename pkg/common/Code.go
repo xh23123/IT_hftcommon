@@ -26,6 +26,10 @@ type ResetID string
 
 type IntervalID string
 
+type OrderidID string
+
+type OrderClientidID string
+
 type AmendTypeID string
 
 // ExchangeID
