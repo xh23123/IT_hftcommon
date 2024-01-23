@@ -8,13 +8,13 @@ type OrderOptions struct {
 }
 
 type OrderAgent interface {
-	CreateNewOrder(exid ExchangeID, accountIndex AccountIdx, orderType OrderTypeID, orderClientId OrderClientidID, symbol SymbolID, transactionId TransactionID, size float64, price float64, orderOptions *OrderOptions) *ActionEvent
-	CreateAmendOrder(exid ExchangeID, accountIndex AccountIdx, orderType OrderTypeID, orderClientId OrderClientidID, symbol SymbolID, transactionId TransactionID, size float64, price float64, orderOptions *OrderOptions) *ActionEvent
-	CancelOrderByCid(exid ExchangeID, accountIndex AccountIdx, orderClientId OrderClientidID, symbol SymbolID, transactionId TransactionID) (*ActionEvent, error)
+	CreateNewOrder(exid ExchangeID, accountIndex AccountIdx, orderType OrderTypeID, clientOrderId ClientOrderidID, symbol SymbolID, transactionId TransactionID, size float64, price float64, orderOptions *OrderOptions) *ActionEvent
+	CreateAmendOrder(exid ExchangeID, accountIndex AccountIdx, orderType OrderTypeID, clientOrderId ClientOrderidID, symbol SymbolID, transactionId TransactionID, size float64, price float64, orderOptions *OrderOptions) *ActionEvent
+	CancelOrderByCid(exid ExchangeID, accountIndex AccountIdx, clientOrderId ClientOrderidID, symbol SymbolID, transactionId TransactionID) (*ActionEvent, error)
 	CancelAllOrders(exid ExchangeID, accountIndex AccountIdx, symbol SymbolID, transactionId TransactionID) *ActionEvent
 
 	GetOrders(exid ExchangeID, accountIndex AccountIdx, symbol SymbolID, transactionId TransactionID) []*Order
-	GetOrder(exid ExchangeID, accountIndex AccountIdx, symbol SymbolID, transactionId TransactionID, clientOrderId OrderClientidID) *Order
+	GetOrder(exid ExchangeID, accountIndex AccountIdx, symbol SymbolID, transactionId TransactionID, clientOrderId ClientOrderidID) *Order
 
 	ActionProcess(actions []*ActionEvent)
 }
@@ -36,7 +36,7 @@ type TimeStampAgent interface {
 		symbol SymbolID,
 		actionType ActionID,
 		timeEventID TimeEventID,
-		orderClientId OrderClientidID,
+		clientOrderId ClientOrderidID,
 		orderId OrderidID,
 		feedBackTimestamp int64,
 	)
@@ -64,7 +64,7 @@ type MarketDataAgent interface {
 }
 
 type SystemAgent interface {
-	GenOrderClientId(exid ExchangeID, accountIndex AccountIdx, dataId DataID, sequence int64) OrderClientidID
+	GenOrderClientId(exid ExchangeID, accountIndex AccountIdx, dataId DataID, sequence int64) ClientOrderidID
 }
 
 type DebugInterface interface {

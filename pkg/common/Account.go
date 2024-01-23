@@ -10,7 +10,7 @@ type OrderTradeUpdateInfo struct {
 	Status          OrderStatusID   `json:"status"`
 	Symbol          SymbolID        `json:"symbol"`
 	Id              OrderidID       `json:"id"`
-	Cid             OrderClientidID `json:"cid"`
+	Cid             ClientOrderidID `json:"cid"`
 	Side            SideID          `json:"side"`
 	PositionSide    PositionID      `json:"position_side"`
 	Type            OrderTypeID     `json:"type"`

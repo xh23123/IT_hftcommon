@@ -7,7 +7,7 @@ type ErrorMsg struct {
 	ActionID     ActionID        `json:"aid"`
 	Symbol       SymbolID        `json:"symbol"`
 	Id           OrderidID       `json:"id"`
-	Cid          OrderClientidID `json:"cid"`
+	Cid          ClientOrderidID `json:"cid"`
 	Side         SideID          `json:"side"`
 	Size         float64         `json:"size"`
 	Error        error           `json:"error"`

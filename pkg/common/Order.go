@@ -7,7 +7,7 @@ type Order struct {
 	Transaction  TransactionID   `json:"tid"`
 	Symbol       SymbolID        `json:"symbol"`
 	Id           OrderidID       `json:"id"`
-	Cid          OrderClientidID `json:"cid"`
+	Cid          ClientOrderidID `json:"cid"`
 	Side         SideID          `json:"side"`
 	IsIsolated   bool            `json:"is_isolated"`
 	PositionSide PositionID      `json:"position_side"`
@@ -27,7 +27,7 @@ type Order struct {
 
 type CancelInfo struct {
 	Id         OrderidID       `json:"id"`
-	Cid        OrderClientidID `json:"cid"`
+	Cid        ClientOrderidID `json:"cid"`
 	Symbol     SymbolID        `json:"symbol"`
 	CreateTime int64           `json:"create_time"`
 }

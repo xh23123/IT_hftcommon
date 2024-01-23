@@ -63,8 +63,8 @@ func SystemSeconds() int64 {
 	return time.Now().Unix()
 }
 
-func GenOrderClientId(exchangeID ExchangeID, accountIndex AccountIdx, dataId DataID, sequence int64) OrderClientidID {
-	return OrderClientidID(fmt.Sprintf("%dX%sX%sX%dX%d", SystemSeconds(), dataId, exchangeID, accountIndex, sequence))
+func GenClientOrderId(exchangeID ExchangeID, accountIndex AccountIdx, dataId DataID, sequence int64) ClientOrderidID {
+	return ClientOrderidID(fmt.Sprintf("%dX%sX%sX%dX%d", SystemSeconds(), dataId, exchangeID, accountIndex, sequence))
 }
 
 func Marshal(v any) string {

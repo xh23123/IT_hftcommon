@@ -28,7 +28,7 @@ type IntervalID string
 
 type OrderidID string
 
-type OrderClientidID string
+type ClientOrderidID string
 
 type AmendTypeID string
 

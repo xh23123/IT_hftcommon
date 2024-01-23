@@ -6,7 +6,7 @@ type OrderManagerInterface interface {
 	TradingInterface
 
 	OpenOrder(orderId OrderidID) *Order
-	OpenOrderByCid(orderClientId OrderClientidID) *Order
+	OpenOrderByCid(orderClientId ClientOrderidID) *Order
 	OpenOrdersBySymbol(symbol SymbolID) []*Order
 	AllOpenOrders() cmap.ConcurrentMap
 	CreateOrderProcess(event interface{}, handler func(data *Order) (id OrderidID, err error))
