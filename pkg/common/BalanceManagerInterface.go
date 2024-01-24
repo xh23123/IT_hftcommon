@@ -1,15 +1,13 @@
 package common
 
-import cmap "github.com/orcaman/concurrent-map"
-
 type BalanceManagerInterface interface {
 	//spot and future
 	WsUpdateBalanceInterface
 	BalanceUserInterface
-	SetBalances(transactionId TransactionID, balances cmap.ConcurrentMap)
+	SetBalances(transactionId TransactionID, balances Balances)
 
 	//future only
 	WsUpdateFuturePositionInterface
 	FuturePositionUserInterface
-	SetFuturePosition(transactionId TransactionID, positions cmap.ConcurrentMap)
+	SetFuturePosition(transactionId TransactionID, positions FuturePositions)
 }

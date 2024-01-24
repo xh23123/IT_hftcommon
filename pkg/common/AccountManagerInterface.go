@@ -1,9 +1,5 @@
 package common
 
-import (
-	cmap "github.com/orcaman/concurrent-map"
-)
-
 type TradingInterface interface {
 	WsUpdateOrderOnOrder(*OrderTradeUpdateInfo)
 	WsUpdateOrderOnTrade(*OrderTradeUpdateInfo)
@@ -35,7 +31,7 @@ type UsageInterface interface {
 	BalanceUserInterface
 	FuturePositionUserInterface
 	GetOrders(symbol SymbolID, transactionId TransactionID) []*Order
-	GetAllOrders(transactionId TransactionID) cmap.ConcurrentMap
+	GetAllOrders(transactionId TransactionID) []*Order
 }
 
 type AccountManagerInterface interface {
