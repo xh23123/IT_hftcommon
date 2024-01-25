@@ -7,10 +7,10 @@ type OrderManagerInterface interface {
 	OpenOrderByCid(orderClientId ClientOrderidID) *Order
 	OpenOrdersBySymbol(symbol SymbolID) []*Order
 	AllOpenOrders() []*Order
-	CreateOrderProcess(event interface{}, handler func(data *Order) (id OrderidID, err error))
-	AmendOrderProcess(event interface{}, handler func(data *Order) (id OrderidID, err error))
-	CancelOrderProcess(event interface{}, handler func(data CancelInfo) error)
+	CreateOrderProcess(event interface{}, handler func(data *Order))
+	AmendOrderProcess(event interface{}, handler func(data *Order))
+	CancelOrderProcess(event interface{}, handler func(data CancelInfo))
 	CancelAllOrderProcess(event interface{}, handler func(data CancelInfo))
 	SetOpenOrder(orders []*Order)
-	UpdateOpenOrder(openOrders []*Order) error
+	UpdateOpenOrder(openOrders []*Order)
 }
