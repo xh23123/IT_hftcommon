@@ -11,6 +11,4 @@ type OrderManagerInterface interface {
 	AmendOrderProcess(event interface{}, handler func(data *Order))
 	CancelOrderProcess(event interface{}, handler func(data CancelInfo))
 	CancelAllOrderProcess(event interface{}, handler func(data CancelInfo))
-	SetOpenOrder(orders []*Order)
-	UpdateOpenOrder(openOrders []*Order)
 }
