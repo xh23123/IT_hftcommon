@@ -30,8 +30,6 @@ type ProcessInterface interface {
 type UsageInterface interface {
 	BalanceUserInterface
 	FuturePositionUserInterface
-	GetOrders(symbol SymbolID, transactionId TransactionID) []*Order
-	GetAllOrders(transactionId TransactionID) []*Order
 }
 
 type AccountManagerInterface interface {
