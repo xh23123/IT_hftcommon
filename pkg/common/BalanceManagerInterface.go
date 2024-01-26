@@ -1,13 +1,13 @@
 package common
 
 type BalanceManagerInterface interface {
+	InitBalances(transactionId TransactionID, balances Balances)
+	InitFuturePosition(transactionId TransactionID, positions FuturePositions)
 	//spot and future
 	WsUpdateBalanceInterface
 	BalanceUserInterface
-	SetBalances(transactionId TransactionID, balances Balances)
 
 	//future only
 	WsUpdateFuturePositionInterface
 	FuturePositionUserInterface
-	SetFuturePosition(transactionId TransactionID, positions FuturePositions)
 }
