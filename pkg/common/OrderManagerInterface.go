@@ -1,7 +1,7 @@
 package common
 
 type OrderManagerInterface interface {
-	IniOpenOrder(orders []*Order) //should be called at the beginning of the program
+	InitOpenOrder(orders []*Order) //should be called at the beginning of the program
 	TradingInterface
 
 	OpenOrder(orderId OrderidID) *Order
