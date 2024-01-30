@@ -3,7 +3,6 @@ package common
 import "math/big"
 
 type RestClientInterface interface {
-	BinanceRestClientInterface
 	GetPremiumIndex(symbol SymbolID) []*PremiumIndexInfo
 	SetMultiAssetMargin(MultiAssetMargin bool)
 	GetOrder(symbol SymbolID, transactionId TransactionID, clientOrderId ClientOrderidID) *Order
