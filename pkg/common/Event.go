@@ -18,7 +18,7 @@ type DataEvent struct {
 	Data          interface{}
 }
 
-func NewDataEvent(exchangeID ExchangeID, accountIndex AccountIdx, transactionID TransactionID, dataID DataID, symbol SymbolID, data interface{}) *DataEvent {
+func NewDataEvent(exchangeID ExchangeID, accountIndex AccountIdx, transactionID TransactionID, dataID DataID, data interface{}) *DataEvent {
 	return &DataEvent{ExchangeID: exchangeID,
 		AccountIndex:  accountIndex,
 		TransactionID: transactionID,
