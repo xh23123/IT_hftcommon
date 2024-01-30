@@ -15,7 +15,6 @@ type DataEvent struct {
 	AccountIndex  AccountIdx
 	TransactionID TransactionID
 	DataID        DataID
-	Symbol        SymbolID
 	Data          interface{}
 }
 
@@ -24,6 +23,5 @@ func NewDataEvent(exchangeID ExchangeID, accountIndex AccountIdx, transactionID 
 		AccountIndex:  accountIndex,
 		TransactionID: transactionID,
 		DataID:        dataID,
-		Symbol:        symbol,
 		Data:          data}
 }
