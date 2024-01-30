@@ -12,6 +12,10 @@ type OrderBookOptions struct {
 	TopLevels int `json:"top_levels"`
 }
 
+type DepthOptions struct {
+	DepthLevels int `json:"depth_levels"`
+}
+
 type MarketDataConfig struct {
 	TransactionId  TransactionID `json:"transaction_id"`
 	MdCallBackName string        `json:"md_callback_name"`
@@ -19,6 +23,7 @@ type MarketDataConfig struct {
 	BookTickOptions  *BookTickOptions  `json:"book_tick_options"`
 	KlineOptions     *KlineOptions     `json:"kline_options"`
 	OrderBookOptions *OrderBookOptions `json:"order_book_options"`
+	DepthOptions     *DepthOptions     `json:"depth_options"`
 }
 
 type MarketDataConfigs struct {
