@@ -54,7 +54,7 @@ type AccountAgent interface {
 
 type GatewayInterface interface {
 	StartGateWay()
-	EnQueue(symbol SymbolID, event *DataEvent)
+	EnQueue(event *DataEvent)
 }
 
 type MarketDataAgent interface {
