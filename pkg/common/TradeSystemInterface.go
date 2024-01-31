@@ -50,6 +50,7 @@ type AccountAgent interface {
 }
 
 type GatewayInterface interface {
+	StartGateWay()
 	EnQueue(event *DataEvent)
 }
 
@@ -74,9 +75,8 @@ type TradeSystemAgent interface {
 	AccountAgent
 	MarketDataAgent
 	SystemAgent
-	GatewayInterface
-	DebugInterface
 	Config() *ini.File
+	EnQueue(event *DataEvent)
 	NewRestClient(exid ExchangeID, config map[string]string) RestClientInterface
 	NewOrderManager(ExchangeID, AccountIdx, TransactionID) OrderManagerInterface
 	NewBalanceManager(ExchangeID, AccountIdx) BalanceManagerInterface
