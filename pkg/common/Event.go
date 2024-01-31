@@ -15,9 +15,10 @@ type DataEvent struct {
 	AccountIndex  AccountIdx
 	TransactionID TransactionID
 	DataID        DataID
-	Data          interface{}
+	Data          interface{} // should be a pointer
 }
 
+// data should be a pointer
 func NewDataEvent(exchangeID ExchangeID, accountIndex AccountIdx, transactionID TransactionID, dataID DataID, data interface{}) *DataEvent {
 	return &DataEvent{ExchangeID: exchangeID,
 		AccountIndex:  accountIndex,

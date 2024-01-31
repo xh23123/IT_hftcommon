@@ -1,1 +1,0 @@
-fb4fae2 - (3 days ago) The futures module adds the continuous contract Kline rest interface and websocket interface (#467) - life (HEAD -> master, origin/master, origin/HEAD)
