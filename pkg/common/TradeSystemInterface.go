@@ -50,7 +50,6 @@ type AccountAgent interface {
 }
 
 type GatewayInterface interface {
-	StartGateWay()
 	EnQueue(event *DataEvent)
 }
 
