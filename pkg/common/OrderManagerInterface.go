@@ -2,7 +2,6 @@ package common
 
 type OrderManagerInterface interface {
 	InitOpenOrder(orders []*Order) //should be called at the beginning of the program
-	TradingInterface
 
 	OpenOrder(orderId OrderidID) *Order
 	OpenOrderByCid(orderClientId ClientOrderidID) *Order
