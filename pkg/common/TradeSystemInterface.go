@@ -49,11 +49,6 @@ type AccountAgent interface {
 	SetDualSidePosition(exid ExchangeID, accountIndex AccountIdx, transactionId TransactionID, dualSidePosition bool) *ActionEvent
 }
 
-type GatewayInterface interface {
-	StartGateWay()
-	EnQueue(event *DataEvent)
-}
-
 type MarketDataAgent interface {
 	InitMdConfig(*StrategyCfg)
 	ResetMarketWs(exid ExchangeID, data []ResetID) *ActionEvent
@@ -64,6 +59,7 @@ type SystemAgent interface {
 	GenOrderClientId(exid ExchangeID, accountIndex AccountIdx, dataId DataID, sequence int64) ClientOrderidID
 }
 
+// DebugInterface is used for debug for TradeSystemAgent
 type DebugInterface interface {
 	SetOpenOrder(exid ExchangeID, accountIndex AccountIdx, transactionID TransactionID, orders []*Order)
 }

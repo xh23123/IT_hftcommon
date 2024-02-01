@@ -1,11 +1,11 @@
 package common
 
 type BookTickOptions struct {
-	TrigInterval int64 `json:"trig_interval"`
+	TrigInterval int64 `json:"trig_interval"` // second
 }
 
 type KlineOptions struct {
-	KlineInterval string `json:"kline_interval"`
+	KlineInterval string `json:"kline_interval"` // second
 }
 
 type OrderBookOptions struct {
@@ -33,8 +33,7 @@ type MarketDataConfigs struct {
 // StrategyConfig
 type StrategyCfg struct {
 	MarketDataConfigs
-	KeyMap          map[SymbolID]string `json:"key_map"`
-	OnTimerInterval int64               `json:"timer_interval"`
+	OnTimerInterval int64 `json:"timer_interval"` // strategy ontimer interval, ms
 }
 
 type WsInfo struct {
