@@ -151,3 +151,7 @@ func (s *TestStrategy) OnTimer() (actions []*ActionEvent) {
 
 	return actions
 }
+
+func (s *TestStrategy) Process() []*ActionEvent {
+	return nil
+}
