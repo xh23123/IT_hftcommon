@@ -30,7 +30,6 @@ type TickWs struct {
 
 type DepthWs struct {
 	MarketDataHeader
-	Symbol   SymbolID       `json:"symbol"`
 	UpdateID int64          `json:"updateid"`
 	Bids     [20][2]float64 `json:"bids"`
 	Asks     [20][2]float64 `json:"asks"`
