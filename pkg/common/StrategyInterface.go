@@ -19,8 +19,6 @@ type MarketDataCallback interface {
 }
 
 type StrategyCommonFunctions interface {
-	InitPara()
-	InitVar()
 	InitMyStrategy() []*ActionEvent
 	OnTimer() []*ActionEvent
 	OnExit()

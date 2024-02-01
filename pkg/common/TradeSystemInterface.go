@@ -64,24 +64,33 @@ type DebugInterface interface {
 	SetOpenOrder(exid ExchangeID, accountIndex AccountIdx, transactionID TransactionID, orders []*Order)
 }
 
-type TradeSystemAgent interface {
+type StrategySideInterface interface {
 	OrderAgent
-	OrderFeedbackInterface
-	TimeStampAgent
-	AccountAgent
-	MarketDataAgent
 	SystemAgent
-	Config() *ini.File
-	EnQueue(event *DataEvent)
+	MarketDataAgent
+	AccountAgent
 	NewRestClient(exid ExchangeID, config map[string]string) RestClientInterface
-	NewOrderManager(ExchangeID, AccountIdx, TransactionID) OrderManagerInterface
-	NewBalanceManager(ExchangeID, AccountIdx) BalanceManagerInterface
-	RegisterAccountManager(ExchangeID, AccountManagerInterface)
-	RegisterAccountWs(ExchangeID, AccountIdx, AccountWsInterface)
-	RegisterMarketWs(ExchangeID, AccountIdx, MarketWsInterface)
 	RegisterSymbols(symbols []SymbolID)
 
 	//options: {"marginMode": "unimargin"}  -> unimargin mode
 	//options: {"marginMode": "normal"}  -> normal mode
 	AmendType(exid ExchangeID, transactionId TransactionID, options map[string]string) AmendTypeID
+}
+
+type GatewaySideInterface interface {
+	TimeStampAgent
+	OrderFeedbackInterface
+
+	NewOrderManager(ExchangeID, AccountIdx, TransactionID) OrderManagerInterface
+	NewBalanceManager(ExchangeID, AccountIdx) BalanceManagerInterface
+	RegisterAccountManager(ExchangeID, AccountManagerInterface)
+	RegisterAccountWs(ExchangeID, AccountIdx, AccountWsInterface)
+	RegisterMarketWs(ExchangeID, AccountIdx, MarketWsInterface)
+	Config() *ini.File
+	EnQueue(event *DataEvent)
+}
+
+type TradeSystemAgent interface {
+	StrategySideInterface
+	GatewaySideInterface
 }
