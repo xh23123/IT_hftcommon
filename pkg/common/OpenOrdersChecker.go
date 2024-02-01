@@ -11,12 +11,20 @@ type orderChecker struct {
 }
 
 type OpenOrderChecker struct {
-	orderCheckFunc     []orderChecker
-	lastFirstCheckTime int64
+	orderCheckFunc      []orderChecker
+	lastFirstCheckTime  int64
+	nextSecondCheckTime int64
 }
 
 const firstOrderCheckSecond = 54 // check at 54th second per minute
 const secondCheckInterval = 1
+
+func NewOpenOrderChecker() *OpenOrderChecker {
+	return &OpenOrderChecker{
+		lastFirstCheckTime:  0,
+		nextSecondCheckTime: 0,
+	}
+}
 
 func (b *OpenOrderChecker) AddOrderCheckFunc(exchangeId ExchangeID, transactionId TransactionID, checkFunc func() error) {
 	if Logger == nil {
@@ -65,6 +73,7 @@ func (b *OpenOrderChecker) firstCheckTime(curSecond int64) bool {
 
 	if (curSecond%60) == firstOrderCheckSecond && b.lastFirstCheckTime != curSecond {
 		b.lastFirstCheckTime = curSecond
+		b.nextSecondCheckTime = curSecond + secondCheckInterval
 		return true
 	}
 
@@ -72,5 +81,13 @@ func (b *OpenOrderChecker) firstCheckTime(curSecond int64) bool {
 }
 
 func (b *OpenOrderChecker) secondCheckTime(curSecond int64) bool {
-	return b.lastFirstCheckTime+secondCheckInterval <= curSecond
+
+	if b.nextSecondCheckTime == 0 {
+		return false
+	} else if b.nextSecondCheckTime <= curSecond {
+		b.nextSecondCheckTime = 0
+		return true
+	} else {
+		return false
+	}
 }
