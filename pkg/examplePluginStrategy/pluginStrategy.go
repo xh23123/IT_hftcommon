@@ -39,7 +39,7 @@ func (s *TestStrategy) initMdConfig() {
 							TransactionId:  SpotID,
 							MdCallBackName: "OnBookTick",
 							BookTickOptions: &BookTickOptions{
-								TrigInterval: 1000,
+								TrigInterval: 1,
 							},
 						},
 					},
@@ -50,7 +50,7 @@ func (s *TestStrategy) initMdConfig() {
 							TransactionId:  SpotID,
 							MdCallBackName: "OnBookTick",
 							BookTickOptions: &BookTickOptions{
-								TrigInterval: 1000,
+								TrigInterval: 1,
 							},
 						},
 					},
