@@ -82,7 +82,7 @@ type GatewaySideInterface interface {
 	OrderFeedbackInterface
 
 	NewOrderManager(ExchangeID, AccountIdx, TransactionID) OrderManagerInterface
-	NewBalanceManager(ExchangeID, AccountIdx, TransactionID) BalanceManagerInterface
+	NewBalanceManager(ExchangeID, AccountIdx) BalanceManagerInterface
 	RegisterAccountManager(ExchangeID, AccountManagerInterface)
 	RegisterAccountWs(ExchangeID, AccountIdx, AccountWsInterface)
 	RegisterMarketWs(ExchangeID, AccountIdx, MarketWsInterface)
