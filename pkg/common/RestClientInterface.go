@@ -12,4 +12,5 @@ type RestClientInterface interface {
 	GetFuturePositions(transactionId TransactionID) (FuturePositions, error)
 	GetKlines(symbol SymbolID, transactionId TransactionID, interval IntervalID, limit int, startTime int64, endTime int64) ([]*Kline, error)
 	GetSuggestGasPrice() (*big.Int, error)
+	GetExchangeInfos(transactionId TransactionID) (*ExchangeInfo, error)
 }

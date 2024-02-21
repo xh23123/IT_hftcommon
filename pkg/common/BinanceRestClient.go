@@ -11,7 +11,6 @@ type BinanceRestClientInterface interface {
 	MarginAllPairs() ([]*MarginAllPair, error)
 	CrossMarginCollateralRatio() ([]*CrossMarginCollateralRatio, error)
 	NextHourlyInterestRates(assets []SymbolID, isIsolated bool) ([]*NextHourlyInterestRate, error)
-	GetExchangeInfos(transactionId TransactionID) (*ExchangeInfo, error)
 }
 
 // ExchangeInfo exchange info
