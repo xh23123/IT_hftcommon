@@ -36,11 +36,11 @@ type AmendTypeID string
 const BINANCEID ExchangeID = "1"
 const OKEXID ExchangeID = "3"
 const COINBASEID ExchangeID = "4"
-const COINEX ExchangeID = "5"
-const BYBIT ExchangeID = "6"
-const ETHEREUMDEX ExchangeID = "7"
-const KRAKEN ExchangeID = "8"
-const MOCKEXCHANGE ExchangeID = "9"
+const COINEXID ExchangeID = "5"
+const BYBITID ExchangeID = "6"
+const ETHEREUMDEXID ExchangeID = "7"
+const KRAKENID ExchangeID = "8"
+const MOCKEXCHANGEID ExchangeID = "9"
 
 // TransactionID
 const SpotID TransactionID = "1"
