@@ -9,11 +9,10 @@ import (
 
 type TestStrategy struct {
 	systemAgent   TradeSystemAgent
-	orderPair     string
+	orderPair     SymbolID
 	orderSequence int64
 	orderExchange ExchangeID
 	maxOrderNum   int64
-	lastOrderCid  []string
 }
 
 func NewStrategy(systemAgent TradeSystemAgent) StrategyInterface {
@@ -31,43 +30,36 @@ func NewStrategy(systemAgent TradeSystemAgent) StrategyInterface {
 }
 
 func (s *TestStrategy) initMdConfig() {
-	strategyConfig := StrategyCfg{}
-	//基础配置
-	strategyConfig.KeyMap = map[string]string{}
-	strategyConfig.BaseConfig.OnTimerInterval = 5000
-	strategyConfig.RegisterConfig = map[ExchangeID]map[string]*RegisterWsConfig{}
-	strategyConfig.RegisterConfig[BINANCEID] = map[string]*RegisterWsConfig{}
-	strategyConfig.RegisterConfig[OKEXID] = map[string]*RegisterWsConfig{}
-
-	//策略配置
-	//Binance
-	strategyConfig.RegisterConfig[BINANCEID][s.orderPair] = getBinanceMdConfig()
-	strategyConfig.RegisterConfig[OKEXID][s.orderPair] = getOkexMdConfig()
+	strategyConfig := StrategyCfg{
+		MarketDataConfigs: MarketDataConfigs{
+			MdConfigs: map[ExchangeID]map[SymbolID][]*MarketDataConfig{
+				BINANCEID: {
+					s.orderPair: {
+						{
+							TransactionId:  SpotID,
+							MdCallBackName: "OnBookTick",
+							BookTickOptions: &BookTickOptions{
+								TrigInterval: 1,
+							},
+						},
+					},
+				},
+				OKEXID: {
+					s.orderPair: {
+						{
+							TransactionId:  SpotID,
+							MdCallBackName: "OnBookTick",
+							BookTickOptions: &BookTickOptions{
+								TrigInterval: 1,
+							},
+						},
+					},
+				},
+			},
+		},
+		OnTimerInterval: 5000,
+	}
 	s.systemAgent.InitMdConfig(&strategyConfig)
-}
-
-func getBinanceMdConfig() *RegisterWsConfig {
-	//策略配置
-	registerWsConfig := RegisterWsConfig{}
-	registerWsConfig.RegisterWs = append(registerWsConfig.RegisterWs, "OnBookTick")
-	//registerWsConfig.RegisterWs = append(registerWsConfig.RegisterWs, "OnFutureBookTick")
-	//registerWsConfig.RegisterWs = append(registerWsConfig.RegisterWs, "OnFutureDepth")
-	//registerWsConfig.RegisterWs = append(registerWsConfig.RegisterWs, "OnFutureAggTrade")
-
-	registerWsConfig.TickTrigInterval = 1
-
-	return &registerWsConfig
-}
-
-func getOkexMdConfig() *RegisterWsConfig {
-	//策略配置
-	registerWsConfig := RegisterWsConfig{}
-	registerWsConfig.RegisterWs = append(registerWsConfig.RegisterWs, "OnBookTick")
-	//registerWsConfig.RegisterWs = append(registerWsConfig.RegisterWs, "OnFutureBookTick")
-
-	registerWsConfig.TickTrigInterval = 1
-
-	return &registerWsConfig
 }
 
 func (s *TestStrategy) InitPara() {
@@ -80,126 +72,82 @@ func (s *TestStrategy) OnExit() {
 	fmt.Println("strategy exited")
 }
 
-func (s *TestStrategy) InitMyStrategy() (actions []ActionEvent) {
+func (s *TestStrategy) InitMyStrategy() (actions []*ActionEvent) {
 	return actions
 }
 
-func (s *TestStrategy) OnBookTick(event BookTickWs) (actions []ActionEvent) {
+func (s *TestStrategy) OnBookTick(event *BookTickWs) (actions []*ActionEvent) {
 	eventStr, _ := json.Marshal(event)
 	fmt.Println("OnBookTick", string(eventStr))
 
 	return actions
 }
-func (s *TestStrategy) genCid(triggerDataExid ExchangeID, accountIndex AccountIdx, triggerDataId DataID) string {
-	orderClientID := s.systemAgent.GenOrderClientId(triggerDataExid, accountIndex, triggerDataId, s.orderSequence)
-	s.lastOrderCid = append(s.lastOrderCid, orderClientID)
-	s.orderSequence += 1
-	return s.lastOrderCid[len(s.lastOrderCid)-1]
-}
 
-func (s *TestStrategy) OnFutureBookTick(event BookTickWs) (actions []ActionEvent) {
-	eventStr, _ := json.Marshal(event)
-	fmt.Println("OnFutureBookTick", string(eventStr))
-
-	return actions
-}
-
-func (s *TestStrategy) OnCoinFutureBookTick(event BookTickWs) (actions []ActionEvent) {
-	eventStr, _ := json.Marshal(event)
-	fmt.Println("OnCoinFutureBookTick", string(eventStr))
-
-	return actions
-}
-
-func (s *TestStrategy) OnDepth(event DepthWs) []ActionEvent {
+func (s *TestStrategy) OnDepth(event *DepthWs) []*ActionEvent {
 	eventStr, _ := json.Marshal(event)
 	fmt.Println("OnDepth", string(eventStr))
 	return nil
 }
 
-func (s *TestStrategy) OnFutureDepth(event DepthWs) []ActionEvent {
-	eventStr, _ := json.Marshal(event)
-	fmt.Println("OnFutureDepth", string(eventStr))
-	return nil
-}
-
-func (s *TestStrategy) OnTick(event TickWs) []ActionEvent {
+func (s *TestStrategy) OnTick(event *TickWs) []*ActionEvent {
 	eventStr, _ := json.Marshal(event)
 	fmt.Println("OnTick", string(eventStr))
 	return nil
 }
 
-func (s *TestStrategy) OnFutureTick(event TickWs) []ActionEvent {
-	eventStr, _ := json.Marshal(event)
-	fmt.Println("OnFutureTick", string(eventStr))
-	return nil
-}
-
-func (s *TestStrategy) OnKlineWs(event KlineWs) []ActionEvent {
+func (s *TestStrategy) OnKlineWs(event *KlineWs) []*ActionEvent {
 	eventStr, _ := json.Marshal(event)
 	fmt.Println("OnKlineWs", string(eventStr))
 	return nil
 }
 
-func (s *TestStrategy) OnFutureOrderbook(event Orderbook) []ActionEvent {
+func (s *TestStrategy) OnOrderbook(event *Orderbook) []*ActionEvent {
 	return nil
 }
 
-func (s *TestStrategy) OnFutureKlineWs(event KlineWs) []ActionEvent {
-	eventStr, _ := json.Marshal(event)
-	fmt.Println("OnFutureKlineWs", string(eventStr))
-	return nil
-}
-
-func (s *TestStrategy) OnFutureAggTrade(event TradeWs) []ActionEvent {
-	eventStr, _ := json.Marshal(event)
-	fmt.Println("OnFutureAggTrade", string(eventStr))
-	return nil
-}
-
-func (s *TestStrategy) OnTradeWs(event TradeWs) []ActionEvent {
+func (s *TestStrategy) OnTradeWs(event *TradeWs) []*ActionEvent {
 	eventStr, _ := json.Marshal(event)
 	fmt.Println("OnTradeWs", string(eventStr))
 	return nil
 }
 
-func (s *TestStrategy) OnMarkPrice(event MarkPriceWs) []ActionEvent {
+func (s *TestStrategy) OnMarkPrice(event *MarkPriceWs) []*ActionEvent {
 	eventStr, _ := json.Marshal(event)
 	fmt.Println("OnMarkPrice", string(eventStr))
 	return nil
 }
 
-func (s *TestStrategy) OnOrder(event OrderTradeUpdateInfo) []ActionEvent {
+func (s *TestStrategy) OnOrder(event *OrderTradeUpdateInfo) []*ActionEvent {
 	eventStr, _ := json.Marshal(event)
 	fmt.Println("OnOrder", string(eventStr))
 	return nil
 }
 
-func (s *TestStrategy) OnTrade(event OrderTradeUpdateInfo) []ActionEvent {
+func (s *TestStrategy) OnTrade(event *OrderTradeUpdateInfo) []*ActionEvent {
 	eventStr, _ := json.Marshal(event)
 	fmt.Println("OnTrade", string(eventStr))
 	return nil
 }
 
-func (s *TestStrategy) OnError(event ErrorMsg) []ActionEvent {
+func (s *TestStrategy) OnError(event *ErrorMsg) []*ActionEvent {
 	eventStr, _ := json.Marshal(event)
 	fmt.Println("OnError", string(eventStr))
 	return nil
 }
 
-func (s *TestStrategy) OnDexBookTicks(event DexBookTicks) []ActionEvent {
+func (s *TestStrategy) OnDexBookTicks(event *DexBookTicks) []*ActionEvent {
 	eventStr, _ := json.Marshal(event)
 	fmt.Println("OnDexBookTicks", string(eventStr))
 	return nil
 }
 
-func (s *TestStrategy) OnDexTrades(event DexTrades) []ActionEvent {
+func (s *TestStrategy) OnDexTrades(event *DexTrades) []*ActionEvent {
 	eventStr, _ := json.Marshal(event)
 	fmt.Println("OnDexTrades", string(eventStr))
 	return nil
 }
 
-func (s *TestStrategy) OnTimer() (actions []ActionEvent) {
+func (s *TestStrategy) OnTimer() (actions []*ActionEvent) {
 
 	return actions
 }

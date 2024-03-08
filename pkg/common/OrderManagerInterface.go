@@ -1,17 +1,14 @@
 package common
 
-import cmap "github.com/orcaman/concurrent-map"
-
 type OrderManagerInterface interface {
-	TradingInterface
+	InitOpenOrder(orders []*Order) //should be called at the beginning of the program
 
-	OpenOrder(orderId string) (*Order, bool)           //TODO
-	OpenOrdersBySymbol(symbol string) ([]*Order, bool) //TODO
-	AllOpenOrders() cmap.ConcurrentMap                 //TODO
-	CreateOrderProcess(event interface{}, handler func(data *Order) (id string, err error))
-	AmendOrderProcess(event interface{}, handler func(data *Order) (id string, err error))
-	CancelOrderProcess(event interface{}, handler func(data CancelInfo) error)
-	CancelAllOrderProcess(event interface{}, handler func(data CancelInfo))
-	SetOpenOrder(orders []*Order)
-	UpdateOpenOrder(openOrders []*Order) error
+	OpenOrder(orderId OrderidID) *Order
+	OpenOrderByCid(orderClientId ClientOrderidID) *Order
+	OpenOrdersBySymbol(symbol SymbolID) []*Order
+	AllOpenOrders() []*Order
+	CreateOrderProcess(event interface{}, handler func(data *Order))
+	AmendOrderProcess(event interface{}, handler func(data *Order))
+	CancelOrderProcess(event interface{}, handler func(data *CancelInfo))
+	CancelAllOrderProcess(event interface{}, handler func(data *CancelInfo))
 }

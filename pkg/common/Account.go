@@ -3,25 +3,25 @@ package common
 import "math/big"
 
 type OrderTradeUpdateInfo struct {
-	DataID          DataID        `json:"dataid"`
-	Transaction     TransactionID `json:"transactionid"`
-	Exchange        ExchangeID    `json:"exid"`
-	AccountIndex    AccountIdx    `json:"accountidx"`
-	Status          OrderStatusID `json:"status"`
-	Symbol          string        `json:"symbol"`
-	Id              string        `json:"id"`
-	Cid             string        `json:"cid"`
-	Side            SideID        `json:"side"`
-	PositionSide    PositionID    `json:"position_side"`
-	Type            OrderTypeID   `json:"type"`
-	Size            float64       `json:"size"`
-	FilledSize      float64       `json:"filled_size"`
-	Price           float64       `json:"price"`
-	AvgPrice        float64       `json:"avg_price"`
-	LastFilledPrice float64       `json:"last_filled_size"`
-	FeeAsset        string        `json:"fee_asset"`
-	FeeCost         float64       `json:"fee_cost"`
-	Timestamp       int64         `json:"timestamp"`
+	DataID          DataID          `json:"dataid"`
+	Transaction     TransactionID   `json:"transactionid"`
+	Exchange        ExchangeID      `json:"exid"`
+	AccountIndex    AccountIdx      `json:"accountidx"`
+	Status          OrderStatusID   `json:"status"`
+	Symbol          SymbolID        `json:"symbol"`
+	Id              OrderidID       `json:"id"`
+	Cid             ClientOrderidID `json:"cid"`
+	Side            SideID          `json:"side"`
+	PositionSide    PositionID      `json:"position_side"`
+	Type            OrderTypeID     `json:"type"`
+	Size            float64         `json:"size"`
+	FilledSize      float64         `json:"filled_size"`
+	Price           float64         `json:"price"`
+	AvgPrice        float64         `json:"avg_price"`
+	LastFilledPrice float64         `json:"last_filled_size"`
+	FeeAsset        SymbolID        `json:"fee_asset"`
+	FeeCost         float64         `json:"fee_cost"`
+	Timestamp       int64           `json:"timestamp"`
 }
 
 type Balance struct {
@@ -33,19 +33,19 @@ type Balance struct {
 }
 
 type UserAsset struct {
-	Asset    string  `json:"asset"`
-	Borrowed float64 `json:"borrowed"`
-	Free     float64 `json:"free"`
-	Interest float64 `json:"interest"`
-	Locked   float64 `json:"locked"`
-	NetAsset float64 `json:"netAsset"`
+	Asset    SymbolID `json:"asset"`
+	Borrowed float64  `json:"borrowed"`
+	Free     float64  `json:"free"`
+	Interest float64  `json:"interest"`
+	Locked   float64  `json:"locked"`
+	NetAsset float64  `json:"netAsset"`
 }
 
-type MarginBalance struct {
+type MarginBalances struct {
 	MarginLevel float64     `json:"marginLevel"`
 	UserAssets  []UserAsset `json:"userAssets"`
 }
-type SpotBalance map[string]*Balance
+type Balances map[SymbolID]*Balance //如何统一 Balances 和 MarginBalances
 
 type SidePosition struct {
 	Amount        float64 `json:"pa"`
@@ -57,15 +57,14 @@ type FuturePosition struct {
 	SHORT *SidePosition `json:"SHORT"`
 	BOTH  *SidePosition `json:"BOTH"`
 }
-type WsFutureBalance map[string]*Balance
-type WsFuturePosition map[string]*FuturePosition
+type FuturePositions map[SymbolID]*FuturePosition
 
 type PremiumIndexInfo struct {
-	Symbol          string `json:"symbol"`
-	MarkPrice       string `json:"markPrice"`
-	LastFundingRate string `json:"lastFundingRate"`
-	NextFundingTime int64  `json:"nextFundingTime"`
-	Time            int64  `json:"time"`
+	Symbol          SymbolID `json:"symbol"`
+	MarkPrice       string   `json:"markPrice"`
+	LastFundingRate string   `json:"lastFundingRate"`
+	NextFundingTime int64    `json:"nextFundingTime"`
+	Time            int64    `json:"time"`
 }
 
 type Kline struct {
