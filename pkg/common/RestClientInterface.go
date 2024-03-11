@@ -4,6 +4,7 @@ import "math/big"
 
 type RestClientInterface interface {
 	BinanceRestClientInterface
+	GetMiscInfo(command string, Options interface{}) (interface{}, error)
 	GetPremiumIndex(symbol string) []*PremiumIndexInfo
 	SetMultiAssetMargin(MultiAssetMargin bool)
 	GetOrder(symbol string, transactionId TransactionID, origClientOrderID string) *Order
