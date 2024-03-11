@@ -3,6 +3,7 @@ package common
 import "math/big"
 
 type RestClientInterface interface {
+	GetMiscInfo(command string, Options interface{}) (interface{}, error)
 	GetPremiumIndex(symbol SymbolID) []*PremiumIndexInfo
 	SetMultiAssetMargin(MultiAssetMargin bool)
 	GetOrder(symbol SymbolID, transactionId TransactionID, clientOrderId ClientOrderidID) *Order
