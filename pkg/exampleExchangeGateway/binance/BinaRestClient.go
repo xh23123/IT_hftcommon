@@ -31,6 +31,10 @@ func NewRestClient(config map[string]string) *BinaRestClient {
 	return &client
 }
 
+func (r *BinaRestClient) GetMiscInfo(command string, Options interface{}) (interface{}, error) {
+	panic("BinaRestClient Not implement GetMiscInfo")
+}
+
 func (r *BinaRestClient) GetPremiumIndex(symbol string) []*common.PremiumIndexInfo {
 	return GetPremiumIndex(r.futureCli, GetExchangeSymbol(symbol))
 }
