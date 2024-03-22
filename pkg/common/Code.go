@@ -41,6 +41,7 @@ const BYBITID ExchangeID = "6"
 const ETHEREUMDEXID ExchangeID = "7"
 const KRAKENID ExchangeID = "8"
 const MOCKEXCHANGEID ExchangeID = "9"
+const GATEID ExchangeID = "10"
 
 // TransactionID
 const SpotID TransactionID = "1"
