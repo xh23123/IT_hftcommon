@@ -16,8 +16,8 @@ type OrderAgent interface {
 	CreateLimitMakerLongFutureOrder(exid ExchangeID, accountIndex AccountIdx, cid string, symbol string, size float64, price float64) ActionEvent
 	CreateLimitMakerShortFutureOrder(exid ExchangeID, accountIndex AccountIdx, cid string, symbol string, size float64, price float64) ActionEvent
 
-	CreateLimitMarginOrder(exid ExchangeID, accountIndex AccountIdx, cid string, symbol string, size float64, price float64) ActionEvent
-	CreateLimitMakerMarginOrder(exid ExchangeID, accountIndex AccountIdx, cid string, symbol string, size float64, price float64) ActionEvent
+	CreateLimitMarginOrder(exid ExchangeID, accountIndex AccountIdx, cid string, symbol string, size float64, price float64, sideEffectType string) ActionEvent
+	CreateLimitMakerMarginOrder(exid ExchangeID, accountIndex AccountIdx, cid string, symbol string, size float64, price float64, sideEffectType string) ActionEvent
 
 	CreateLimitBothCoinFutureOrder(exid ExchangeID, accountIndex AccountIdx, cid string, symbol string, size float64, price float64, reduceOnly bool) ActionEvent
 	CreateLimitLongCoinFutureOrder(exid ExchangeID, accountIndex AccountIdx, cid string, symbol string, size float64, price float64) ActionEvent
@@ -25,7 +25,7 @@ type OrderAgent interface {
 
 	//IOC orders
 	CreateIocSpotOrder(exid ExchangeID, accountIndex AccountIdx, cid string, symbol string, size float64, price float64) ActionEvent
-	CreateIocMarginOrder(exid ExchangeID, accountIndex AccountIdx, cid string, symbol string, size float64, price float64) ActionEvent
+	CreateIocMarginOrder(exid ExchangeID, accountIndex AccountIdx, cid string, symbol string, size float64, price float64, sideEffectType string) ActionEvent
 
 	CreateIocBothFutureOrder(exid ExchangeID, accountIndex AccountIdx, cid string, symbol string, size float64, price float64, reduceOnly bool) ActionEvent
 	CreateIocLongFutureOrder(exid ExchangeID, accountIndex AccountIdx, cid string, symbol string, size float64, price float64) ActionEvent
