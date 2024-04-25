@@ -3,25 +3,26 @@ package common
 import "math/big"
 
 type OrderTradeUpdateInfo struct {
-	DataID          DataID          `json:"dataid"`
-	Transaction     TransactionID   `json:"transactionid"`
-	Exchange        ExchangeID      `json:"exid"`
-	AccountIndex    AccountIdx      `json:"accountidx"`
-	Status          OrderStatusID   `json:"status"`
-	Symbol          SymbolID        `json:"symbol"`
-	Id              OrderidID       `json:"id"`
-	Cid             ClientOrderidID `json:"cid"`
-	Side            SideID          `json:"side"`
-	PositionSide    PositionID      `json:"position_side"`
-	Type            OrderTypeID     `json:"type"`
-	Size            float64         `json:"size"`
-	FilledSize      float64         `json:"filled_size"`
-	Price           float64         `json:"price"`
-	AvgPrice        float64         `json:"avg_price"`
-	LastFilledPrice float64         `json:"last_filled_size"`
-	FeeAsset        SymbolID        `json:"fee_asset"`
-	FeeCost         float64         `json:"fee_cost"`
-	Timestamp       int64           `json:"timestamp"`
+	DataID           DataID          `json:"dataid"`
+	Transaction      TransactionID   `json:"transactionid"`
+	Exchange         ExchangeID      `json:"exid"`
+	AccountIndex     AccountIdx      `json:"accountidx"`
+	Status           OrderStatusID   `json:"status"`
+	Symbol           SymbolID        `json:"symbol"`
+	Id               OrderidID       `json:"id"`
+	Cid              ClientOrderidID `json:"cid"`
+	Side             SideID          `json:"side"`
+	PositionSide     PositionID      `json:"position_side"`
+	Type             OrderTypeID     `json:"type"`
+	Size             float64         `json:"size"`
+	FilledSize       float64         `json:"filled_size"`
+	Price            float64         `json:"price"`
+	AvgPrice         float64         `json:"avg_price"`
+	LastFilledPrice  float64         `json:"last_filled_size"`
+	FeeAsset         SymbolID        `json:"fee_asset"`
+	FeeCost          float64         `json:"fee_cost"`
+	ExchangeTime     int64           `json:"exchange_time"`
+	ReceiveTimeStamp int64           `json:"receive_time"`
 }
 
 type Balance struct {
