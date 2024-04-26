@@ -3,8 +3,9 @@ package common
 import "gopkg.in/ini.v1"
 
 type OrderOptions struct {
-	ReduceOnly bool       `json:"reduce_only"` //For future BOTH orders only
-	PositionId PositionID `json:"position_id"` //For future orders
+	ReduceOnly   bool                   `json:"reduce_only"` //For future BOTH orders only
+	PositionId   PositionID             `json:"position_id"` //For future orders
+	OtherOptions map[string]interface{} `json:"other_options"`
 }
 
 type OrderAgent interface {
