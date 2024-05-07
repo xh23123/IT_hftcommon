@@ -13,13 +13,19 @@ type BinanceRestClientInterface interface {
 	NextHourlyInterestRates(assets []SymbolID, isIsolated bool) ([]*NextHourlyInterestRate, error)
 }
 
+type Filters struct {
+	LotSizeFilter
+	PriceFilter
+	FilterType string `json:"filterType,omitempty"`
+}
+
 // ExchangeInfo exchange info
 type ExchangeInfo struct {
-	Timezone        string           `json:"timezone"`
-	ServerTime      int64            `json:"serverTime"`
-	RateLimits      []RateLimit      `json:"rateLimits"`
-	ExchangeFilters []interface{}    `json:"exchangeFilters"`
-	Symbols         []BinaSymbolInfo `json:"symbols"`
+	Timezone   string      `json:"timezone"`
+	ServerTime int64       `json:"serverTime"`
+	RateLimits []RateLimit `json:"rateLimits"`
+	// ExchangeFilters []interface{}    `json:"exchangeFilters"`
+	Symbols []BinaSymbolInfo `json:"symbols"`
 }
 
 // RateLimit struct
@@ -32,54 +38,44 @@ type RateLimit struct {
 
 // Symbol market symbol
 type BinaSymbolInfo struct {
-	Symbol                     SymbolID                 `json:"symbol"`
-	Status                     string                   `json:"status"`
-	BaseAsset                  SymbolID                 `json:"baseAsset"`
-	BaseAssetPrecision         int                      `json:"baseAssetPrecision"`
-	QuoteAsset                 SymbolID                 `json:"quoteAsset"`
-	QuotePrecision             int                      `json:"quotePrecision"`
-	QuoteAssetPrecision        int                      `json:"quoteAssetPrecision"`
-	BaseCommissionPrecision    int32                    `json:"baseCommissionPrecision"`
-	QuoteCommissionPrecision   int32                    `json:"quoteCommissionPrecision"`
-	OrderTypes                 []string                 `json:"orderTypes"`
-	IcebergAllowed             bool                     `json:"icebergAllowed"`
-	OcoAllowed                 bool                     `json:"ocoAllowed"`
-	QuoteOrderQtyMarketAllowed bool                     `json:"quoteOrderQtyMarketAllowed"`
-	IsSpotTradingAllowed       bool                     `json:"isSpotTradingAllowed"`
-	IsMarginTradingAllowed     bool                     `json:"isMarginTradingAllowed"`
-	Filters                    []map[string]interface{} `json:"filters"`
-	Permissions                []string                 `json:"permissions"`
+	Symbol                     SymbolID  `json:"symbol"`
+	Status                     string    `json:"status"`
+	BaseAsset                  SymbolID  `json:"baseAsset"`
+	BaseAssetPrecision         int       `json:"baseAssetPrecision"`
+	QuoteAsset                 SymbolID  `json:"quoteAsset"`
+	QuotePrecision             int       `json:"quotePrecision"`
+	QuoteAssetPrecision        int       `json:"quoteAssetPrecision"`
+	BaseCommissionPrecision    int32     `json:"baseCommissionPrecision"`
+	QuoteCommissionPrecision   int32     `json:"quoteCommissionPrecision"`
+	OrderTypes                 []string  `json:"orderTypes"`
+	IcebergAllowed             bool      `json:"icebergAllowed"`
+	OcoAllowed                 bool      `json:"ocoAllowed"`
+	QuoteOrderQtyMarketAllowed bool      `json:"quoteOrderQtyMarketAllowed"`
+	IsSpotTradingAllowed       bool      `json:"isSpotTradingAllowed"`
+	IsMarginTradingAllowed     bool      `json:"isMarginTradingAllowed"`
+	Filters                    []Filters `json:"filters"`
+	Permissions                []string  `json:"permissions"`
 }
 
 // LotSizeFilter define lot size filter of symbol
 type LotSizeFilter struct {
-	MaxQuantity string `json:"maxQty"`
-	MinQuantity string `json:"minQty"`
-	StepSize    string `json:"stepSize"`
+	MaxQuantity string `json:"maxQty,omitempty"`
+	MinQuantity string `json:"minQty,omitempty"`
+	StepSize    string `json:"stepSize,omitempty"`
 }
 
 // PriceFilter define price filter of symbol
 type PriceFilter struct {
-	MaxPrice string `json:"maxPrice"`
-	MinPrice string `json:"minPrice"`
-	TickSize string `json:"tickSize"`
+	MaxPrice string `json:"maxPrice,omitempty"`
+	MinPrice string `json:"minPrice,omitempty"`
+	TickSize string `json:"tickSize,omitempty"`
 }
 
 // LotSizeFilter return lot size filter of symbol
 func (s *BinaSymbolInfo) LotSizeFilter() *LotSizeFilter {
 	for _, filter := range s.Filters {
-		if filter["filterType"].(string) == string("LOT_SIZE") {
-			f := &LotSizeFilter{}
-			if i, ok := filter["maxQty"]; ok {
-				f.MaxQuantity = i.(string)
-			}
-			if i, ok := filter["minQty"]; ok {
-				f.MinQuantity = i.(string)
-			}
-			if i, ok := filter["stepSize"]; ok {
-				f.StepSize = i.(string)
-			}
-			return f
+		if filter.FilterType == "LOT_SIZE" {
+			return &filter.LotSizeFilter
 		}
 	}
 	return nil
@@ -88,18 +84,8 @@ func (s *BinaSymbolInfo) LotSizeFilter() *LotSizeFilter {
 // PriceFilter return price filter of symbol
 func (s *BinaSymbolInfo) PriceFilter() *PriceFilter {
 	for _, filter := range s.Filters {
-		if filter["filterType"].(string) == string("PRICE_FILTER") {
-			f := &PriceFilter{}
-			if i, ok := filter["maxPrice"]; ok {
-				f.MaxPrice = i.(string)
-			}
-			if i, ok := filter["minPrice"]; ok {
-				f.MinPrice = i.(string)
-			}
-			if i, ok := filter["tickSize"]; ok {
-				f.TickSize = i.(string)
-			}
-			return f
+		if filter.FilterType == "PRICE_FILTER" {
+			return &filter.PriceFilter
 		}
 	}
 	return nil
