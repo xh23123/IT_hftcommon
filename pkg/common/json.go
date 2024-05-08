@@ -142,11 +142,11 @@ func (a Strings) IsNil() bool {
 
 // MarshalJSONObject implements MarshalerJSONObject
 func (i *BinaSymbolInfo) MarshalJSONObject(enc *gojay.Encoder) {
-	enc.ObjectKey("symbol", &i.Symbol)
+	enc.StringKey("symbol", string(i.Symbol))
 	enc.StringKey("status", i.Status)
-	enc.ObjectKey("baseAsset", &i.BaseAsset)
+	enc.StringKey("baseAsset", string(i.BaseAsset))
 	enc.IntKey("baseAssetPrecision", i.BaseAssetPrecision)
-	enc.ObjectKey("quoteAsset", &i.QuoteAsset)
+	enc.StringKey("quoteAsset", string(i.QuoteAsset))
 	enc.IntKey("quotePrecision", i.QuotePrecision)
 	enc.IntKey("quoteAssetPrecision", i.QuoteAssetPrecision)
 	enc.Int32Key("baseCommissionPrecision", i.BaseCommissionPrecision)
@@ -174,7 +174,9 @@ func (i *BinaSymbolInfo) UnmarshalJSONObject(dec *gojay.Decoder, key string) err
 
 	switch key {
 	case "symbol":
-		err := dec.Object(&i.Symbol)
+		var str string
+		err := dec.String(&str)
+		i.Symbol = SymbolID(str)
 
 		return err
 
@@ -182,7 +184,9 @@ func (i *BinaSymbolInfo) UnmarshalJSONObject(dec *gojay.Decoder, key string) err
 		return dec.String(&i.Status)
 
 	case "baseAsset":
-		err := dec.Object(&i.BaseAsset)
+		var str string
+		err := dec.String(&str)
+		i.BaseAsset = SymbolID(str)
 
 		return err
 
@@ -190,7 +194,9 @@ func (i *BinaSymbolInfo) UnmarshalJSONObject(dec *gojay.Decoder, key string) err
 		return dec.Int(&i.BaseAssetPrecision)
 
 	case "quoteAsset":
-		err := dec.Object(&i.QuoteAsset)
+		var str string
+		err := dec.String(&str)
+		i.QuoteAsset = SymbolID(str)
 
 		return err
 
@@ -254,6 +260,9 @@ func (i *BinaSymbolInfo) NKeys() int { return 17 }
 
 // Reset reset fields
 func (i *BinaSymbolInfo) Reset() {
+	i.Symbol = ""
+	i.BaseAsset = ""
+	i.QuoteAsset = ""
 	i.Status = ""
 	i.BaseAssetPrecision = 0
 	i.QuotePrecision = 0
