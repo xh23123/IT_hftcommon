@@ -7,8 +7,8 @@ type MarketDataHeader struct {
 	DataID            DataID        `json:"dataid"`
 	Symbol            SymbolID      `json:"symbol"`
 	TransactionID     TransactionID `json:"transactionid"`
-	ReceiveTimestamp  int64         `json:"recvtimestamp"`
-	ExchangeTimestamp int64         `json:"extimestamp"`
+	ReceiveTimestamp  int64         `json:"recv_timestamp"`
+	ExchangeTimestamp int64         `json:"exchange_timestamp"`
 }
 
 // 行情相关数据
@@ -75,8 +75,8 @@ type Orderbook struct {
 
 type DexBookTick struct {
 	Symbol            SymbolID           `json:"symbol"`
-	ReceiveTimestamp  int64              `json:"recvtimestamp"`
-	ExchangeTimestamp int64              `json:"extimestamp"`
+	ReceiveTimestamp  int64              `json:"recv_timestamp"`
+	ExchangeTimestamp int64              `json:"exchange_timestamp"`
 	UniswapV2         *UniswapV2BookTick `json:"uniswapv2,omitempty"`
 }
 
@@ -97,8 +97,8 @@ type DexBookTicks struct {
 
 type DexTrade struct {
 	Symbol            SymbolID        `json:"symbol"`
-	ReceiveTimestamp  int64           `json:"recvtimestamp"`
-	ExchangeTimestamp int64           `json:"extimestamp"`
+	ReceiveTimestamp  int64           `json:"recv_timestamp"`
+	ExchangeTimestamp int64           `json:"exchange_timestamp"`
 	UniswapV2         *UniswapV2Trade `json:"uniswapv2,omitempty"`
 }
 
