@@ -18,7 +18,8 @@ type OrderTradeUpdateInfo struct {
 	FilledSize        float64         `json:"filled_size"`
 	Price             float64         `json:"price"`
 	AvgPrice          float64         `json:"avg_price"`
-	LastFilledPrice   float64         `json:"last_filled_size"`
+	LastFilledPrice   float64         `json:"last_filled_price"`
+	LastFilledSize    float64         `json:"last_filled_size"`
 	FeeAsset          SymbolID        `json:"fee_asset"`
 	FeeCost           float64         `json:"fee_cost"`
 	ReceiveTimestamp  int64           `json:"recv_timestamp"`
