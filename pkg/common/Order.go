@@ -23,6 +23,9 @@ type Order struct {
 	DexAmountIn     big.Int `json:"dex_amount_in"`
 	DexMinAmountOut big.Int `json:"dex_amount_out"`
 	GasPrice        big.Int `json:"gas_price"`
+
+	// Options
+	OrderOptions
 }
 
 type CancelInfo struct {
