@@ -25,7 +25,7 @@ type Order struct {
 	GasPrice        big.Int `json:"gas_price"`
 
 	// Options
-	OrderOptions
+	Options map[string]interface{} `json:"options"` //other options
 }
 
 type CancelInfo struct {
