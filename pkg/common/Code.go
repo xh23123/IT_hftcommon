@@ -44,6 +44,7 @@ const MOCKEXCHANGEID ExchangeID = "9"
 const GATEID ExchangeID = "10"
 const BITGETID ExchangeID = "11"
 const LBANKID ExchangeID = "12"
+const WOOID ExchangeID = "13"
 
 // TransactionID
 const SpotID TransactionID = "1"
