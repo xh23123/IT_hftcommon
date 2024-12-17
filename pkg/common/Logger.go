@@ -1,6 +1,8 @@
 package common
 
 import (
+	"os"
+
 	"github.com/natefinch/lumberjack"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
@@ -11,7 +13,7 @@ var MaxSize int = 100
 var MaxAge int = 30
 var MaxBackups int = 30
 
-func InitLogger(logpath string, loglevel string) {
+func InitLogger(logpath string, loglevel string, printToScreen bool) {
 	hook := lumberjack.Logger{
 		Filename:   logpath, //日志文件路径
 		MaxSize:    MaxSize, //最大MB
@@ -32,8 +34,15 @@ func InitLogger(logpath string, loglevel string) {
 	default:
 		level = zap.InfoLevel
 	}
-	//syncer := zapcore.NewMultiWriteSyncer(zapcore.AddSync(os.Stdout), zapcore.AddSync(&hook))
-	syncer := zapcore.NewMultiWriteSyncer(zapcore.AddSync(&hook))
+
+	var syncer zapcore.WriteSyncer
+
+	if printToScreen {
+		syncer = zapcore.NewMultiWriteSyncer(zapcore.AddSync(os.Stdout), zapcore.AddSync(&hook))
+	} else {
+		syncer = zapcore.NewMultiWriteSyncer(zapcore.AddSync(&hook))
+	}
+
 	encoderConfig := zap.NewProductionEncoderConfig()
 	encoderConfig.EncodeTime = zapcore.ISO8601TimeEncoder
 	core := zapcore.NewCore(
