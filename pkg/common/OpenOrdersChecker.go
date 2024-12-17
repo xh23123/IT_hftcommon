@@ -28,7 +28,7 @@ func NewOpenOrderChecker() *OpenOrderChecker {
 
 func (b *OpenOrderChecker) AddOrderCheckFunc(exchangeId ExchangeID, transactionId TransactionID, checkFunc func() error) {
 	if Logger == nil {
-		InitLogger("golog/common.log", "info")
+		InitLogger("golog/common.log", "info", false)
 	}
 	b.orderCheckFunc = append(b.orderCheckFunc, orderChecker{
 		ExchangeId:     exchangeId,
