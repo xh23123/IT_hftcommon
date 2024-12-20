@@ -47,6 +47,7 @@ const LBANKID ExchangeID = "12"
 const WOOID ExchangeID = "13"
 const KUCOINID ExchangeID = "14"
 const PHEMEXID ExchangeID = "15"
+const HUOBIID ExchangeID = "16"
 
 // TransactionID
 const SpotID TransactionID = "1"
