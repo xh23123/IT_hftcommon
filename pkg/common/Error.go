@@ -1,6 +1,8 @@
 package common
 
-import "fmt"
+import (
+	"fmt"
+)
 
 var _ error = (*gostError)(nil)
 
