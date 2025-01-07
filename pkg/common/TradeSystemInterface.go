@@ -94,5 +94,5 @@ type GatewaySideInterface interface {
 type TradeSystemAgent interface {
 	StrategySideInterface
 	GatewaySideInterface
-	NotifyRisk(ExchangeID, AccountIdx, TransactionID, reason string)
+	NotifyRisk(exid ExchangeID, accountIndex AccountIdx, transactionId TransactionID, reason string)
 }
