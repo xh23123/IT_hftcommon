@@ -151,3 +151,7 @@ func (s *TestStrategy) OnTimer() (actions []*ActionEvent) {
 
 	return actions
 }
+
+func (s *TestStrategy) OnMiscEvent(event *MiscEvent) (actions []*ActionEvent)  {
+	return actions
+}
