@@ -1,13 +1,13 @@
 package common
 
-type MiscEventTypeID string
-
-const MdConnectionStatus MiscEventTypeID = "MdConnectionStatus"
-
 type MiscEvent struct {
 	Type  MiscEventTypeID `json:"type"`
 	Event interface{}     `json:"event"`
 }
+
+type MiscEventTypeID string
+
+const MdConnectionStatus MiscEventTypeID = "MdConnectionStatus"
 
 type MdConnectionStatusEvent struct {
 	Exchange      ExchangeID    `json:"exid"`

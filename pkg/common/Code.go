@@ -76,6 +76,7 @@ const OrderbookID DataID = "15"
 const BalancesUpdateID DataID = "16"
 const PositionsUpdateID DataID = "17"
 const UpdateRestOrderID DataID = "18"
+const MiscEventID DataID = "19"
 
 // ActionID
 const CREATE_LIMITTYPE_SPOT_ORDER ActionID = "1"
