@@ -28,4 +28,5 @@ type StrategyInterface interface {
 	OrderEntryCallback
 	MarketDataCallback
 	StrategyCommonFunctions
+	OnMiscEvent(event *MiscEvent) []*ActionEvent
 }
