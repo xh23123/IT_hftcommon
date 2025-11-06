@@ -30,9 +30,9 @@ type TickWs struct {
 
 type DepthWs struct {
 	MarketDataHeader
-	UpdateID int64          `json:"updateid"`
-	Bids     [20][2]float64 `json:"bids"`
-	Asks     [20][2]float64 `json:"asks"`
+	UpdateID int64        `json:"updateid"`
+	Bids     [][2]float64 `json:"bids"`
+	Asks     [][2]float64 `json:"asks"`
 }
 
 type KlineWs struct {
