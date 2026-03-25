@@ -9,6 +9,8 @@ type MiscEventTypeID string
 
 const MdConnectionStatus MiscEventTypeID = "MdConnectionStatus"
 
+const MiscEventTypePolymarket MiscEventTypeID = "polymarket"
+
 type MdConnectionStatusEvent struct {
 	Exchange      ExchangeID    `json:"exid"`
 	DataID        DataID        `json:"dataid"`

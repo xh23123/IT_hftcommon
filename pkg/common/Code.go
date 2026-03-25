@@ -49,6 +49,7 @@ const KUCOINID ExchangeID = "14"
 const PHEMEXID ExchangeID = "15"
 const HUOBIID ExchangeID = "16"
 const ASTERID ExchangeID = "17"
+const POLYMARKETID ExchangeID = "18"
 
 // TransactionID
 const SpotID TransactionID = "1"
