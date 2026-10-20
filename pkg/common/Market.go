@@ -53,7 +53,7 @@ type KlineWs struct {
 type TradeWs struct {
 	MarketDataHeader
 	TradeID         int64   `json:"tradeid"`
-	TransactionTime int64   `json:"transactiontime"`
+	TransactionTime int64   `json:"tradetime"`
 	Price           float64 `json:"price"`
 	Size            float64 `json:"size"`
 	TradeCount      int64   `json:"tradecount"`
