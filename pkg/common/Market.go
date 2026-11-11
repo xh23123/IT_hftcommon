@@ -9,6 +9,10 @@ type MarketDataHeader struct {
 	TransactionID     TransactionID `json:"transactionid"`
 	ReceiveTimestamp  int64         `json:"recv_timestamp"`
 	ExchangeTimestamp int64         `json:"exchange_timestamp"`
+	// Extra carries exchange-specific supplementary fields as a JSON-serializable
+	// object struct or map. Leave nil when unused; do not mutate its contents after
+	// enqueueing the event. Existing fields retain their original meanings.
+	Extra interface{} `json:"extra,omitempty"`
 }
 
 // 行情相关数据
